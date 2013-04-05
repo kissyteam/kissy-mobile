@@ -1046,8 +1046,33 @@ form.bs-docs-example {
   }
 }
 
-h1, h3, h3, .masthead p, .subhead p, .marketing h2
+h1, h2,h3, h4, h5 ,h6 ,.masthead p, .subhead p, .marketing h2, .lead,blockquote
 {
   font-family: "Helvetica Neue",Helvetica,'microsoft yahei ui', 'microsoft yahei','simhei',Arial,sans-serif;
   font-weight: normal;
+}
+
+blockquote,
+blockquote p{
+	font-family:ËÎÌו;
+	font-size:14px;
+}
+
+.j-logo {
+	height:160px;
+	background:url('ksmb-sm.png') no-repeat 50% 50% #171717;
+    /*width: 688px;*/
+}
+.j-logo-wrapper {
+	border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px 3px 3px 3px;
+    padding: 6px;
+}
+
+#text-4 {
+	margin-top:20px;
+}
+
+body {
+	font-size:14px !important;
 }

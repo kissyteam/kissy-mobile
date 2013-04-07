@@ -1,0 +1,16 @@
+<project name="pagination.build" default="doc" basedir="">
+    <description>Component Build File</description>
+
+	<!--生成md文档-->
+    <target name="doc">
+		<echo>若报错,请安装marked：</echo>
+		<echo>npm install -g marked</echo>
+		<apply executable="marked">
+			<fileset dir="." includes="**/*.md"/>
+			<arg value="-o" />
+			<targetfile /> 
+			<mapper type="glob" from="*.md" to="*.md.html" />
+		</apply>
+    </target>
+
+</project>

@@ -1,0 +1,26 @@
+<div class="con">
+    <ul>
+        <li><a onclick="NS.back();">back</a></li>
+        <li><a onclick="NS.back('pages/1.html');">back to 1</a></li>
+        <li><a onclick="NS.forward('pages/3.html');">forward to 3</a></li>
+        <li><a onclick="NS.forward();">forward</a></li>
+    </ul>
+</div>
+
+<style>
+    .con {
+        color: white;
+        width: 100%;
+        height: 100%;
+        background-color: blue;
+    }
+</style>
+
+<script>
+    KISSY.use('mobile/app/1.0/', function(S, MS) {
+        MS.startup(function(data) {
+            app = this;
+        });
+    });
+</script>
+

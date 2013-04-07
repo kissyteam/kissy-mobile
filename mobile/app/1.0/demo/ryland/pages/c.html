@@ -1,5 +1,5 @@
 <div class="navbar">
-    <a href="javascript:void(0);" class="left">
+    <a href="javascript:void(0);" onclick="NS.back('pages/b.html');" class="left">
         <span class="common-icon"><span class="back-icon"></span><span class="back-icon-text">Back</span></span>
     </a>
     <span class="title"></span>
@@ -68,7 +68,7 @@
 
     .estate-tab {
         min-height: 80px;
-        margin: 0 0 50px 15px;
+       /* margin: 0 0 50px 15px;*/
     }
 
     .estate-tab img {
@@ -242,14 +242,13 @@
 	KISSY.use('mobile/app/1.0/',function(S,MS){
 		
 		MS.startup(function(data){
+			// alert(22);
 			var app = this;
 			var page = app.get('page');
 			var footer = page.one('.footer a');
-
 			if(!data || !data.city || !data.estate) {
 				return;
 			}
-
 			page.one('.title').html(data.estate + ' @ ' + data.city);
 			page.one('.info-name').html(data.estate);
 			footer.one('.common-btn').html('Back to ' + data.city);
@@ -265,6 +264,7 @@
 					city: data.city
 				})
 			});	
+			
 		});
 	});
 

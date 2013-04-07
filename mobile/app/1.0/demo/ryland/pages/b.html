@@ -14,7 +14,7 @@
             <li class="estate-tab" data-estate="Estate 1">
                 <img src="http://origin-images.ryland.com/GetImage.aspx?Type=community&Id=673&ImageId=789&Height=77&Width=116&v=1914382330"/>
                 <ul class="info">
-                    <li class="info-name">Estate 1</li>
+                    <li class="info-name">Estate 1 <a href="pages/c.html">next</a></li>
                     <li>Priced From: $245,990</li>
                     <li>Square Foot: 2405-3880</li>
                     <li>City: XXX</li>
@@ -274,10 +274,10 @@
 			if(!data || !data.city) {
 				return;
 			}
-
 			page.one('.title').html(data.city);	
 
 			page.all('.estate-tab').on('click', function() {
+				//debugger;
 				var tab = page.one(this);
 				app.forward('pages/c.html', {
 					city: data.city,

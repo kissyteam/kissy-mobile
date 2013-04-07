@@ -23,8 +23,12 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 		}else{
 			url = uri;
 		}
+		var initCom = new Function;
 		if(url == ""){
 			url = "mobile/startup/index.html"
+			var initCom = function(){
+				initComment();
+			};
 		}
 		S.IO({
 			url:url+'?t='+S.now(),
@@ -34,9 +38,7 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 					'	<div id="disqus_thread"></div>',
 					'</div>'
 				 ].join(''));
-				window.disqus_title = url;
-				window.disqus_url = url;
-				initComment(hash(url));
+				initCom();
 			},
 			error:function(){
 				S.one('#doc').html('<h2>404. Not Found</h2>');
@@ -56,7 +58,7 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 function initComment(key){
 	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
 	window.disqus_shortname = 'mobilekissyuicom'; // required: replace example with your forum shortname
-	window.disqus_identifier = key;
+	window.disqus_identifier = 'mobile-index';
 
 	/* * * DON'T EDIT BELOW THIS LINE * * */
 	(function() {

@@ -20,10 +20,19 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 			S.one('#doc').css('display','none');
 			S.one('#index').css('display','block');
 		}else{
-			S.one('#doc').css('display','block');
+			S.one('#doc').css({
+				'display':'block',
+				'padding-top':'20px'
+			});
 			S.one('#index').css('display','none');
-			S.IO.get(url+'?t='+S.now(),function(d){
-				S.one('#doc').html(d);
+			S.IO({
+				url:url+'?t='+S.now(),
+				success:function(d){
+					S.one('#doc').html(d);
+				},
+				error:function(){
+					S.one('#doc').html('<h2>404. Not Found</h2>');
+				}
 			});
 		}
 	};	

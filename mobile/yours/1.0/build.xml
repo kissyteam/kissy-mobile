@@ -78,10 +78,10 @@
 		<echo>若报错,请安装marked：</echo>
 		<echo>npm install -g marked</echo>
 		<apply executable="marked">
-			<fileset dir="." includes="**/*.markdown"/>
+			<fileset dir="." includes="**/*.md"/>
 			<arg value="-o" />
 			<targetfile /> 
-			<mapper type="glob" from="*.markdown" to="*.markdown.api" />
+			<mapper type="glob" from="*.md" to="*.md.html" />
 		</apply>
     </target>
 

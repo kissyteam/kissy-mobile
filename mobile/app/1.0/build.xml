@@ -9,6 +9,8 @@
 	<dirname property="current.dir" file="${ant.file.compressor.build}"/>
 
 	<property name="root.dir" location="${current.dir}/../../../"/>
+	<property name="svn.dir" location="${root.dir}/svn"/>
+	<property name="site.id" value="887"/>
 
     <import file="../../common.xml"/>
 
@@ -40,6 +42,10 @@
 		<property name="component.build.dir"
 				  location="${mobile.build.dir}/mobile/${component.name}/${component.version}"/>
 		<property name="component.build.dir.tmp" value="${component.build.dir}/tmp"/>
+
+		<property name="assets.dir" value="${root.dir}/mobile-build/mobile"/>
+		<property name="pubpath" value="${component.name}/${component.version}"/>
+
 	</target>
 
 	<target name="getname_unix" if="isUnix">
@@ -72,6 +78,57 @@
 	<condition property="isWindows">  
 		<os family="windows" />  
 	</condition>  
+
+	<target name="svnup">
+		<exec executable="svn" dir="${svn.dir}">
+			<arg value="up" />
+		</exec>
+	</target>
+
+	<!--发布-->
+	<target name="pub" depends="getversion,getname,svnup,pub_unix,pub_windows" />
+
+	<target name="pub_unix" if="isUnix">
+		<echo message="Publishing..." />
+		<apply executable="bake" failonerror="true" parallel="true">
+			<fileset dir="${assets.dir}" includes="**/*.js" />
+			<arg value="-f" />
+			<arg value="${assets.dir}" />
+			<arg value="-t" />
+			<arg value="${svn.dir}" />
+			<arg value="-P" />
+			<arg value="mobile/${component.name}" />
+			<arg value="-p" />
+			<arg value="1" />
+			<arg value="-u" />
+			<arg value="kissyMobileTools" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${pubpath}" />
+		</apply>
+	</target>
+	<target name="pub_windows" if="isWindows">  
+		<propertyregex property="_assets.dir" input="${assets.dir}" regexp="\\" replace="\/" defaultvalue="${assets.dir}" />
+		<propertyregex property="_svn.dir" input="${svn.dir}" regexp="\\" replace="\/" defaultvalue="${svn.dir}" />
+		<propertyregex property="_pubpath" input="${pubpath}" regexp="\\" replace="\/" defaultvalue="${pubpath}" />
+		<exec executable="bake.exe" dir="./" failonerror="true">
+			<arg value="-f" />
+			<arg value="${_assets.dir}" />
+			<arg value="-t" />
+			<arg value="${_svn.dir}" />
+			<arg value="-P" />
+			<arg value="mobile/${component.name}" />
+			<arg value="-p" />
+			<arg value="1" />
+			<arg value="-u" />
+			<arg value="kissyMobileTools" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${pubpath}" />
+		</exec>
+	</target>  
 
 	<!--生成md文档-->
     <target name="doc">

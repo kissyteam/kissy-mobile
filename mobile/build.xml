@@ -1,0 +1,43 @@
+<project name="pagination.build" default="doc,build" basedir="">
+    <description>mobile Build</description>
+
+    <property name="mobile.dir" location="."/>
+	<property name="mobile.build.dir" location="${mobile.dir}/../mobile-build/"/>
+
+    <target name="dircheck">
+        <condition property="mobile.build.dir.exists">
+            <available file="${mobile.build.dir}" type="dir"/>
+        </condition>
+    </target>
+
+    <target name="del" if="mobile.build.dir.exists" depends="dircheck">
+        <delete includeemptydirs="true" >
+            <fileset dir="${mobile.build.dir}"  includes="**/*" />
+        </delete>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${mobile.build.dir}"/>
+    </target>
+
+    <target name="build-all">
+        <subant target="" failonerror="false" inheritall="false">
+            <fileset dir="${mobile.dir}" includes="**/build.xml"/>
+        </subant>
+    </target>
+
+    <target name="build" depends="del,prepare,build-all"> </target>
+
+	<!--生成md文档-->
+    <target name="doc">
+		<echo>若报错,请安装marked：</echo>
+		<echo>npm install -g marked</echo>
+		<apply executable="marked">
+			<fileset dir="." includes="**/*.md"/>
+			<arg value="-o" />
+			<targetfile /> 
+			<mapper type="glob" from="*.md" to="*.md.html" />
+		</apply>
+    </target>
+
+</project>

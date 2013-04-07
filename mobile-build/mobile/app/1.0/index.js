@@ -2820,7 +2820,7 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 	return BSlide;
 
 },{
-	requires:['node','event','json','./slide-util','./kissy2yui']	
+	requires:['node','event','json','./util','./kissy2yui']	
 });
 
 KISSY.add('mobile/app/1.0/util',function(S){

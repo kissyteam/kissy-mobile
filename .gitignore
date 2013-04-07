@@ -1,0 +1,6 @@
+.DS_Store
+*.swp
+/.settings
+/.project
+/.svn
+/svn

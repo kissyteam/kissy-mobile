@@ -13,11 +13,6 @@
     <link href="tools/skin/docs.css" rel="stylesheet">
     <link href="tools/skin/prettify.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="tools/skin/html5shiv.js"></script>
-    <![endif]-->
-
     <!-- Le fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="tools/skin/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="tools/skin/apple-touch-icon-114-precomposed.png">
@@ -68,21 +63,12 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <!--div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav">
-          <li><a href="#download-bootstrap"><i class="icon-chevron-right"></i> Download</a></li>
-          <li><a href="#file-structure"><i class="icon-chevron-right"></i> File structure</a></li>
-          <li><a href="#contents"><i class="icon-chevron-right"></i> What's included</a></li>
-          <li><a href="#html-template"><i class="icon-chevron-right"></i> HTML template</a></li>
-          <li><a href="#examples"><i class="icon-chevron-right"></i> Examples</a></li>
-          <li><a href="#what-next"><i class="icon-chevron-right"></i> What next?</a></li>
-        </ul>
-      </div-->
-      <div class="span8">
+	  <div class="span8" id="doc"></div>
+      <div class="span8" id="index" style="display:none;">
 		 <div class="page-header">
             <h1>Kissy Mobile</h1>
           </div>
-		<p class="lead">Bef23:54中文ore downloading, be sure to have a code editor (we recommend <a href="http://sublimetext.com/2">Sublime Text 2</a>) and some working knowledge of HTML and CSS. We won't walk </p>
+		<p>KISSY<sup>Mobile</sup> 是 <a href="http://docs.kissyui.com">Kissy</a> 的子项目。专门面向Web无线设备的一整套工具库。包含控件级的事件支持、触屏行为的封装、富控件、皮肤、App的基础架构等，同时该文档还包含web无线项目最佳实践。项目基于KISSY 1.3.0。全套Web无线解决方案力争将HTML5和CSS3的优势发挥至最佳，做到即调即用。 </p>
 
 		<header id="overview">
 			<div class="j-logo-wrapper">
@@ -95,240 +81,42 @@
         ================================================== -->
         <div id="download-bootstrap">
           <div class="page-header">
-            <h1>1. 说明</h1>
+            <h2>跨平台支持</h2>
           </div>
-          <p class="lead">Before downloading, be sure to have a code editor (we recommend <a href="http://sublimetext.com/2">Sublime Text 2</a>) and some working knowledge of HTML and CSS. We won't walk through the source files here, but they are available for download. We'll focus on getting started with the compiled Bootstrap files.</p>
+		  <p>KISSY<sup>Mobile</sup> 面向主流移动设备的浏览器平台，兼容iOS、Android和Window Phone中大部分设备和版本。设备涵盖智能机和平板电脑。这些设备支持情况是与时俱进的，因此KISSYMobile的平台兼容情况也会及时更新。我们会定期给出最新的移动设备占有率更新的GBS（浏览器分级支持基准）。详情请参阅<a href="#">硬件测试基准GBS</a>(TODO)。</p>
 
           <div class="row-fluid">
-            <div class="span6">
-              <h2>Download compiled</h2>
-              <p><strong>Fastest way to get started:</strong> get the compiled and minified versions of our CSS, JS, and images. No docs or original source files.</p>
-              <p><a class="btn btn-large btn-primary" href="tools/skin/todc-bootstrap.css">Download TODC Bootstrap</a></p>
-            </div>
-            <div class="span6">
-              <h2>Download source</h2>
-              <p>Get the original files for all CSS and JavaScript, along with a local copy of the docs by downloading the latest version directly from GitHub.</p>
-              <p><a class="btn btn-large" href="https://github.com/todc/todc-bootstrap/zipball/master">Download TODC Bootstrap source</a></p>
-            </div>
-          </div>
-          <div class="row-fluid">
-            <div class="span6">
-              <p><a class="btn btn-large btn-primary" href="http://twitter.github.com/bootstrap/assets/bootstrap.zip">Download Bootstrap</a></p>
-            </div>
-            <div class="span6">
-              <p><a class="btn btn-large" href="https://github.com/twitter/bootstrap/zipball/master">Download Bootstrap source</a></p>
+            <div class="span12">
+              <h2>Mobile App Develop Toolkit</h2>
+              <p><strong>Mobile App Develop Toolkit:</strong>用来构建应用模式的Web页面，包括专场动画，页面间变量切换，缓存处理等。KDK是整个KS Mobile的基础。</p>
+			  <p>
+				<a class="btn btn-large btn-primary" href="tools/skin/todc-bootstrap.css">Useage</a>
+				<a class="btn btn-large btn-primary" href="tools/skin/todc-bootstrap.css">Demo</a>
+			  </p>
             </div>
           </div>
           <div class="alert alert-info">
-            <strong>Heads up!</strong> TODC Bootstrap does not currently provide a compiled/zipped package. The
-            <strong>Download TODC Bootstrap</strong> button will download the todc-bootstrap stylesheet.
+			<strong>KISSY Mobile App Develop Toolkit</strong>（简称KDK）是 <a href="https://github.com/zhenn/mslide">MSlide</a> 的增强版，KISSY<sup>Mobile</sup>的基础。它给出了一套网页应用化的基本思路和开发实践，基于此可以快速完成“应用化”的web页面的架设。
           </div>
         </div>
 
 
+		<div class="comment">
+			<div id="disqus_thread"></div>
+			<script type="text/javascript">
+				/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			var disqus_shortname = 'tbragithubcom'; // required: replace example with your forum shortname
+			var disqus_identifier = 'urn:uuid:be1a9029-53ea-4b6a-9b70-369ec5c98cd4';
 
-        <!-- File structure
-        ================================================== -->
-        <section id="file-structure">
-          <div class="page-header">
-            <h1>2. File structure</h1>
-          </div>
-          <p class="lead">Within the download you'll find the following file structure and contents, logically grouping common assets and providing both compiled and minified variations.</p>
-          <p>Once downloaded, unzip the compressed folder to see the structure of (the compiled) Bootstrap. You'll see something like this:</p>
-<pre class="prettyprint">
-  bootstrap/
-  ├── css/
-  │   ├── bootstrap.css
-  │   ├── bootstrap.min.css
-  ├── js/
-  │   ├── bootstrap.js
-  │   ├── bootstrap.min.js
-  └── img/
-      ├── glyphicons-halflings.png
-      └── glyphicons-halflings-white.png
-</pre>
-          <p>This is the most basic form of Bootstrap: compiled files for quick drop-in usage in nearly any web project. We provide compiled CSS and JS (<code>bootstrap.*</code>), as well as compiled and minified CSS and JS (<code>bootstrap.min.*</code>). The image files are compressed using <a href="http://imageoptim.com/">ImageOptim</a>, a Mac app for compressing PNGs.</p>
-          <p>Please note that all JavaScript plugins require jQuery to be included.</p>
-        </section>
-
-
-
-        <!-- Contents
-        ================================================== -->
-        <section id="contents">
-          <div class="page-header">
-            <h1>3. What's included</h1>
-          </div>
-          <p class="lead">Bootstrap comes equipped with HTML, CSS, and JS for all sorts of things, but they can be summarized with a handful of categories visible at the top of the <a href="http://getbootstrap.com">Bootstrap documentation</a>.</p>
-
-          <h2>Docs sections</h2>
-          <h4><a href="http://twitter.github.com/bootstrap/scaffolding.html">Scaffolding</a></h4>
-          <p>Global styles for the body to reset type and background, link styles, grid system, and two simple layouts.</p>
-          <h4><a href="http://twitter.github.com/bootstrap/base-css.html">Base CSS</a></h4>
-          <p>Styles for common HTML elements like typography, code, tables, forms, and buttons. Also includes <a href="http://glyphicons.com">Glyphicons</a>, a great little icon set.</p>
-          <h4><a href="http://twitter.github.com/bootstrap/components.html">Components</a></h4>
-          <p>Basic styles for common interface components like tabs and pills, navbar, alerts, page headers, and more.</p>
-          <h4><a href="http://twitter.github.com/bootstrap/javascript.html">JavaScript plugins</a></h4>
-          <p>Similar to Components, these JavaScript plugins are interactive components for things like tooltips, popovers, modals, and more.</p>
-
-          <h2>List of components</h2>
-          <p>Together, the <strong>Components</strong> and <strong>JavaScript plugins</strong> sections provide the following interface elements:</p>
-          <ul>
-            <li>Button groups</li>
-            <li>Button dropdowns</li>
-            <li>Navigational tabs, pills, and lists</li>
-            <li>Navbar</li>
-            <li>Labels</li>
-            <li>Badges</li>
-            <li>Page headers and hero unit</li>
-            <li>Thumbnails</li>
-            <li>Alerts</li>
-            <li>Progress bars</li>
-            <li>Modals</li>
-            <li>Dropdowns</li>
-            <li>Tooltips</li>
-            <li>Popovers</li>
-            <li>Accordion</li>
-            <li>Carousel</li>
-            <li>Typeahead</li>
-          </ul>
-          <p>In future guides, we may walk through these components individually in more detail. Until then, look for each of these in the documentation for information on how to utilize and customize them.</p>
-        </section>
-
-
-
-        <!-- HTML template
-        ================================================== -->
-        <section id="html-template">
-          <div class="page-header">
-            <h1>4. Basic HTML template</h1>
-          </div>
-          <p class="lead">With a brief intro into the contents out of the way, we can focus on putting Bootstrap to use. To do that, we'll utilize a basic HTML template that includes everything we mentioned in the <a href="./getting-started.html#file-structure">File structure</a>.</p>
-          <p>Now, here's a look at a <strong>typical HTML file</strong>:</p>
-<pre class="prettyprint linenums">
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;Bootstrap 101 Template&lt;/title&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Hello, world!&lt;/h1&gt;
-    &lt;script src="http://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</pre>
-          <p>To make this <strong>a Bootstrapped template</strong>, just include the appropriate CSS and JS files:</p>
-<pre class="prettyprint linenums">
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;Bootstrap 101 Template&lt;/title&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;!-- Bootstrap --&gt;
-    &lt;link href="css/bootstrap.min.css" rel="stylesheet" media="screen"&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Hello, world!&lt;/h1&gt;
-    &lt;script src="http://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
-    &lt;script src="js/bootstrap.min.js"&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</pre>
-          <p><strong>And you're set!</strong> With those two files added, you can begin to develop any site or application with Bootstrap.</p>
-        </section>
-
-
-
-        <!-- Examples
-        ================================================== -->
-        <section id="examples">
-          <div class="page-header">
-            <h1>5. Examples</h1>
-          </div>
-          <p class="lead">Move beyond the base template with a few example layouts. We encourage folks to iterate on these examples and not simply use them as an end result.</p>
-          <ul class="thumbnails bootstrap-examples">
-            <li class="span3">
-              <a class="thumbnail" href="examples/starter-template.html">
-                <img src="tools/skin/bootstrap-example-starter.png" alt="">
-              </a>
-              <h4>Starter template</h4>
-              <p>A barebones HTML document with all the Bootstrap CSS and JavaScript included.</p>
-            </li>
-            <li class="span3">
-              <a class="thumbnail" href="examples/hero.html">
-                <img src="tools/skin/bootstrap-example-marketing.png" alt="">
-              </a>
-              <h4>Basic marketing site</h4>
-              <p>Featuring a hero unit for a primary message and three supporting elements.</p>
-            </li>
-            <li class="span3">
-              <a class="thumbnail" href="examples/fluid.html">
-                <img src="tools/skin/bootstrap-example-fluid.png" alt="">
-              </a>
-              <h4>Fluid layout</h4>
-              <p>Uses our new responsive, fluid grid system to create a seamless liquid layout.</p>
-            </li>
-
-            <li class="span3">
-              <a class="thumbnail" href="examples/marketing-narrow.html">
-                <img src="tools/skin/bootstrap-example-marketing-narrow.png" alt="">
-              </a>
-              <h4>Narrow marketing</h4>
-              <p>Slim, lightweight marketing template for small projects or teams.</p>
-            </li>
-            <li class="span3">
-              <a class="thumbnail" href="examples/justified-nav.html">
-                <img src="tools/skin/bootstrap-example-justified-nav.png" alt="">
-              </a>
-              <h4>Justified nav</h4>
-              <p>Marketing page with equal-width navigation links in a modified navbar.</p>
-            </li>
-            <li class="span3">
-              <a class="thumbnail" href="examples/signin.html">
-                <img src="tools/skin/bootstrap-example-signin.png" alt="">
-              </a>
-              <h4>Sign in</h4>
-              <p>Barebones sign in form with custom, larger form controls and a flexible layout.</p>
-            </li>
-
-            <li class="span3">
-              <a class="thumbnail" href="examples/sticky-footer.html">
-                <img src="tools/skin/bootstrap-example-sticky-footer.png" alt="">
-              </a>
-              <h4>Sticky footer</h4>
-              <p>Pin a fixed-height footer to the bottom of the user's viewport.</p>
-            </li>
-            <li class="span3">
-              <a class="thumbnail" href="examples/carousel.html">
-                <img src="tools/skin/bootstrap-example-carousel.png" alt="">
-              </a>
-              <h4>Carousel jumbotron</h4>
-              <p>A more interactive riff on the basic marketing site featuring a prominent carousel.</p>
-            </li>
-          </ul>
-        </section>
-
-
-
-
-        <!-- Next
-        ================================================== -->
-        <section id="what-next">
-          <div class="page-header">
-            <h1>What next?</h1>
-          </div>
-          <p class="lead">Head to the docs for information, examples, and code snippets, or take the next leap and customize Bootstrap for any upcoming project.</p>
-          <a class="btn btn-large btn-primary" href="./scaffolding.html" >Visit the TODC Bootstrap docs</a>
-          <a class="btn btn-large" href="http://twitter.github.com/bootstrap/customize.html" style="margin-left: 5px;" target="_blank">Customize Bootstrap</a>
-          <p>
-            <div class="alert alert-info">
-              <strong>Heads up!</strong> TODC Bootstrap can not be customized using the customizer at this time. The Customize button links to the Bootstrap customizer.
-            </div>
-          </p>
-        </section>
-
-
+			/* * * DON'T EDIT BELOW THIS LINE * * */
+			(function() {
+			 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			 dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+			 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			 })();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		 </div>
 
 
       </div>
@@ -347,22 +135,12 @@
 
   </div>
 
-
-
     <!-- Footer
     ================================================== -->
     <footer class="footer">
       <div class="container">
-        <p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
-        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
-        <p><a href="http://glyphicons.com">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
-        <ul class="footer-links">
-          <li><a href="http://blog.getbootstrap.com">Blog</a></li>
-          <li class="muted">&middot;</li>
-          <li><a href="https://github.com/twitter/bootstrap/issues?state=open">Issues</a></li>
-          <li class="muted">&middot;</li>
-          <li><a href="https://github.com/twitter/bootstrap/blob/master/CHANGELOG.md">Changelog</a></li>
-        </ul>
+        <p>©2009 - 2029 KISSY UI LIBRARY</p>
+        <p><a href="http://jayli.github.com">拔赤</a> 、舒文、承玉</p>
       </div>
     </footer>
 
@@ -372,6 +150,8 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://a.tbcdn.cn/??s/kissy/1.3.0/seed-min.js" data-config="{combine:true}"></script>
+    <script src="tools/skin/app.js"></script>
     <script src="tools/skin/jquery.js"></script>
     <script src="tools/skin/bootstrap-transition.js"></script>
     <script src="tools/skin/bootstrap-alert.js"></script>
@@ -391,7 +171,6 @@
     <script src="tools/skin/prettify.js"></script>
 
     <script src="tools/skin/application.js"></script>
-
 
 
   </body>

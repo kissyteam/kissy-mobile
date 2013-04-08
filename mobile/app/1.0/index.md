@@ -6,7 +6,7 @@
 - Version 1.0
 - Author 拔赤
 - Update 2012-12-24
-- [Demo]()
+- [Demo](mobile/app/1.0/demo/simple/mb.html#viewpath=mb/a.html)
 
 <hr class="smooth large" />
 
@@ -40,7 +40,7 @@
 
 ### 基本的交互模式
 
-KDK本质上是一个“幻灯切换”功能，这里使用了[KISSY Slide](slide-readme.md)作为基础来实现。划入和划出无非是切换上一帧和下一帧。只是切换操作是由KDK更新URL（的hash）来触发，由KDK对hashchange的监听来完成切换操作。因此，KDK默认监听了页面中的所有`a`标签，`a`标签的`href`属性是要进入到的页面，比如：
+划入和划出无非是切换上一帧和下一帧。只是切换操作是由KDK更新URL（的hash）来触发，由KDK对hashchange的监听来完成切换操作。因此，KDK默认监听了页面中的所有`a`标签，`a`标签的`href`属性是要进入到的页面，比如：
 
 	<a href="b.html">进入到B页面</a>
 
@@ -152,7 +152,7 @@ KDK只关注页面与页面之间的调用关系，而不会关注层次关系�
 
 当页面划入视口时，页面中的代码也会被渲染，JS代码会被解析，但注册事件只在首次有效，比如，我在某个子页面中注册了startup和teardown函数，这里的注册操作只被执行了一次，页面离开视口再次划入视口时，不会被二次绑定。子页面JS代码：
 
-	KISSY.use('zoo/mobile/app/',function(S,MS){
+	KISSY.use('mobile/app/1.0/',function(S,MS){
 
 		"use strict";
 
@@ -202,11 +202,11 @@ KDK只关注页面与页面之间的调用关系，而不会关注层次关系�
 
 ### 框架搭建
 
-分为框架页面和内容页面，框架页面只负责对页面框架进行初始化和配置，内容页面是具体页面，框架页面是完整的html，需要引入kissy和zoo.js：
+分为框架页面和内容页面，框架页面只负责对页面框架进行初始化和配置，框架页面是完整的html，需要引入kissy：
 
-	<script type="text/javascript" src="http://a.tbcdn.cn/??s/kissy/1.3.0/seed-min.js,apps/ks/zoo.js"></script>
+	<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed-min.js"></script>
 
-KISSY提供的reset css也要随之引入（最好这样做）：
+KISSY提供的reset css也要随之引入：
 
 	<link rel="stylesheet" href="http://a.tbcdn.cn/s/kissy/1.3.0/css/dpl/base.css" />
 
@@ -244,7 +244,7 @@ KISSY提供的reset css也要随之引入（最好这样做）：
 
 配置Mobile App KDK，这段代码中给出了一些配置参数
 
-	KISSY.use('zoo/mobile/app/',function(S,MS){
+	KISSY.use('mobile/app/1.0/',function(S,MS){
 
 		"use strict";
 
@@ -286,7 +286,7 @@ KISSY提供的reset css也要随之引入（最好这样做）：
 		</div>
 	</section>
 	<script>
-		KISSY.use('zoo/mobile/app/',function(S,MS){
+		KISSY.use('mobile/app/1.0/',function(S,MS){
 
 			"use strict";
 
@@ -317,7 +317,7 @@ JS代码会被解析，但注册操作只会在首次解析这段代码时执行
 
 ### 上下文
 
-	KISSY.use('zoo/mobile/app/',function(S,MS){
+	KISSY.use('mobile/app/1.0/',function(S,MS){
 
 		// 上下文1
 
@@ -370,7 +370,7 @@ KDK提供两种触发页面跳转的方法，一类是通过监听`hashchange`�
 
 KDK通过KISSY.use形式引入进来，传回的对象即是构造函数，我们称为`MS`。构造函数实例化的结果是配置好的应用，我们称为`app`。构造函数可以使用new来创建（`new MS({})`），也可以直接用工厂方法创建`MS({})`。
 
-	KISSY.use('zoo/mobile/app/',function(S,MS){
+	KISSY.use('mobile/app/1.0/',function(S,MS){
 		
 		/*
 		*	MS 为KDK构造器，通过new MS()或MS()初始化实例

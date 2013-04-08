@@ -7,10 +7,10 @@
 <h2>准备环境</h2>
 <ul>
 <li>安装发布工具（只提交源码，忽略此步）：<a href="http://gitlab.alibaba-inc.com/jay.li/clam-tools/tree/master">http://gitlab.alibaba-inc.com/jay.li/clam-tools/tree/master</a></li>
-<li><p>markdown文档生成工具</p>
-<p>  npm install -g marked</p>
-</li>
+<li>markdown文档生成工具</li>
 </ul>
+<p>通过npm安装</p>
+<pre><code>npm install -g marked</code></pre>
 <p>将 kissy-tools 和 kissy-mobile 并列checkout</p>
 <pre><code>git clone git@github.com:kissyteam/kissy-mobile.git
 git clone git@github.com:kissyteam/kissy-tools.git</code></pre>
@@ -52,7 +52,7 @@ git clone git@github.com:kissyteam/kissy-tools.git</code></pre>
 </ol>
 <p>三，<strong>书写文档</strong></p>
 <p>文档以<code>md</code>为后缀，markdown格式，写好后，在版本目录下执行<code>ant doc</code>，生成对应的html。</p>
-<p>访问方式：<code>/index.#path-to-markdown-html</code></p>
+<p>访问方式：<code>/index.html#path-to-markdown-html</code></p>
 <h2>Demo开发</h2>
 <p>开发demo时，需要指定mobile的配置</p>
 <pre><code>&lt;script&gt;

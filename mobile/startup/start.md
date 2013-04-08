@@ -9,6 +9,8 @@
 
 - 安装发布工具（只提交源码，忽略此步）：<http://gitlab.alibaba-inc.com/jay.li/clam-tools/tree/master>
 - markdown文档生成工具
+
+通过npm安装
 	
 	npm install -g marked
 
@@ -69,7 +71,7 @@ CDN上的目录说明：
 
 文档以`md`为后缀，markdown格式，写好后，在版本目录下执行`ant doc`，生成对应的html。
 
-访问方式：`/index.#path-to-markdown-html`
+访问方式：`/index.html#path-to-markdown-html`
 
 ## Demo开发
 

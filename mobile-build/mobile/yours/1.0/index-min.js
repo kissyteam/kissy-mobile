@@ -1,1 +1,0 @@
-KISSY.add(function(b){function a(c,d){if(this instanceof a)this.con=b.one(c),a.superclass.constructor.call(this,d),this.init();else return new a(c,d)}a.ATTRS={a:{setter:function(){},getter:function(){},value:1}};b.extend(a,b.Base,{init:function(){},destory:function(){}});return a},{requires:["base","node","ajax"]});

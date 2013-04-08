@@ -3,10 +3,10 @@
 > KISSY Mobile App Develop Toolkit（简称*KDK*）是[MSlide](https://github.com/zhenn/mslide)的增强版，是整个 KISSY<sup>Mobile</sup> 项目的根基。它给出了一套网页应用化的基本思路和开发实践，配备有多种典型的API，基于此可以快速完成_“应用化”_的web页面的架设，如果你希望让你的产品有OPOA一样的体验，你真的需要尝试一下。
 > 初次使用该控件，请完整阅读本篇文档。下文将本控件简称为KDK。
 
-- Version 1.0 Beta
-- Author 拔赤/栋寒
+- Version 1.0
+- Author 拔赤
 - Update 2012-12-24
-- [Demo](http://zoojs.org/zoo/mobile/app/demo/mb.html?__dev__=true&__basecombine__=false#viewpath=mb/a.html)
+- [Demo]()
 
 <hr class="smooth large" />
 

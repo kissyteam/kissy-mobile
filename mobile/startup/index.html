@@ -20,6 +20,114 @@
 
           <div class="row-fluid">
             <div class="span12">
+              <h2>基础代码</h2>
+              <p><strong>基础控件储备</strong>：Kissy Mobile 内置了一些常用的基础代码，组件列表：</p>
+			  <p>
+			  	<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>版本</th>
+							<th>用法</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+			  		<tr>
+			  			<td>slide</td>
+			  			<td>1.0</td>
+			  			<td>KISSY.use('gallery/slide/1.0/')</td>
+						<td>基于KISSY1.3.0的幻灯切换控件，<a href="http://docs.kissyui.com/kissy-gallery/gallery/slide/">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>jquery</td>
+			  			<td>1.9.1</td>
+			  			<td>KISSY.use('mobile/jquery/')</td>
+			  			<td><a href="http://api.jquery.com/">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>iscroll</td>
+			  			<td>4.2.5</td>
+			  			<td>KISSY.use('mobile/iscroll/')</td>
+						<td><a href="http://cubiq.org/iscroll-4">docs</a> <a href="https://github.com/cubiq/iscroll">github</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>iscroll-lite</td>
+			  			<td>4.1.6</td>
+			  			<td>KISSY.use('mobile/iscroll-lite/')</td>
+						<td>iscroll轻量版</td>
+			  		</tr>
+			  		<tr>
+			  			<td>flipsnap</td>
+			  			<td>0.5.3</td>
+			  			<td>KISSY.use('mobile/flipsnap/')</td>
+			  			<td>第三方触屏幻灯切换控件 <a href="http://pxgrid.github.io/js-flipsnap/start.html">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>jhash</td>
+			  			<td>2.1</td>
+			  			<td>KISSY.use('mobile/jhash/')</td>
+			  			<td>hash路由的实现 <a href="http://jhash.codeplex.com/">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>underscore</td>
+			  			<td>1.4.4</td>
+			  			<td>KISSY.use('gallery/underscore/')</td>
+			  			<td><a href="http://documentcloud.github.io/underscore/">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>backbone</td>
+			  			<td>1.0.0</td>
+			  			<td>KISSY.use('gallery/backbone/')</td>
+			  			<td><a href="http://backbonejs.org/">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>zepto</td>
+			  			<td>1.0</td>
+			  			<td>KISSY.use('mobile/zepto/')</td>
+						<td><a href="http://zeptojs.com">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>zepto-gfx</td>
+			  			<td>1.0</td>
+			  			<td>KISSY.use('mobile/zepto/,mobile/zepto-gfx/')</td>
+			  			<td>基于zepto的滑动特效 <a href="https://github.com/gobhi/zepto-gfx">docs</a></td>
+			  		</tr>
+			  		<tr>
+			  			<td>zepto-gfx.cube</td>
+			  			<td>1.0</td>
+			  			<td>KISSY.use('mobile/zepto/,mobile/zepto-gfx/,mobile/zepto-gfx.cube/')</td>
+			  			<td>基于zepto的特效实现，文档同上</td>
+			  		</tr>
+			  		<tr>
+			  			<td>zepto-gfx.flip</td>
+			  			<td>1.0</td>
+			  			<td>KISSY.use('mobile/zepto/,mobile/zepto-gfx/,mobile/zepto-gfx.flip/')</td>
+			  			<td>基于zepto的滑动事件实现，文档同上</td>
+			  		</tr>
+			  	</table>
+			  </p>
+            </div>
+          </div>
+
+          <div class="row-fluid">
+            <div class="span12">
+              <h2>DPL</h2>
+              <p><strong>皮肤样式库</strong>：淘宝H5通用皮肤、组件库。</p>
+			  <p>
+				<a class="btn btn-large btn-primary" href="http://ued.dyndns.org/wireless/base/styles/doc/components.html">HTML DPL</a>
+			  </p>
+			  <p>
+			  		DPL中的JS控件依赖<code>Seajs1.2.0</code>，引用地址：
+			  </p>
+			  <p>
+			  	<pre>
+&lt;script src="http://a.tbcdn.cn/s/seajs/1.2.0/sea.js"&gt;&lt;/script&gt;</pre>
+			  </p>
+            </div>
+          </div>
+
+          <div class="row-fluid">
+            <div class="span12">
               <h2>Mobile App Develop Toolkit</h2>
               <p><strong>Mobile App Develop Toolkit:</strong>是 KISSY<sup>Mobile</sup> 最重要的组件，用来管理`pageview`的切换，包括专场动画，页面间变量传递，缓存处理等。他是整个KS Mobile的基础。</p>
 			  <p>

@@ -595,6 +595,7 @@ back如果涉及到新页面的加载，则以get方式载入
 - <del>loading & closeLoading</del>
 - <del>页面缓存</del>
 - <del>四个全局静态事件的阻止</del>
+- 在当前视图增加查找hash参数的方法：query
 - Ajax Error 处理
 - 前进后退到已经加载过的页面，垂直位置的恢复
 - 专门面向应用的配置，即考虑浏览器不存在地址栏的情况

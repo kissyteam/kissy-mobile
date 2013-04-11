@@ -62,6 +62,8 @@ KISSY.add('mobile/app/1.0/util',function(S){
 			}
 		},
 		// 一段杂乱的html片段，执行其中的script脚本
+		// edit by donghan 
+		// 增加功能：在匹配script标签时，忽略模板，避免eval报错
 		execScript:function(html){
 			var self = this;
 			var re_script = new RegExp(/<script([^>]*)>([^<]*(?:(?!<\/script>)<[^<]*)*)<\/script>/ig); // 防止过滤错误
@@ -69,6 +71,7 @@ KISSY.add('mobile/app/1.0/util',function(S){
 			var hd = S.one('head').getDOMNode(),
 				match, attrs, srcMatch, charsetMatch,
 				t, s, text,
+				temp = /\stype="javascript\/template"/i,
 				RE_SCRIPT_SRC = /\ssrc=(['"])(.*?)\1/i,
 				RE_SCRIPT_CHARSET = /\scharset=(['"])(.*?)\1/i;
 
@@ -76,6 +79,11 @@ KISSY.add('mobile/app/1.0/util',function(S){
 			while ((match = re_script.exec(html))) {
 				attrs = match[1];
 				srcMatch = attrs ? attrs.match(RE_SCRIPT_SRC) : false;
+				// 如果script标示为模板
+				if (attrs.match(temp)) {
+					continue;	
+				}
+
 				// 通过src抓取到脚本
 				if (srcMatch && srcMatch[2]) {
 					s = document.createElement('script');

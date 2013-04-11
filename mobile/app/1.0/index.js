@@ -139,19 +139,29 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 		},
 
-		// added by 栋寒
-		// 查询当前视图节点所对应URL中hash参数值
-		// 应用场景：
-		// --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
-		// edit time: 2013-04-11
-		queryKey: function(name) {
+		/**
+		 * 查询当前视图节点所对应URL中hash参数值或search参数值
+		 * 应用场景：
+		 * --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
+		 * @name queryKey
+		 * @param name {string} 查询的key值 
+		 * @param scope {string} 查询key的范围，可选值有search、hash，分别代表location的search和hash，默认值为search
+		 * @returns 返回对应的value
+		 * @type string | null
+		 * @author 栋寒(zhenn)
+		 * @time 2013-04-11
+		 */
+		queryKey: function(name , scope) {
+			scope = ((typeof scope === 'undefined') || (scope !== 'hash')) ? 'search' : 'hash';
 			var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)','i'),
-				r = location.hash.substr(1).match(reg);
+				r = location[scope].substr(1).match(reg);
 			if (r != null) {
 				return unescape(r[2]);
 			}
 			return null;
 		}
+		
+
 	});
 
 	S.extend(MS, S.Base, {

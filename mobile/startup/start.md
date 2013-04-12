@@ -73,6 +73,8 @@ CDN上的目录说明：
 
 访问方式：`/index.html#path-to-markdown-html`
 
+代码库由主干合并到分支`gh-pages`后，每晚11点自动更新到服务器上
+
 ## Demo开发
 
 开发demo时，需要指定mobile的配置

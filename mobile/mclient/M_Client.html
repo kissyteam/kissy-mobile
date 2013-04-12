@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>M_Client Demo</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="format-detection" content="telephone=no" />
+    <script type="text/javascript" src="http://a.tbcdn.cn/apps/et/trip-html5/common/core/zepto.js"></script>
+    <script type="text/javascript" src="M_Client.js"></script>
+</head>
+<body>
+
+    <style type="text/css">
+        body {
+            max-width: 320px;
+            font-size: 14px;
+        }
+        
+        input {
+            display: block;
+            width: 100%;
+        }
+    </style>
+
+    <input type="button" value="跳到系统浏览器" class="J_openBrowser" />
+    <input type="button" value="跳到AppStore" class="J_jumpAppStore" />
+    <input type="button" value="设置顶部Title" class="J_setTitle" />
+    <input type="button" value="客户端页面回退" class="J_clientBack" />
+    <input type="button" value="警告提示框" class="J_alert" />
+    <input type="button" value="确认提示框" class="J_confirm" />
+    <input type="button" value="获取客户端类型/版本信息" class="J_clientInfo" />
+    <input type="button" value="获取客户端定位信息" class="J_clientLocation" />
+    
+    <script type="text/javascript">
+        M_Client = new M_Client();
+
+        $('.J_openBrowser').click(function() {
+            M_Client.pushBack('open_system_browser', {
+                url: 'http://triph5.m.taobao.com'
+            });
+        });
+
+        $('.J_jumpAppStore').click(function() {
+            M_Client.pushBack('client_appstore_call', {
+                url: 'itms-appss://itunes.apple.com/cn/app/id453691481?mt=8'
+            });
+        });
+
+        $('.J_setTitle').click(function() {
+            M_Client.pushBack('set_browser_title', {
+                title: '随机数' + Math.random()
+            });
+        });
+
+        $('.J_clientBack').click(function() {
+            M_Client.pushBack('client_page_back');
+        });
+
+        $('.J_alert').click(function() {
+            M_Client.pushBack('client_alert', {
+                title: '弹框标题在此',
+                msg: '弹框内容在此',
+                ok_wording: '确定！',
+                callback: function() {
+                    alert('client_alert_callback');
+                }
+            });
+        });
+
+        $('.J_confirm').click(function() {
+            M_Client.pushBack('client_confirm', {
+                title: '弹框标题在此',
+                msg: '弹框内容在此',
+                ok_wording: '确定！',
+                cancel_wording: '取消！',
+                ok_callback: function() {
+                    alert('client_confirm_ok_callback');
+                },
+                cancel_callback: function() {
+                    alert('client_confirm_cancel_callback');
+                }
+            });
+        });
+
+        $('.J_clientInfo').click(function() {
+            M_Client.pushBack('get_client_info', {
+                callback: function(resp) {
+                    alert('客户端信息数据：' + resp);
+                }
+            });
+        });
+
+        $('.J_clientLocation').click(function() {
+            M_Client.pushBack('get_client_location', {
+                callback: function(resp) {
+                    alert('客户端定位信息：' + resp);
+                },
+                failback: function() {
+                    alert('获取客户端定位信息失败');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

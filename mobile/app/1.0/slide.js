@@ -480,6 +480,16 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			return this;
 		},
 
+		/**
+		 * 隐藏浏览器地址栏
+		 * added bydonghan - 2013-04-13
+		 * 执行时机：app加载完成后初始化操作、切换应用视图后
+		 */
+		hideURIbar: function() {
+			this.animcon.height('2500px');
+			window.scrollTo(0 , 1);
+			this.animcon.height(window.innerHeight + 'px');
+		},
 
 		/**
 		 * 重置动画包裹器尺寸，fixed和auto两种

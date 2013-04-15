@@ -197,6 +197,8 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.bindEvent();
 
 			self.initLoad();
+			// 隐藏浏览器地址栏
+			self.slide.hideURIbar();
 
 			MS.APP = self;
 
@@ -534,12 +536,26 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				} else {
 					self.__clickEvent = true;
 					var path = el.attr('href');
-					var param = el.attr('data-param');
+					var param = el.attr('data-param') , 
+						// 获取slide方向
+						dir = el.attr('dir');
 					if(path === ''){
 						return true;
 					}
-					self.setRouteHash(path,param);
 					e.preventDefault();
+					
+					// 增加超链接上定义slide方向
+					// 如果dir不是back\forward之一，则执行默认进入操作
+					// 一般情况下，亦可在相关视图中绑定js事件调用app.back或app.forward
+					// 相比之下，超链接中声明dir更加快捷
+					// eidt by 栋寒(zhenn) - 2013-4-13
+					if (dir === 'back') {
+						self.back(path);
+					} else if (dir === 'forward') {
+						self.forward(path);	
+					} else {
+						self.setRouteHash(path , param);
+					}
 					// self.next(path);
 				}
 				
@@ -742,7 +758,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		// type 可以是post，也可以是get，默认是get
 		back: function(path,param,callback){
 			var self = this;
-
 			// back(path)
 			// back(path,callback)
 			// back(path,param)
@@ -893,7 +908,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 
 		// next 和 prev 是私有方法，只做切换,不处理history
-		next:function(path,callback){
+		next: function(path , callback) {
 			var self = this;
 
 			if(S.isFunction(path)){
@@ -1127,7 +1142,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					'left':0
 				});
 				self.slide.addHeightTimmer();
-				alert(1);
+			//	alert(1);
+				// 隐藏浏览器地址栏
+				self.slide.hideURIbar();
 			};
 
 			// Info: 必须将子节点挂载到body下，position:fixed 才起作用,不知道原因

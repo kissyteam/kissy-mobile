@@ -71,7 +71,7 @@ KISSY.add('mobile/app/1.0/util',function(S){
 			var hd = S.one('head').getDOMNode(),
 				match, attrs, srcMatch, charsetMatch,
 				t, s, text,
-				temp = /\stype="javascript\/template"/i,
+				temp = /\stype="(javascript)|(text)\/template"/i,
 				RE_SCRIPT_SRC = /\ssrc=(['"])(.*?)\1/i,
 				RE_SCRIPT_CHARSET = /\scharset=(['"])(.*?)\1/i;
 

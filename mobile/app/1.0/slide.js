@@ -267,7 +267,8 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 		buildWrap: function(){
 			var self = this;
 
-			self.animwrap = S.Node.create('<div style="position:absolute;"></div>');
+			//self.animwrap = S.Node.create('<div style="position:absolute;"></div>');
+			self.animwrap = S.Node.create('<div style="height: 100%;"></div>');
 			self.animwrap.set('innerHTML', self.animcon.get('innerHTML'));
 			self.animcon.set('innerHTML', '');
 			self.animcon.appendChild(self.animwrap);
@@ -479,6 +480,21 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			return this;
 		},
 
+
+		/**
+		 * 重置动画包裹器尺寸，fixed和auto两种
+		 * added by donghan - 2013-04-13
+		 */
+		setViewSize: function(type) {
+			var body = S.one('body') , 
+				html = S.one('html') ,
+				size = type === 'auto' ? 'auto' : '100%';
+			body.setStyle('height' , size);
+			html.setStyle('height' , size);
+			this.animcon.setStyle('height' , size);
+			this.animcon.parent().height(size);
+		},
+
 		// timmer 是指的动态监控wrapperCon高度的定时器
 		// wrapperCon在很多时候高度是可变的
 		// 这时就需要timmer来监听了
@@ -487,10 +503,14 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			if(!S.isNull(self.heightTimmer)){
 				clearInterval(self.heightTimmer);
 				self.heightTimmer = null;
+				//self.addHeightTimmer();
 			}
 		},
+		// ????????
+		// edit by donghan
+		// 干什么用的？？？？
 		addHeightTimmer: function(){
-			var self = this;
+		/*	var self = this;
 			if(!S.isNull(self.heightTimmer)){
 				clearInterval(self.heightTimmer);
 				self.heightTimmer = null;
@@ -499,14 +519,14 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			var resetHeight = function(){
 				if(self.effect == 'hSlide'){
 					self.animcon.setStyles({
-						height:self.pannels.item(self.currentTab).get('region').height+'px'
+						height: self.pannels.item(self.currentTab).get('region').height+'px'
 					});
 				}
 			};
-			self.heightTimmer = setInterval(resetHeight,100);
-			resetHeight();
+			self.heightTimmer = setInterval(resetHeight,1000);
+			resetHeight();*/
 		},
-
+		
 		//在before_switch和windowResize的时候执行，根据spec_width是否指定，来决定是否重置页面中的适配出来的宽度和高度并赋值
 		// index是go的目标tab-pannel的索引
 		// 这个函数主要针对横向滚动时各个pannel高度不定的情况
@@ -541,13 +561,13 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 					width:width * self.colspan +'px',
 					overflow:'hidden'
 				});
-
-				if(self.animWrapperAutoHeightSetting){
+				
+				/*if(self.animWrapperAutoHeightSetting){
 					self.animcon.setStyles({
-						height:height+'px'
+						height: height + 'px'
 						//强制pannel的内容不超过动画容器的范围
 					});
-				}
+				}*/
 			}
 
 			if(self.effect == 'vSlide'){
@@ -561,9 +581,9 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 					height:height * self.colspan +'px',
 					display:'block'
 				});
-
+				
 				self.animcon.setStyles({
-					height:height * self.colspan +'px',
+					height: height * self.colspan +'px',
 					overflow:'hidden'
 				});
 

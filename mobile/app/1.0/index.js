@@ -190,8 +190,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 
 			self.positionTimmer = null;
-
-			self.slide.addHeightTimmer();
+			// 采用针对每个视图单独配置视口高度的方案，若有问题，则重新选择其他方法
+			// addHeightTimer 暂时放弃
+			// self.slide.addHeightTimmer();
 
 			self.bindEvent();
 
@@ -222,8 +223,28 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 		},
+		/**
+		 * edit by 栋寒 --- 2013-4-15
+		 * 说明:
+		 * (1) 修改startup回调中this指向当前视图(虚拟对象，非MS实例)
+		 * (2) 当前视图包括属性node , viewHeight 方法config
+		 */ 
 		callStartup:function(path){
 			var self = this;
+			self[location.hash] = {
+				node: self.get('page'),
+				viewHeight: 'fixed',
+				config: function(obj) {
+					obj = {
+						viewHeight: (typeof obj.viewHeight === 'undefined' || obj.viewHeight !== 'auto') ? 'fixed' : 'auto'
+					};
+					for (var i in obj) {
+						this[i] = obj[i];
+						//self[location.hash][i] = obj[i];
+					}
+				}
+			};
+
 			if(S.isUndefined(path)){
 				path = self.get('viewpath');
 			}
@@ -234,12 +255,17 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('param',null); 
 
 			self.set('storage',self.MS.STORAGE[path] || {});
-
 			if(S.isFunction(cb)){
-				cb.call(self,param);
+				//cb.call(self,param);
+				cb.call(self[location.hash] , param);
+				// 以下是根据视图配置项执行的相关视图初始化操作
+				S.later(function() {
+					self.slide.setViewSize(self[location.hash]['viewHeight']);
+				} , 0);
 			}
 			return this;
 		},
+		
 		// teardown的时候应当恢复调用之前的hash
 		callTeardown:function(path){
 			var self = this;
@@ -1088,9 +1114,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		// 切换后，修正新节点高度，使高度复位
 		_fixScrollTopAfter: function(el){
 			var self = this;
-			if(self.get('animWrapperAutoHeightSetting')){
+			/*if(self.get('animWrapperAutoHeightSetting')){
 				return;
-			}
+			}*/
 
 			var p = el.parent();
 
@@ -1101,6 +1127,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					'left':0
 				});
 				self.slide.addHeightTimmer();
+				alert(1);
 			};
 
 			// Info: 必须将子节点挂载到body下，position:fixed 才起作用,不知道原因
@@ -1112,7 +1139,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			});
 
 			// 使用动画来规避瞬间css赋值带来的闪屏
-			
+
 			if(S.UA.opera && S.UA.opera > 0){
 				// Opera 的判断代码废弃
 				window.scrollTo(0,0);

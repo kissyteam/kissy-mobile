@@ -19,7 +19,7 @@
         buildProxy: function() {
             var that = this;
             var mClientProxy = document.querySelector("#J_MClientProxy");
-            var IFRAME ='<iframe id="J_MClientProxy" class="hidden" style="width:0;height:0;opacity:0;display:none;" src="###"></iframe>';
+            var IFRAME ='<iframe id="J_MClientProxy" class="hidden" style="width:0;height:0;opacity:0;display:none;" src="native://"></iframe>';
 
             if(mClientProxy) {
                 return;
@@ -53,16 +53,17 @@
             }
 
             if(that.platform === 'android') {
+                //alert('回调客户端命令：' + host);
                 that.bridge && that.bridge[host] && that.bridge[host](JSON.stringify(data));
-                console.info('回调客户端命令：%s', host);
-                console.info('回传数据：%s', JSON.stringify(data));
+                //console.info('回调客户端命令：%s', host);
+                //console.info('回传数据：%s', JSON.stringify(data));
                 return;
             }
 
-            uri += JSON.stringify(data);
+            uri += encodeURIComponent(JSON.stringify(data));
             that.mClientProxy.attr('src', uri);
-            console.info('回调客户端命令：%s', host);
-            console.info('回传数据：%s', JSON.stringify(data));
+            //console.info('回调客户端命令：%s', host);
+            //console.info('回传数据：%s', JSON.stringify(data));
         },
 
         getRequestParam: function(uri, param) {

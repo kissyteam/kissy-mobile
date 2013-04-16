@@ -550,9 +550,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					// 相比之下，超链接中声明dir更加快捷
 					// eidt by 栋寒(zhenn) - 2013-4-13
 					if (dir === 'back') {
+<<<<<<< HEAD
 						self.back(path , param);
 					} else if (dir === 'forward') {
 						self.forward(path , param);	
+=======
+						self.back(path);
+					} else if (dir === 'forward') {
+						self.forward(path);	
+>>>>>>> 50de4f8ba432e9fc10a80624beb4278d20edb959
 					} else {
 						self.setRouteHash(path , param);
 					}
@@ -907,7 +913,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 		// next 和 prev 是私有方法，只做切换,不处理history
 		next: function(path , callback) {
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 50de4f8ba432e9fc10a80624beb4278d20edb959
 			var self = this;
 
 			if(S.isFunction(path)){

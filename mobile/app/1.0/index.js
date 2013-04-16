@@ -139,19 +139,29 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 		},
 
-		// added by 栋寒
-		// 查询当前视图节点所对应URL中hash参数值
-		// 应用场景：
-		// --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
-		// edit time: 2013-04-11
-		queryKey: function(name) {
+		/**
+		 * 查询当前视图节点所对应URL中hash参数值或search参数值
+		 * 应用场景：
+		 * --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
+		 * @name queryKey
+		 * @param name {string} 查询的key值 
+		 * @param scope {string} 查询key的范围，可选值有search、hash，分别代表location的search和hash，默认值为search
+		 * @returns 返回对应的value
+		 * @type string | null
+		 * @author 栋寒(zhenn)
+		 * @time 2013-04-11
+		 */
+		queryKey: function(name , scope) {
+			scope = ((typeof scope === 'undefined') || (scope !== 'hash')) ? 'search' : 'hash';
 			var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)','i'),
-				r = location.hash.substr(1).match(reg);
+				r = location[scope].substr(1).match(reg);
 			if (r != null) {
 				return unescape(r[2]);
 			}
 			return null;
 		}
+		
+
 	});
 
 	S.extend(MS, S.Base, {
@@ -180,12 +190,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 
 			self.positionTimmer = null;
-
-			self.slide.addHeightTimmer();
+			// 采用针对每个视图单独配置视口高度的方案，若有问题，则重新选择其他方法
+			// addHeightTimer 暂时放弃
+			// self.slide.addHeightTimmer();
 
 			self.bindEvent();
 
 			self.initLoad();
+			// 隐藏浏览器地址栏
+			self.slide.hideURIbar();
 
 			MS.APP = self;
 
@@ -212,8 +225,28 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 		},
+		/**
+		 * edit by 栋寒 --- 2013-4-15
+		 * 说明:
+		 * (1) 修改startup回调中this指向当前视图(虚拟对象，非MS实例)
+		 * (2) 当前视图包括属性node , viewHeight 方法config
+		 */ 
 		callStartup:function(path){
 			var self = this;
+			self[location.hash] = {
+				node: self.get('page'),
+				viewHeight: 'fixed',
+				config: function(obj) {
+					obj = {
+						viewHeight: (typeof obj.viewHeight === 'undefined' || obj.viewHeight !== 'auto') ? 'fixed' : 'auto'
+					};
+					for (var i in obj) {
+						this[i] = obj[i];
+						//self[location.hash][i] = obj[i];
+					}
+				}
+			};
+
 			if(S.isUndefined(path)){
 				path = self.get('viewpath');
 			}
@@ -224,12 +257,17 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('param',null); 
 
 			self.set('storage',self.MS.STORAGE[path] || {});
-
 			if(S.isFunction(cb)){
-				cb.call(self,param);
+				//cb.call(self,param);
+				cb.call(self[location.hash] , param);
+				// 以下是根据视图配置项执行的相关视图初始化操作
+				S.later(function() {
+					self.slide.setViewSize(self[location.hash]['viewHeight']);
+				} , 0);
 			}
 			return this;
 		},
+		
 		// teardown的时候应当恢复调用之前的hash
 		callTeardown:function(path){
 			var self = this;
@@ -498,12 +536,26 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				} else {
 					self.__clickEvent = true;
 					var path = el.attr('href');
-					var param = el.attr('data-param');
+					var param = el.attr('data-param') , 
+						// 获取slide方向
+						dir = el.attr('dir');
 					if(path === ''){
 						return true;
 					}
-					self.setRouteHash(path,param);
 					e.preventDefault();
+					
+					// 增加超链接上定义slide方向
+					// 如果dir不是back\forward之一，则执行默认进入操作
+					// 一般情况下，亦可在相关视图中绑定js事件调用app.back或app.forward
+					// 相比之下，超链接中声明dir更加快捷
+					// eidt by 栋寒(zhenn) - 2013-4-13
+					if (dir === 'back') {
+						self.back(path , param);
+					} else if (dir === 'forward') {
+						self.forward(path , param);	
+					} else {
+						self.setRouteHash(path , param);
+					}
 					// self.next(path);
 				}
 				
@@ -644,6 +696,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 		},
 		_go :function(path,type,callback){
+
 			var self = this;
 
 			if(self.callTeardown(self.get('signet').viewpath) === false){
@@ -706,7 +759,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		// type 可以是post，也可以是get，默认是get
 		back: function(path,param,callback){
 			var self = this;
-
 			// back(path)
 			// back(path,callback)
 			// back(path,param)
@@ -803,18 +855,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			if(S.isString(param)){
 				param = S.unparam(param);
 			}
-
 			self.set('param',S.merge(param,{
-				from:self.get('signet').viewpath
+				from: self.get('signet').viewpath
 			}));
-
 			/*
 			if(S.UA.android && S.UA.android < 4.3){
 				self._androidHistoryMan();
 			}
 			*/
 			self.next.apply(self,arguments);
-
 			var state = self.recordSignet(1,path);
 			his.pushState(state,"",S.setHash(state.hisurl,param));
 			self.set('viewpath',S.getHash()['viewpath']);
@@ -857,7 +906,8 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 
 		// next 和 prev 是私有方法，只做切换,不处理history
-		next:function(path,callback){
+		next: function(path , callback) {
+	
 			var self = this;
 
 			if(S.isFunction(path)){
@@ -892,7 +942,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					self.callStartup();
 				},0);
 			}else{
-				self._go(path,'next',callback);
+				self._go(path,'next','sdfsdfsdf=123');
 			}
 		},
 
@@ -1078,9 +1128,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		// 切换后，修正新节点高度，使高度复位
 		_fixScrollTopAfter: function(el){
 			var self = this;
-			if(self.get('animWrapperAutoHeightSetting')){
+			/*if(self.get('animWrapperAutoHeightSetting')){
 				return;
-			}
+			}*/
 
 			var p = el.parent();
 
@@ -1091,6 +1141,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					'left':0
 				});
 				self.slide.addHeightTimmer();
+			//	alert(1);
+				// 隐藏浏览器地址栏
+				self.slide.hideURIbar();
 			};
 
 			// Info: 必须将子节点挂载到body下，position:fixed 才起作用,不知道原因
@@ -1102,7 +1155,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			});
 
 			// 使用动画来规避瞬间css赋值带来的闪屏
-			
+
 			if(S.UA.opera && S.UA.opera > 0){
 				// Opera 的判断代码废弃
 				window.scrollTo(0,0);

@@ -32,8 +32,8 @@
 
 | 方法名                 |说明				 | 需要的参数名         |
 | -----------------------|:------------------|:-------------------|
-| view_jump              |					|url, title, callback   	 |
-| view_back              | 					|callback      			     |
+| view_jump              |跳转(进入)到下一个view	|url, title, callback   	 |
+| view_back              |回退到上一个view			|callback      			     |
 
 ##### 调用举例
 

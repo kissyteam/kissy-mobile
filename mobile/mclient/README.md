@@ -17,23 +17,23 @@
 
 ###### a. 单VIEW操作
 
-| 方法名                  | 需要的参数名         |
-| -----------------------|:-------------------|
-| open_system_browser    | url                |
-| client_appstore_call   | url                |
-| set_browser_title      | title              |
-| client_page_back       | -                  |
-| client_alert           | title, msg, ok_wording, callback |
-| client_confirm         | title, msg, ok_wording, cancle_wording, ok_callback, cancel_callback |
-| get_client_info        | callback           |
-| get_client_location    | callback, failback |
+| 方法名                 |说明				 | 需要的参数名         |
+| -----------------------|:------------------|:-------------------|
+| open_system_browser    |用浏览器打开url 		|url                |
+| client_appstore_call   |跳转到appstroe 		|url                |
+| set_browser_title      |设置顶部title			 |title              |
+| client_page_back       |客户端页面回退（back到webview上一页） |-                  |
+| client_alert           |警告提示框，要求客户端自定义风格 |title, msg, ok_wording, callback |
+| client_confirm         |确认提示框，俩按钮的提示框 |title, msg, ok_wording, cancle_wording, ok_callback, cancel_callback |
+| get_client_info        |获取客户端类型/版本信息 |callback           |
+| get_client_location    |获取客户端定位信息 |callback, failback |
 
 ###### b. 多VIEW操作
 
-| 方法名                  | 需要的参数名         |
-| -----------------------|:-------------------|
-| view_jump              | url, callback      |
-| view_back              | callback           |
+| 方法名                 |说明				 | 需要的参数名         |
+| -----------------------|:------------------|:-------------------|
+| view_jump              |					|url, title, callback   	 |
+| view_back              | 					|callback      			     |
 
 ##### 调用举例
 
@@ -55,3 +55,8 @@ $('.J_confirm').click(function() {
     });
 });
 ```
+
+##### TODO
+
+- Native 调用 js
+- 交易相关接口

@@ -32,7 +32,7 @@
 
 | 方法名                 |说明				 | 需要的参数名         |
 | -----------------------|:------------------|:-------------------|
-| view_jump              |跳转(进入)到下一个view	|url, title, callback   	 |
+| view_jump              |跳转(进入)到下一个view	|url, title, param, callback   	 |
 | view_back              |回退到上一个view			|callback      			     |
 
 ##### 调用举例
@@ -51,6 +51,15 @@ $('.J_confirm').click(function() {
         },
         cancel_callback: function() {
             alert('client_confirm_cancel_callback');
+        }
+    });
+    M_Client.pushBack('view_jump',{
+        url:'目标url地址',
+        param:{
+            a:1,b:2 // 需要额外带入的参数
+        },
+        callback:function(){
+            alert('view_jump_callbck');
         }
     });
 });

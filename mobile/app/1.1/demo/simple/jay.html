@@ -1,0 +1,102 @@
+<!doctype html>
+<!--html manifest="appcache.php"-->
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta charset="utf-8">
+<title>mslide框架</title>
+
+	<link rel="stylesheet" href="http://a.tbcdn.cn/s/kissy/1.3.0rc/css/base.css"/>
+	<script type="text/javascript" src="http://b.ued.taobao.net/a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+	<script>
+		KISSY.config({
+			packages:[
+				{
+					name:"mobile",
+					tag:"20111220",
+					path:"../../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+					charset:"utf-8"
+				}
+			]
+		});
+	</script>
+
+</head>
+
+<body>
+
+<style>
+	#MS {
+		width:400px;
+		overflow:hidden;
+		margin:0 auto;
+		position:relative;
+	}
+	#MS-nav {
+		display:none;
+	}
+	.MS-content {
+		width:400px;
+		overflow:hidden;
+		background-color:orange;
+	}
+	.MS-pannel {
+		width:400px;
+		float:left;
+
+	}
+
+	body {
+		background-color:black;
+	}
+
+</style>
+
+<section id="MS">
+	<ul id="MS-nav"></ul>
+	<div class="MS-con">
+		<div class="MS-pal">
+			<a id="a1" href="b.html" data-diriiiiection="next">next</a>
+		</div>
+	</div>
+</section>
+<button id="a3" hash-data="c.html">prev</button>
+<!--slide容器}}-->
+<script>
+	var app;
+	var M;
+	var A = 1;
+	KISSY.use('mobile/app/1.0/',function(S,MS){
+		M = MS;
+		app = MS({
+			viewpath:'a.html',
+			forcereload:true,
+			fullrangewidth:false,
+			webkitoptimize:true
+		});
+
+		/*
+		S.one('#a1').on('click',function(e){
+			e.halt();
+
+			app.next('a.html');
+			
+		});
+
+		*/
+		S.one('#a3').on('click',function(e){
+			history.back();
+		});
+
+	});
+	/*
+	window.history.pushState({
+		a:1,b:2	
+	},"page 3","xxx");
+	*/
+</script>
+</body>
+
+</html>

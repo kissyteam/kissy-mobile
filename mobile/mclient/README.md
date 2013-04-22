@@ -39,10 +39,10 @@
 ##### 调用举例
 
 ```
-var mc = new MClient('Android_Bridge'); // 如果是Android需要指定桥名
+var mc = new M_Client('Android_Bridge'); // 如果是Android需要指定桥名
 
 $('.J_confirm').click(function() {
-    M_Client.pushBack('client_confirm', {
+    mc.pushBack('client_confirm', {
         title: '弹框标题在此',
         msg: '弹框内容在此',
         ok_wording: '确定！',
@@ -54,7 +54,7 @@ $('.J_confirm').click(function() {
             alert('client_confirm_cancel_callback');
         }
     });
-    M_Client.pushBack('view_jump',{
+    mc.pushBack('view_jump',{
         url:'目标url地址',
         param:{
             a:1,b:2 // 需要额外带入的参数

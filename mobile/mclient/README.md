@@ -27,12 +27,13 @@
 | client_confirm         |确认提示框，俩按钮的提示框 |title, msg, ok_wording, cancle_wording, ok_callback, cancel_callback |
 | get_client_info        |获取客户端类型/版本信息 |callback           |
 | get_client_location    |获取客户端定位信息 |callback, failback |
+| set_title             |给当前页面设置title |title |
 
 ###### b. 多VIEW操作
 
 | 方法名                 |说明				 | 需要的参数名         |
 | -----------------------|:------------------|:-------------------|
-| view_jump              |跳转(进入)到下一个view	|url, title, param, callback   	 |
+| view_jump              |跳转(进入)到下一个view	|url, param, callback   	 |
 | view_back              |回退到上一个view			|callback      			     |
 
 ##### 调用举例

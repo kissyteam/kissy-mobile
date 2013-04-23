@@ -118,10 +118,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			 **/
 		},
 		includeOnce:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.INCLUDEONCE[k])){
-				this.INCLUDEONCE[k] = cb;
-				cb.call(this.APP,this.APP);
+			if(!this.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.INCLUDEONCE[k])){
+					this.INCLUDEONCE[k] = cb;
+					cb.call(this.APP,this.APP);
+				}
 			}
 		},
 		destory:function(cb){
@@ -131,15 +135,24 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 		},
 		startup:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.STARTUP[k])){
-				this.STARTUP[k] = cb;
+			// 单页面
+			if(!this.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.STARTUP[k])){
+					this.STARTUP[k] = cb;
+				}
 			}
 		},
 		ready:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.READY[k])){
-				this.READY[k] = cb;
+			if(!this.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.READY[k])){
+					this.READY[k] = cb;
+				}
 			}
 		},
 		teardown:function(cb){
@@ -157,38 +170,41 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 			self.MS = self.constructor;
 
-			if(S.UA.opera && S.UA.opera > 0){
-				self.set('animWrapperAutoHeightSetting',true);
+			if(S.one("#MS")){
+				if(S.UA.opera && S.UA.opera > 0){
+					self.set('animWrapperAutoHeightSetting',true);
+				}
+
+				self.slide = new Slide('MS',{
+					autoSlide:false,
+					effect:self.get('anim')?'hSlide':'none',
+					touchmove:false,
+					adaptive_fixed_width:true,
+					contentClass:'MS-con',
+					speed:450,
+					pannelClass:'MS-pal',
+					animWrapperAutoHeightSetting:self.get('animWrapperAutoHeightSetting'),//不需要自动修正wrapper的高度
+					webkitOptimize:self.get('webkitOptimize'),
+					adaptive_width:self.get('fullRangeWidth')
+				});
+
+
+				self.positionTimmer = null;
+
+				if(self.get('containerHeighTimmer')){
+					self.slide.addHeightTimmer();
+				}
+
+				self.bindEvent();
+				self.initLoad();
+			} else {
+				self.set('page',S.one('body'));
+				self.initPageStorage();
+				self.set('storage',self.MS.STORAGE[self.get('viewpath')]||{});
 			}
-
-			self.slide = new Slide('MS',{
-				autoSlide:false,
-				effect:self.get('anim')?'hSlide':'none',
-				touchmove:false,
-				adaptive_fixed_width:true,
-				contentClass:'MS-con',
-				speed:450,
-				pannelClass:'MS-pal',
-				animWrapperAutoHeightSetting:self.get('animWrapperAutoHeightSetting'),//不需要自动修正wrapper的高度
-				webkitOptimize:self.get('webkitOptimize'),
-				adaptive_width:self.get('fullRangeWidth')
-			});
-
-
-			self.positionTimmer = null;
-
-			if(self.get('containerHeighTimmer')){
-				self.slide.addHeightTimmer();
-			}
-
-			self.bindEvent();
-
-			self.initLoad();
 
 			MS.APP = self;
-
 			return this;
-
 		},
 
 		callDestory:function(){

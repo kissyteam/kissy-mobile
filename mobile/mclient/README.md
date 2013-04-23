@@ -1,6 +1,29 @@
 ### 跨移动终端的客户端通用接口调用
 
-##### 实现原理
+##### 背景
+
+Native2H5 是一套协议规范，用以定义H5页面和Native之间的相互调用的通用方法和行为，指导SDK的开发。目标是形成各个环境中的SDK。
+
+SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。HMTL页面在各种环境中都可以运行
+
+比如：我的HTML页面代码为：
+
+	<html>
+	<head>
+		<script src="**-sdk.js" /><!--在Android和iPhone中的webview环境提供-->
+	</head>
+	<body>
+		<a href="javascript:MC.open('url')">跳转</a>
+	</body>
+	</html>
+
+各个环境中点击`a`标签的行为：
+
+- 单页面（浏览器）中发生普通的页面跳转（刷新）
+- Android/iphone中进行activity、webview创建，并执行专场动画
+- H5框架（浏览器）中，执行专场动画加载新页面（无刷新）
+
+##### 面向Android和iOS的JS调用原理
 
 1. `Android` 通过桥（客户端暴露在WebView全局对象下的一个对象，内挂各种API方法）的方式进行调用，如`window['Android_Bridge']['method'](JSON)`。
 
@@ -27,13 +50,15 @@
 | client_confirm         |确认提示框，俩按钮的提示框 |title, msg, ok_wording, cancle_wording, ok_callback, cancel_callback |
 | get_client_info        |获取客户端类型/版本信息 |callback           |
 | get_client_location    |获取客户端定位信息 |callback, failback |
+| show_loading    			|显示菊花  | |
+| close_loading    			|关闭菊花  | |
 
 ###### b. 多VIEW操作
 
 | 方法名                 |说明				 | 需要的参数名         |
 | -----------------------|:------------------|:-------------------|
-| view_jump              |跳转(进入)到下一个view	|url, param, callback   	 |
-| view_back              |回退到上一个view			|callback      			     |
+| open      		      |跳转(进入)到下一个view	|url, param, callback   	 |
+| back		              |回退到上一个view			|callback      			     |
 
 ##### 调用举例
 
@@ -53,7 +78,9 @@ $('.J_confirm').click(function() {
             alert('client_confirm_cancel_callback');
         }
     });
-    mc.pushBack('view_jump',{
+
+	// 打开新的view（页面）
+    mc.pushBack('open',{
         url:'目标url地址',
         param:{
             a:1,b:2 // 需要额外带入的参数
@@ -62,6 +89,9 @@ $('.J_confirm').click(function() {
             alert('view_jump_callbck');
         }
     });
+
+	// view（页面）回退
+	mc.pushBack('back');
 });
 ```
 

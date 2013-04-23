@@ -1378,7 +1378,7 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 
 			var afterSwitch = function(){
 				if(S.isFunction(callback)){
-					callback.apply(self,self);
+					callback.call(self,self);
 				}
 				self.fire('afterSwitch',{
 					index: self.currentTab,

@@ -1047,6 +1047,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 							window.scrollTo(0,0);
 						}
 						self.slide.next(function(){
+							// TODO: Android 2 下这里不执行？
 							self.callDestory();
 							if(S.isFunction(callback)){
 								callback.call(self.slide,self.slide);

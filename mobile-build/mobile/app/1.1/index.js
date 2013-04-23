@@ -59,9 +59,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		animWrapperAutoHeightSetting: {
 			value:true
 		},
-		containerHeighTimmer: {
-			value:true
-		},
 		basepath:{
 			value:window.location.protocol + '//' + window.location.hostname +
 					window.location.pathname.replace(/\/[^\/]+$/i,'').replace(/\/$/,'') + '/'
@@ -96,7 +93,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 	// 全局静态方法
 	S.mix(MS,{
-		READY:{},// 专场动画完成后，页面的执行函数，一个页面一个，类似Domready
 		STARTUP:{},// 来到页面时的启动函数，一个页面一个
 		TEARDOWN:{},// 离开页面时的清理函数，一个页面一个
 		INCLUDEONCE:{},// 该页面首次加载时执行一次
@@ -136,18 +132,36 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				this.STARTUP[k] = cb;
 			}
 		},
-		ready:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.READY[k])){
-				this.READY[k] = cb;
-			}
-		},
 		teardown:function(cb){
 			var k = this.APP.get('viewpath');
 			if(!S.isFunction(this.TEARDOWN[k])){
 				this.TEARDOWN[k] = cb;
 			}
+		},
+
+		/**
+		 * 查询当前视图节点所对应URL中hash参数值或search参数值
+		 * 应用场景：
+		 * --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
+		 * @name queryKey
+		 * @param name {string} 查询的key值 
+		 * @param scope {string} 查询key的范围，可选值有search、hash，分别代表location的search和hash，默认值为search
+		 * @returns 返回对应的value
+		 * @type string | null
+		 * @author 栋寒(zhenn)
+		 * @time 2013-04-11
+		 */
+		queryKey: function(name , scope) {
+			scope = ((typeof scope === 'undefined') || (scope !== 'hash')) ? 'search' : 'hash';
+			var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)','i'),
+				r = location[scope].substr(1).match(reg);
+			if (r != null) {
+				return unescape(r[2]);
+			}
+			return null;
 		}
+		
+
 	});
 
 	S.extend(MS, S.Base, {
@@ -176,14 +190,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 
 			self.positionTimmer = null;
-
-			if(self.get('containerHeighTimmer')){
-				self.slide.addHeightTimmer();
-			}
+			// 采用针对每个视图单独配置视口高度的方案，若有问题，则重新选择其他方法
+			// addHeightTimer 暂时放弃
+			// self.slide.addHeightTimmer();
 
 			self.bindEvent();
 
 			self.initLoad();
+			// 隐藏浏览器地址栏
+			self.slide.hideURIbar();
 
 			MS.APP = self;
 
@@ -210,22 +225,28 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 		},
-		callReady:function(path){
-			var self = this;
-			if(S.isUndefined(path)){
-				path = self.get('viewpath');
-			}
-			var cb = self.MS.READY[path];
-
-			if(S.isFunction(cb)){
-				setTimeout(function(){
-					cb.call(self);
-				},200);
-			}
-			return this;
-		},
+		/**
+		 * edit by 栋寒 --- 2013-4-15
+		 * 说明:
+		 * (1) 修改startup回调中this指向当前视图(虚拟对象，非MS实例)
+		 * (2) 当前视图包括属性node , viewHeight 方法config
+		 */ 
 		callStartup:function(path){
 			var self = this;
+			self[location.hash] = {
+				node: self.get('page'),
+				viewHeight: 'fixed',
+				config: function(obj) {
+					obj = {
+						viewHeight: (typeof obj.viewHeight === 'undefined' || obj.viewHeight !== 'auto') ? 'fixed' : 'auto'
+					};
+					for (var i in obj) {
+						this[i] = obj[i];
+						//self[location.hash][i] = obj[i];
+					}
+				}
+			};
+
 			if(S.isUndefined(path)){
 				path = self.get('viewpath');
 			}
@@ -236,12 +257,17 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('param',null); 
 
 			self.set('storage',self.MS.STORAGE[path] || {});
-
 			if(S.isFunction(cb)){
-				cb.call(self,param);
+				//cb.call(self,param);
+				cb.call(self[location.hash] , param);
+				// 以下是根据视图配置项执行的相关视图初始化操作
+				S.later(function() {
+					self.slide.setViewSize(self[location.hash]['viewHeight']);
+				} , 0);
 			}
 			return this;
 		},
+		
 		// teardown的时候应当恢复调用之前的hash
 		callTeardown:function(path){
 			var self = this;
@@ -276,14 +302,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var vp = self.get('viewpath');
 			var scrollTop = self.MS.PAGESCROLL[vp];
 			if(scrollTop){
-				// window.scrollTo(0,scrollTop);
+				window.scrollTo(0,scrollTop);
 				if(S.DOM.scrollTop() === 0){
 					setTimeout(function(){
-						S.Anim(window,{
-							scrollTop:scrollTop
-						},0.5,'easeBoth',function(){
-
-						}).run();
+						window.scrollTo(0,scrollTop);
 					},200);
 				}
 			}
@@ -514,12 +536,26 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				} else {
 					self.__clickEvent = true;
 					var path = el.attr('href');
-					var param = el.attr('data-param');
+					var param = el.attr('data-param') , 
+						// 获取slide方向
+						dir = el.attr('dir');
 					if(path === ''){
 						return true;
 					}
-					self.setRouteHash(path,param);
 					e.preventDefault();
+					
+					// 增加超链接上定义slide方向
+					// 如果dir不是back\forward之一，则执行默认进入操作
+					// <a href="url" dir="back"></a>
+					// <a href="url" dir="forward"></a>
+					// eidt by 栋寒(zhenn) - 2013-4-13
+					if (dir === 'back') {
+						self.back(path , param);
+					} else if (dir === 'forward') {
+						self.forward(path , param);	
+					} else {
+						self.setRouteHash(path , param);
+					}
 					// self.next(path);
 				}
 				
@@ -660,6 +696,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 		},
 		_go :function(path,type,callback){
+
 			var self = this;
 
 			if(self.callTeardown(self.get('signet').viewpath) === false){
@@ -722,7 +759,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		// type 可以是post，也可以是get，默认是get
 		back: function(path,param,callback){
 			var self = this;
-
 			// back(path)
 			// back(path,callback)
 			// back(path,param)
@@ -819,18 +855,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			if(S.isString(param)){
 				param = S.unparam(param);
 			}
-
 			self.set('param',S.merge(param,{
-				from:self.get('signet').viewpath
+				from: self.get('signet').viewpath
 			}));
-
 			/*
 			if(S.UA.android && S.UA.android < 4.3){
 				self._androidHistoryMan();
 			}
 			*/
 			self.next.apply(self,arguments);
-
 			var state = self.recordSignet(1,path);
 			his.pushState(state,"",S.setHash(state.hisurl,param));
 			self.set('viewpath',S.getHash()['viewpath']);
@@ -873,7 +906,8 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 
 		// next 和 prev 是私有方法，只做切换,不处理history
-		next:function(path,callback){
+		next: function(path , callback) {
+
 			var self = this;
 
 			if(S.isFunction(path)){
@@ -895,25 +929,20 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					window.scrollTo(0,0);
 				}
 				self.slide.next(function(){
-					if(self.get('containerHeighTimmer')){
-						self.slide.addHeightTimmer();
-					}
+					self.slide.addHeightTimmer();
 					if(S.isFunction(callback)){
 						callback.call(self.slide,self.slide);
 					}
 					if(self.get('forceReload')){
 						self.slide.remove(self.slide.length - 2);
 					}
-					setTimeout(function(){
-						self.callReady();
-					},0);
 				});
 				self.set('page',self.slide.getCurrentPannel());
 				setTimeout(function(){
 					self.callStartup();
 				},0);
 			}else{
-				self._go(path,'next',callback);
+				self._go(path,'next','sdfsdfsdf=123');
 			}
 		},
 
@@ -943,17 +972,12 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				self.slide.removeHeightTimmer();
 				self.slide.previous(function(){
 					var that = this;
-					if(self.get('containerHeighTimmer')){
-						self.slide.addHeightTimmer();
-					}
+					self.slide.addHeightTimmer();
 					self.callDestory();
 					that.removeLast();
 					if(S.isFunction(callback)){
 						callback.call(self.slide,self.slide);
 					}
-					setTimeout(function(){
-						self.callReady();
-					},0);
 				});
 				self.set('page',self.slide.getCurrentPannel());
 				setTimeout(function(){
@@ -999,7 +1023,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 				self.closeLoading();
 
-				var prel = self.get('page');
 				var el = S.Node('<div class="MS-pal">'+html+'</div>');
 				//向前
 				self.set('page',el);
@@ -1018,23 +1041,18 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 						self.slide.removeHeightTimmer();
 						self.slide.previous(function(){
 							var that = this;
-							if(self.get('containerHeighTimmer')){
-								self.slide.addHeightTimmer();
-							}
+							self.slide.addHeightTimmer();
 							self.callDestory();
 							if(S.isFunction(callback)){
 								callback.call(self.slide,self.slide);
 							}
-							setTimeout(function(){
-								self.callReady();
-							},0);
 							that.removeLast();
 						});
 					},150);
 					break;
 				case 'next':
 					// TODO: 只有异步加载新页面时，才会修正进入view的marginTop
-					self._fixScrollTopBefore(el,prel);
+					self._fixScrollTopBefore(el);
 					self.slide.add(el);
 					S.execScript(html);
 					setTimeout(function(){
@@ -1054,10 +1072,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 							if(self.get('forceReload')){
 								self.slide.remove(self.slide.length - 2);
 							}
-							setTimeout(function(){
-								self.callReady();
-							},0);
-							self._fixScrollTopAfter(el,prel);
+							self._fixScrollTopAfter(el);
 						});
 					},150);
 
@@ -1071,9 +1086,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 						self.callStartup();
 					},0);
 					callback.call(self.slide,self.slide);
-					setTimeout(function(){
-						self.callReady();
-					},0);
 					self.slide.removeLast();
 					// self.slide.next(callback);
 					break;
@@ -1082,11 +1094,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 			};
 
-			var handleHTML = function(str){
-				str = str.replace(/\r/mig,'$123').replace(/\n/g,'$456').replace(/.*<!--kdk{{-->/i,'').replace(/<!--kdk}}-->.*$/i,'');
-				str = str.replace(/\$123/g,'\r').replace(/\$456/g,'\n');
-				self.MS.PAGECACHE[path] = str;
-				renderPage(str);
+			var handleHTML = function(html){
+				html = html.replace(/.*<!--kdk{{-->/ig,'').replace(/<!--kdk}}-->*/ig,'');
+				self.MS.PAGECACHE[path] = html;
+				renderPage(html);
 			};
 
 			var fullpath = self.getAjaxPath(path);
@@ -1104,7 +1115,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 		},
 		// 切换前，修正新节点切换高度
-		_fixScrollTopBefore: function(el,prel){
+		_fixScrollTopBefore: function(el){
 			var self = this;
 			if(self.get('animWrapperAutoHeightSetting')){
 				return;
@@ -1115,28 +1126,24 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			});
 		},
 		// 切换后，修正新节点高度，使高度复位
-		_fixScrollTopAfter: function(el,prel){
+		_fixScrollTopAfter: function(el){
 			var self = this;
-			if(self.get('animWrapperAutoHeightSetting')){
+			/*if(self.get('animWrapperAutoHeightSetting')){
 				return;
-			}
+			}*/
 
 			var p = el.parent();
 
 			var doReset = function(){
-				el.css({
-					'position':'absolute',
-					top:0
-				}).css({
+				el.appendTo(p).css({
 					'margin-top':0,
 					'position':'relative',
-					'-webkit-backface-visibility':false,
 					'left':0
-				}).appendTo(p);
-
-				if(self.get('containerHeighTimmer')){
-					self.slide.addHeightTimmer();
-				}
+				});
+				self.slide.addHeightTimmer();
+			//	alert(1);
+				// 隐藏浏览器地址栏
+				self.slide.hideURIbar();
 			};
 
 			// Info: 必须将子节点挂载到body下，position:fixed 才起作用,不知道原因
@@ -1144,12 +1151,11 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				'margin-top':0,
 				'position':'fixed',
 				'top':0,
-				'-webkit-backface-visibility':false,
 				'left':self.slide.con.offset().left + 'px'
 			});
 
 			// 使用动画来规避瞬间css赋值带来的闪屏
-			
+
 			if(S.UA.opera && S.UA.opera > 0){
 				// Opera 的判断代码废弃
 				window.scrollTo(0,0);
@@ -1158,7 +1164,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				// 对于支持position:fixed的环境
 				S.Anim(window,{
 					scrollTop:0
-				},0.1,'easeNone',function(){
+				},0.1,'easeBoth',function(){
 					doReset();
 				}).run();
 			}
@@ -1543,7 +1549,8 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 		buildWrap: function(){
 			var self = this;
 
-			self.animwrap = S.Node.create('<div style="position:absolute;"></div>');
+			//self.animwrap = S.Node.create('<div style="position:absolute;"></div>');
+			self.animwrap = S.Node.create('<div style="height: 100%;"></div>');
 			self.animwrap.set('innerHTML', self.animcon.get('innerHTML'));
 			self.animcon.set('innerHTML', '');
 			self.animcon.appendChild(self.animwrap);
@@ -1755,6 +1762,31 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			return this;
 		},
 
+		/**
+		 * 隐藏浏览器地址栏
+		 * added bydonghan - 2013-04-13
+		 * 执行时机：app加载完成后初始化操作、切换应用视图后
+		 */
+		hideURIbar: function() {
+			this.animcon.height('2500px');
+			window.scrollTo(0 , 1);
+			this.animcon.height(window.innerHeight + 'px');
+		},
+
+		/**
+		 * 重置动画包裹器尺寸，fixed和auto两种
+		 * added by donghan - 2013-04-13
+		 */
+		setViewSize: function(type) {
+			var body = S.one('body') , 
+				html = S.one('html') ,
+				size = type === 'auto' ? 'auto' : '100%';
+			body.setStyle('height' , size);
+			html.setStyle('height' , size);
+			this.animcon.setStyle('height' , size);
+			this.animcon.parent().height(size);
+		},
+
 		// timmer 是指的动态监控wrapperCon高度的定时器
 		// wrapperCon在很多时候高度是可变的
 		// 这时就需要timmer来监听了
@@ -1763,10 +1795,14 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			if(!S.isNull(self.heightTimmer)){
 				clearInterval(self.heightTimmer);
 				self.heightTimmer = null;
+				//self.addHeightTimmer();
 			}
 		},
+		// ????????
+		// edit by donghan
+		// 干什么用的？？？？
 		addHeightTimmer: function(){
-			var self = this;
+		/*	var self = this;
 			if(!S.isNull(self.heightTimmer)){
 				clearInterval(self.heightTimmer);
 				self.heightTimmer = null;
@@ -1775,14 +1811,14 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			var resetHeight = function(){
 				if(self.effect == 'hSlide'){
 					self.animcon.setStyles({
-						height:self.pannels.item(self.currentTab).get('region').height+'px'
+						height: self.pannels.item(self.currentTab).get('region').height+'px'
 					});
 				}
 			};
-			self.heightTimmer = setInterval(resetHeight,100);
-			resetHeight();
+			self.heightTimmer = setInterval(resetHeight,1000);
+			resetHeight();*/
 		},
-
+		
 		//在before_switch和windowResize的时候执行，根据spec_width是否指定，来决定是否重置页面中的适配出来的宽度和高度并赋值
 		// index是go的目标tab-pannel的索引
 		// 这个函数主要针对横向滚动时各个pannel高度不定的情况
@@ -1817,13 +1853,13 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 					width:width * self.colspan +'px',
 					overflow:'hidden'
 				});
-
-				if(self.animWrapperAutoHeightSetting){
+				
+				/*if(self.animWrapperAutoHeightSetting){
 					self.animcon.setStyles({
-						height:height+'px'
+						height: height + 'px'
 						//强制pannel的内容不超过动画容器的范围
 					});
-				}
+				}*/
 			}
 
 			if(self.effect == 'vSlide'){
@@ -1837,9 +1873,9 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 					height:height * self.colspan +'px',
 					display:'block'
 				});
-
+				
 				self.animcon.setStyles({
-					height:height * self.colspan +'px',
+					height: height * self.colspan +'px',
 					overflow:'hidden'
 				});
 

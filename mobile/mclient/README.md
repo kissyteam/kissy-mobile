@@ -27,7 +27,6 @@
 | client_confirm         |确认提示框，俩按钮的提示框 |title, msg, ok_wording, cancle_wording, ok_callback, cancel_callback |
 | get_client_info        |获取客户端类型/版本信息 |callback           |
 | get_client_location    |获取客户端定位信息 |callback, failback |
-| set_title             |给当前页面设置title |title |
 
 ###### b. 多VIEW操作
 

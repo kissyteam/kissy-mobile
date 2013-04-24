@@ -633,10 +633,10 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			}
 
 			// 绑定窗口resize事件 
-			S.Event.on('resize',function(e){
+			S.Event.on(window,'resize',function(e){
 				self.fixSlideSize(self.currentTab);
 				self.relocateCurrentTab();
-			},window);
+			});
 
 			// 绑定判断switch发生的时机
 			self.on('beforeSwitch',function(o){

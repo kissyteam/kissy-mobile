@@ -66,6 +66,12 @@ SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。
 | -----------------------|:------------------|:-------------------|
 | start_data_statistics  | 客户端埋点          | control_type, control_name, args |
 
+注释：
+
+- control_type: 埋点类型，0为`page`, 1为`button`, etc.
+- control_name: 埋点名称，如`1ActGoodsList`.
+- args: 为了方便扩展灵活的附加参数对象。
+
 ##### 调用举例
 
 ```

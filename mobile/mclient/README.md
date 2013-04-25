@@ -4,7 +4,7 @@
 
 Native2H5 是一套协议规范，用以定义H5页面和Native之间的相互调用的通用方法和行为，指导SDK的开发。目标是形成各个环境中的SDK。
 
-SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。HMTL页面在各种环境中都可以运行
+SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。HTML页面在各种环境中都可以运行
 
 比如：我的HTML页面代码为：
 
@@ -20,7 +20,7 @@ SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。
 各个环境中点击`a`标签的行为：
 
 - 单页面（浏览器）中发生普通的页面跳转（刷新）
-- Android/iphone中进行activity、webview创建，并执行专场动画
+- Android/iPhone中进行Activity、WebView创建，并执行专场动画
 - H5框架（浏览器）中，执行专场动画加载新页面（无刷新）
 
 ##### 面向Android和iOS的JS调用原理
@@ -60,6 +60,12 @@ SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。
 | open      		      |跳转(进入)到下一个view	|url, param, callback   	 |
 | back		              |回退到上一个view			|callback      			     |
 
+###### c. 通用操作
+
+| 方法名                  | 说明               | 需要的参数名         |
+| -----------------------|:------------------|:-------------------|
+| start_data_statistics  | 客户端埋点          | control_type, control_name, args |
+
 ##### 调用举例
 
 ```
@@ -80,12 +86,12 @@ $('.J_confirm').click(function() {
     });
 
 	// 打开新的view（页面）
-    mc.pushBack('open',{
-        url:'目标url地址',
-        param:{
-            a:1,b:2 // 需要额外带入的参数
+    mc.pushBack('open', {
+        url: '目标url地址',
+        param: {
+            a:1, b:2 // 需要额外带入的参数
         },
-        callback:function(){
+        callback: function(){
             alert('view_jump_callbck');
         }
     });
@@ -97,5 +103,6 @@ $('.J_confirm').click(function() {
 
 ##### TODO
 
-- Native 调用 js
-- 交易相关接口
+- Native 调用 JavaScript
+- 交易相关接口约定
+- 浏览器中操作使用原生方法的适配

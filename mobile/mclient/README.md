@@ -58,7 +58,11 @@ SDK有至少四个版本，H5（多页）、H4（单页）、Android、iPhone。
 | 方法名                 |说明				 | 需要的参数名         |
 | -----------------------|:------------------|:-------------------|
 | open      		      |跳转(进入)到下一个view	|url, param, callback   	 |
-| back		              |回退到上一个view			|callback      			     |
+| back		              |回退到上一个view			|args, callback      			     |
+
+注释：
+
+- back操作完成后，Native容器应当触发上一级view绑定的frompop事件并传入args参数。
 
 ###### c. 通用操作
 

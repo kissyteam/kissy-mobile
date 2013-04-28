@@ -138,6 +138,7 @@ KISSY.add('mobile/app/1.0/util',function(S){
 	requires:[
 		'node',
 		'sizzle',
-		'json'
+		'json',
+		'uri'
 	]	
 });

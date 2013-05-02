@@ -67,7 +67,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 		basepath:{
 			value:window.location.protocol + '//' + window.location.hostname +
-					window.location.pathname.replace(/\/[^\/]+$/i,'').replace(/\/$/,'') + '/'
+					window.location.pathname.replace(/\/[^\/]+$/i,'').replace(/\/$/,'') + '/',
+			setter:function(v){
+				if(/\/$/.test(v)){
+					return v;
+				} else {
+					return v + '/';
+				}
+			}
 		},
 		initPostData:{
 			value:null

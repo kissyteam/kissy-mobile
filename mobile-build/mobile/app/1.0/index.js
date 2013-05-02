@@ -30,7 +30,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 	// MS.ATTR
 	MS.ATTRS = {
 		viewpath: {
-			value: 'index.html'
+			value: 'index.html',
+			setter: function(v){
+				return decodeURIComponent(v);
+			}
 		},
 		forceReload:{ // 切换时（不论前进后退），都进行重新加载
 			value: true 
@@ -118,10 +121,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			 **/
 		},
 		includeOnce:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.INCLUDEONCE[k])){
-				this.INCLUDEONCE[k] = cb;
-				cb.call(this.APP,this.APP);
+			if(!this.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.INCLUDEONCE[k])){
+					this.INCLUDEONCE[k] = cb;
+					cb.call(this.APP,this.APP);
+				}
 			}
 		},
 		destory:function(cb){
@@ -131,15 +138,24 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 		},
 		startup:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.STARTUP[k])){
-				this.STARTUP[k] = cb;
+			// 单页面
+			if(!this.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.STARTUP[k])){
+					this.STARTUP[k] = cb;
+				}
 			}
 		},
 		ready:function(cb){
-			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.READY[k])){
-				this.READY[k] = cb;
+			if(!this.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.READY[k])){
+					this.READY[k] = cb;
+				}
 			}
 		},
 		teardown:function(cb){
@@ -157,38 +173,41 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 			self.MS = self.constructor;
 
-			if(S.UA.opera && S.UA.opera > 0){
-				self.set('animWrapperAutoHeightSetting',true);
+			if(S.one("#MS")){
+				if(S.UA.opera && S.UA.opera > 0){
+					self.set('animWrapperAutoHeightSetting',true);
+				}
+
+				self.slide = new Slide('MS',{
+					autoSlide:false,
+					effect:self.get('anim')?'hSlide':'none',
+					touchmove:false,
+					adaptive_fixed_width:true,
+					contentClass:'MS-con',
+					speed:450,
+					pannelClass:'MS-pal',
+					animWrapperAutoHeightSetting:self.get('animWrapperAutoHeightSetting'),//不需要自动修正wrapper的高度
+					webkitOptimize:self.get('webkitOptimize'),
+					adaptive_width:self.get('fullRangeWidth')
+				});
+
+
+				self.positionTimmer = null;
+
+				if(self.get('containerHeighTimmer')){
+					self.slide.addHeightTimmer();
+				}
+
+				self.bindEvent();
+				self.initLoad();
+			} else {
+				self.set('page',S.one('body'));
 			}
-
-			self.slide = new Slide('MS',{
-				autoSlide:false,
-				effect:self.get('anim')?'hSlide':'none',
-				touchmove:false,
-				adaptive_fixed_width:true,
-				contentClass:'MS-con',
-				speed:450,
-				pannelClass:'MS-pal',
-				animWrapperAutoHeightSetting:self.get('animWrapperAutoHeightSetting'),//不需要自动修正wrapper的高度
-				webkitOptimize:self.get('webkitOptimize'),
-				adaptive_width:self.get('fullRangeWidth')
-			});
-
-
-			self.positionTimmer = null;
-
-			if(self.get('containerHeighTimmer')){
-				self.slide.addHeightTimmer();
-			}
-
-			self.bindEvent();
-
-			self.initLoad();
+			self.initPageStorage();
+			self.set('storage',self.MS.STORAGE[self.get('viewpath')]||{});
 
 			MS.APP = self;
-
 			return this;
-
 		},
 
 		callDestory:function(){
@@ -292,7 +311,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var self = this;
 
 			if(!S.isUndefined(S.getHash()['viewpath'])){
-				self.set('viewpath',S.getHash()['viewpath']);
+				self.set('viewpath',(S.getHash()['viewpath']));
 			}
 
 			if(!S.isNull(self.get('initPostData'))){
@@ -315,7 +334,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('signet',state);
 			his.replaceState(state,"",hisurl);
 
-			self.set('viewpath',S.getHash()['viewpath']);
+			self.set('viewpath',(S.getHash()['viewpath']));
 
 		},
 		// 此方法暂时废弃
@@ -336,7 +355,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('signet',state);
 			his.replaceState(state,"",hisurl);
 
-			self.set('viewpath',S.getHash()['viewpath']);
+			self.set('viewpath',(S.getHash()['viewpath']));
 
 		},
 		// 调用Loading
@@ -421,7 +440,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 			var url = S.setHash(S.merge(param,{
-				viewpath:path	
+				viewpath:encodeURIComponent(path)
 			}));
 
 			return self.getUrlPrefix() + url.replace(/^.+#/i,'#');
@@ -432,7 +451,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		setRouteHash:function(path,param){
 			var self = this;
 
-			self.set('viewpath',path);
+			self.set('viewpath',(path));
 
 			if(S.isUndefined(param)){
 				param = '';
@@ -447,7 +466,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var state = {
 				level:self.get('signet').level + 1,
 				viewpath:path,
-				hisurl:S.setHash(hisurl,param),
+				hisurl:S.setHash(decodeURIComponent(hisurl),param),
 				forward:1,
 				lastviewpath:path,
 				scrollTop:S.DOM.scrollTop()  // 暂时无用
@@ -458,7 +477,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var newpath = lo.protocol + '//' + lo.hostname + lo.pathname + lo.search;
 			
 			newpath = S.setHash(newpath,S.merge({
-				viewpath:path
+				viewpath:encodeURIComponent(path)
 			},param));
 
 			if(S.UA.android && S.UA.android < 4.3){
@@ -477,7 +496,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var self = this;
 			var ou = S.setHash(S.merge({
 				stamp:S.now(),
-				viewpath:viewpath
+				viewpath:encodeURIComponent(viewpath)
 			},param));
 			var hash = ou.match(/#.*$/i)[0];
 			window.location.hash = hash;
@@ -530,9 +549,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				// 当前时刻（hash变化后，触发行为之前），不管何种状态，只有signet（印记）是旧的
 				var state = self.get('signet');
 				var level = 0;
-				var viewpath = S.getHash()['viewpath'];
+				var viewpath = decodeURIComponent(S.getHash()['viewpath']);
 
-				self.set('viewpath',S.getHash()['viewpath']);
+				self.set('viewpath',viewpath);
 
 				// 判断是否从普通点a标签击事件触发hashchange
 				var clicked = false;
@@ -759,6 +778,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				param = S.unparam(param);
 			}
 
+			if(S.isString(path)){
+				path = encodeURIComponent(path);
+			}
+
 			// 保存临时参量
 			self.set('param',S.merge(param,{
 				from:self.get('signet').viewpath
@@ -775,7 +798,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					self._androidHistoryMan(path);
 				}
 				*/
-				self.prev.apply(self,arguments);
+				self.prev.apply(self,[path,param,callback]);
 				var state = self.recordSignet(1,path,-1);
 				his.pushState(state,"",S.setHash(state.hisurl,param));
 				/*
@@ -787,7 +810,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				his.back();
 			}
 
-			self.set('viewpath',S.getHash()['viewpath']);
+			self.set('viewpath',(S.getHash()['viewpath']));
 
 			return this;
 		},
@@ -829,7 +852,8 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				self._androidHistoryMan();
 			}
 			*/
-			self.next.apply(self,arguments);
+			path = encodeURIComponent(path);
+			self.next.apply(self,[path,param,callback]);
 
 			var state = self.recordSignet(1,path);
 			his.pushState(state,"",S.setHash(state.hisurl,param));
@@ -1090,7 +1114,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				renderPage(str);
 			};
 
-			var fullpath = self.getAjaxPath(path);
+			var fullpath = self.getAjaxPath(decodeURIComponent(path));
 
 			self.loading();
 
@@ -1910,10 +1934,10 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			}
 
 			// 绑定窗口resize事件 
-			S.Event.on('resize',function(e){
+			S.Event.on(window,'resize',function(e){
 				self.fixSlideSize(self.currentTab);
 				self.relocateCurrentTab();
-			},window);
+			});
 
 			// 绑定判断switch发生的时机
 			self.on('beforeSwitch',function(o){
@@ -3025,6 +3049,7 @@ KISSY.add('mobile/app/1.0/util',function(S){
 	requires:[
 		'node',
 		'sizzle',
-		'json'
+		'json',
+		'uri'
 	]	
 });

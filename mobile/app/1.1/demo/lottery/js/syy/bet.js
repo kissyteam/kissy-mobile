@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/syy/bet", function (S , Layout , Bet , Tool , Backbone , _) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/syy/bet", function (S , Layout , Bet , Tool , Backbone , _) {
 
 	var rx2_random = function(){
 		var reds = Tool.baseBallRandom(2,11,false,true,'ceil').sort();
@@ -488,11 +488,11 @@ KISSY.add("mobile/syy/bet", function (S , Layout , Bet , Tool , Backbone , _) {
 
 } , {
 	requires: [
-		'mobile/base/layout',
-		'mobile/base/bet',
-		'mobile/base/tool',
-		'mobile/lib/backbone-localstorage',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/bet',
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone-localstorage',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]	
 });
 

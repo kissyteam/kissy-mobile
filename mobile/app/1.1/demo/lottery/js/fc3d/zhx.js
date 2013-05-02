@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/fc3d/zhx", function (S , Tool , Layout , Ball , _) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/fc3d/zhx", function (S , Tool , Layout , Ball , _) {
 		
 	var collectionConfig = function(){
 		return {
@@ -117,10 +117,10 @@ KISSY.add("mobile/fc3d/zhx", function (S , Tool , Layout , Ball , _) {
 } , {
 	
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/base/ball',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/ball',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]	
 
 });

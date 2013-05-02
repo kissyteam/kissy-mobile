@@ -1,5 +1,5 @@
 
-KISSY.add('mobile/widget/calendar/calendar' , function(S) {
+KISSY.add('mobile/app/1.1/demo/lottery/js/widget/calendar/calendar' , function(S) {
 	/**
 	 * 日历组件类
 	 * @class Calendar

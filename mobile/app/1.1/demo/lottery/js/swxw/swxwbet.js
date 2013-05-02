@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/swxw/swxwbet", function (S , Layout , Bet , Tool , Backbone , _) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/swxw/swxwbet", function (S , Layout , Bet , Tool , Backbone , _) {
 	
 	var collectionConfig = function(){
 		return {
@@ -106,10 +106,10 @@ KISSY.add("mobile/swxw/swxwbet", function (S , Layout , Bet , Tool , Backbone , 
 
 } , {
 	requires: [
-		'mobile/base/layout',
-		'mobile/base/bet',
-		'mobile/base/tool',
-		'mobile/lib/backbone-localstorage',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/bet',
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone-localstorage',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]
 });

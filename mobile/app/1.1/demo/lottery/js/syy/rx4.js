@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/syy/rx4" , function (S , Tool , Layout , Ball , BackboneLocalstorage ,_ ) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/syy/rx4" , function (S , Tool , Layout , Ball , BackboneLocalstorage ,_ ) {
 	var collectionConfig = function(){
 		return {
 			lines: 1,
@@ -105,10 +105,10 @@ KISSY.add("mobile/syy/rx4" , function (S , Tool , Layout , Ball , BackboneLocals
 	};
 } , {
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/base/ball',
-		'mobile/lib/backbone-localstorage',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/ball',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone-localstorage',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]
 });

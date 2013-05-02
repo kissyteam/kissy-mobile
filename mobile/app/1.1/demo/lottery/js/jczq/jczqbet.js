@@ -1,6 +1,6 @@
 
 
-KISSY.add("mobile/jczq/jczqbet" , function (S , App) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/jczq/jczqbet" , function (S , App) {
 	return {
 		initialize: function(){
 			C.JCZQ = new App.app({
@@ -11,6 +11,6 @@ KISSY.add("mobile/jczq/jczqbet" , function (S , App) {
 		}
 	}
 } , {
-	requires: ['mobile/base/sportbet']
+	requires: ['mobile/app/1.1/demo/lottery/js/base/sportbet']
 });
 

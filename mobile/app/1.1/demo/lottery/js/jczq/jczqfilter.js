@@ -2,7 +2,7 @@
  * 声明seajs模块
  */
 
-KISSY.add('mobile/jczq/jczqfilter' , function(S , App) {
+KISSY.add('mobile/app/1.1/demo/lottery/js/jczq/jczqfilter' , function(S , App) {
 
 	return {
 		initialize: function(){
@@ -12,6 +12,6 @@ KISSY.add('mobile/jczq/jczqfilter' , function(S , App) {
 		}
 	}
 } , {
-	requires: ['mobile/base/filter']
+	requires: ['mobile/app/1.1/demo/lottery/js/base/filter']
 });
 

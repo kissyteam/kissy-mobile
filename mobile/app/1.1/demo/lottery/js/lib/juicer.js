@@ -11,7 +11,7 @@
 */
 
 
-KISSY.add("mobile/lib/juicer" , function(S) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/lib/juicer" , function(S) {
 var juicer;
 (function() {
 

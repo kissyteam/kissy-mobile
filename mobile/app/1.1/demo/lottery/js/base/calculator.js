@@ -1,5 +1,5 @@
 
-KISSY.add('mobile/base/calculator' , function(S , Tool , _) {
+KISSY.add('mobile/app/1.1/demo/lottery/js/base/calculator' , function(S , Tool , _) {
 
 	return {
         /**
@@ -471,8 +471,8 @@ KISSY.add('mobile/base/calculator' , function(S , Tool , _) {
     };
 } , {
 	requires: [
-		'mobile/base/tool',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]
 });
 

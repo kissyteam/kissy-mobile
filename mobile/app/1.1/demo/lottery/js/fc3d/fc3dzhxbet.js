@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/fc3d/fc3dzhxbet" , function (S , BackboneLocalstorage ,  Layout , Bet , Tool , _) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/fc3d/fc3dzhxbet" , function (S , BackboneLocalstorage ,  Layout , Bet , Tool , _) {
 	
 	var collectionConfig = function(){
 		return {
@@ -147,10 +147,10 @@ KISSY.add("mobile/fc3d/fc3dzhxbet" , function (S , BackboneLocalstorage ,  Layou
 } , {
 
 	requires: [
-		'mobile/lib/backbone-localstorage',
-		'mobile/base/layout',
-		'mobile/base/bet',
-		'mobile/base/tool',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/lib/backbone-localstorage',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/bet',
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]
 });

@@ -4,7 +4,7 @@
  */
 
 
-KISSY.add("mobile/base/filter" , function (S , Backbone, Tool , Layout , juicer) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/base/filter" , function (S , Backbone, Tool , Layout , juicer) {
 
 	var FilterModel = Backbone.Model.extend({});
 
@@ -134,10 +134,10 @@ KISSY.add("mobile/base/filter" , function (S , Backbone, Tool , Layout , juicer)
 
 } , {
 	requires: [
-		'mobile/lib/backbone',
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/lib/juicer'
+		'mobile/app/1.1/demo/lottery/js/lib/backbone',
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/lib/juicer'
 	]
 });
 

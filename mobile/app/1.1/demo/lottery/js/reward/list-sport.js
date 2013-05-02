@@ -2,7 +2,7 @@
  * 声明seajs模块
  */
 
-KISSY.add('mobile/reward/list-sport' , function(S , Tool , Layout ,  Backbone , _) {
+KISSY.add('mobile/app/1.1/demo/lottery/js/reward/list-sport' , function(S , Tool , Layout ,  Backbone , _) {
 	var ItemModel = Backbone.Model.extend({});
 	
 	/**
@@ -112,10 +112,10 @@ KISSY.add('mobile/reward/list-sport' , function(S , Tool , Layout ,  Backbone , 
 
 } , {
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/lib/backbone',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]	
 });
 

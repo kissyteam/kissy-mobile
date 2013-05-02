@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/dlt/common", function (S , Tool , Layout , Ball) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/dlt/common", function (S , Tool , Layout , Ball) {
 
 
 	var collectionConfig = function(){
@@ -89,8 +89,8 @@ KISSY.add("mobile/dlt/common", function (S , Tool , Layout , Ball) {
 
 } , {
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/base/ball'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/ball'
 	]
 });

@@ -54,11 +54,11 @@
     </div>
 </section>
 <script>
-	KISSY.use('mobile/app/1.0/' , function(S , MS) {
+	KISSY.use('mobile/app/1.1/' , function(S , MS) {
 		"use strict";
         MS.startup(function(data) {
 			var isEdit = MS.queryKey('edit' , 'hash');
-			S.use('mobile/syy/rx7',function(S , ball){
+			S.use('mobile/app/1.1/demo/lottery/js/syy/rx7',function(S , ball){
 				ball.initialize(isEdit);	
 			});
 		});

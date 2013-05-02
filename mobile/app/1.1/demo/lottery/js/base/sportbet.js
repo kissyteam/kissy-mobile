@@ -4,7 +4,7 @@
  */
 
 
-KISSY.add("mobile/base/sportbet", function (S , Tool , Layout , Calculator , Confirm , _ , Backbone) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/base/sportbet", function (S , Tool , Layout , Calculator , Confirm , _ , Backbone) {
 
 	!C.DataCache && (C.DataCache = {});
 	_.extend(C.DataCache, Backbone.Events);   //使该对象可发起自定义事件
@@ -727,12 +727,12 @@ KISSY.add("mobile/base/sportbet", function (S , Tool , Layout , Calculator , Con
 
 } , {
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/base/calculator',
-		'mobile/widget/confirm/confirm',
-		'mobile/lib/underscore',
-		'mobile/lib/backbone-localstorage'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/calculator',
+		'mobile/app/1.1/demo/lottery/js/widget/confirm/confirm',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone-localstorage'
 	]
 });
 

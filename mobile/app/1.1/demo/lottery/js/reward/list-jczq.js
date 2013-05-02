@@ -1,5 +1,5 @@
 
-KISSY.add("mobile/reward/list-jczq" , function (S , Tool , Layout , Calendar , Reward) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/reward/list-jczq" , function (S , Tool , Layout , Calendar , Reward) {
 
 	return {
 		initialize: function(){
@@ -48,10 +48,10 @@ KISSY.add("mobile/reward/list-jczq" , function (S , Tool , Layout , Calendar , R
 } , {
 
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/widget/calendar/calendar',
-		'mobile/reward/list-sport'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/widget/calendar/calendar',
+		'mobile/app/1.1/demo/lottery/js/reward/list-sport'
 	]
 
 });

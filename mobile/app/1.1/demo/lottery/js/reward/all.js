@@ -1,5 +1,5 @@
 
-KISSY.add('mobile/reward/all' , function(S , Layout , Tool , Backbone , _) {
+KISSY.add('mobile/app/1.1/demo/lottery/js/reward/all' , function(S , Layout , Tool , Backbone , _) {
 
 	var RewardModel = Backbone.Model.extend({});
 	
@@ -110,10 +110,10 @@ KISSY.add('mobile/reward/all' , function(S , Layout , Tool , Backbone , _) {
 } , {
 	
 	requires: [
-		'mobile/base/layout',
-		'mobile/base/tool',
-		'mobile/lib/backbone-localstorage',
-		'mobile/lib/underscore'
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone-localstorage',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore'
 	]
 
 });

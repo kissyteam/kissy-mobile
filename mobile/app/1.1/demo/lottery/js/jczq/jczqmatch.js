@@ -2,7 +2,7 @@
  * 声明seajs模块
  */
 
-KISSY.add("mobile/jczq/jczqmatch" , function(S , Match) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/jczq/jczqmatch" , function(S , Match) {
 	return {
 		initialize: function(){
 			C.JCZQ = new Match.app({
@@ -14,7 +14,7 @@ KISSY.add("mobile/jczq/jczqmatch" , function(S , Match) {
 	};
 } , {
 	requires: [
-		'mobile/base/match'
+		'mobile/app/1.1/demo/lottery/js/base/match'
 	]	
 });
 

@@ -2,7 +2,7 @@
  * 声明seajs模块
  * 竞技彩对阵页
  */
-KISSY.add("mobile/base/match" , function(S , Tool , Layout , _ , Backbone , juicer) {
+KISSY.add("mobile/app/1.1/demo/lottery/js/base/match" , function(S , Tool , Layout , _ , Backbone , juicer) {
 	!C.DataCache && (C.DataCache = {});
 	_.extend(C.DataCache, Backbone.Events);   //使该对象可发起自定义事件
 	
@@ -406,11 +406,11 @@ KISSY.add("mobile/base/match" , function(S , Tool , Layout , _ , Backbone , juic
 
 } , {
 	requires: [
-		'mobile/base/tool',
-		'mobile/base/layout',
-		'mobile/lib/underscore',
-		'mobile/lib/backbone',
-		'mobile/lib/juicer'
+		'mobile/app/1.1/demo/lottery/js/base/tool',
+		'mobile/app/1.1/demo/lottery/js/base/layout',
+		'mobile/app/1.1/demo/lottery/js/lib/underscore',
+		'mobile/app/1.1/demo/lottery/js/lib/backbone',
+		'mobile/app/1.1/demo/lottery/js/lib/juicer'
 	]	
 });
 

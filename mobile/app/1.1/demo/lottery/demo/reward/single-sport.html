@@ -126,7 +126,7 @@
 
 <script>
 
-	KISSY.use('mobile/app/1.0/' , function(S , MS) {
+	KISSY.use('mobile/app/1.1/' , function(S , MS) {
 		'use strict'
 
 		var lotype = MS.queryKey('lotype' , 'hash') , path;
@@ -136,7 +136,7 @@
 			}
 		}
 		MS.startup(function(data) {
-			S.use('mobile/reward/list-' + path , function(S , list) {
+			S.use('mobile/app/1.1/demo/lottery/js/reward/list-' + path , function(S , list) {
 				list.initialize(lotype);
 			});	
 		});

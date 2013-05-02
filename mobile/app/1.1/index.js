@@ -8,7 +8,7 @@
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/index", function (S,Slide) {
+KISSY.add("mobile/app/1.1/index", function (S,Slide) {
 
 	// Jayli TODO: Android下未完全测试
 

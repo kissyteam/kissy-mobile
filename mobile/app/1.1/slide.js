@@ -9,7 +9,7 @@
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/slide",function(S){
+KISSY.add("mobile/app/1.1/slide",function(S){
 
 	"use strict";
 

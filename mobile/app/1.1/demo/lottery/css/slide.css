@@ -1,0 +1,32 @@
+#MS{width:100%;overflow:hidden;}
+
+.MS-wrapper{width:200%;-webkit-animation-duration:.3s; -webkit-animation-timing-function:ease-in-out;}
+/*防止闪烁*/
+.MS-pannel{width:50%;float:left;-webkit-backface-visibility:hidden;position:relative;height:100%;overflow:hidden;}
+
+.MS-error , .MS-loading{text-align:center;padding-top:153px;}
+.MS-loading{height:3000px;}
+.MS-loading img{width:30px;height:12px;}
+
+.MS-forward{-webkit-transform:translate3d(-50%,0,0);}
+.MS-back{-webkit-transform:translate3d(0,0,0)}
+
+.MS-anim-forward{-webkit-transform:translate3d(-50%,0,0);-webkit-animation-name:s-slide-next; }
+@-webkit-keyframes s-slide-next{
+	from{
+		-webkit-transform:translate3d(0,0,0);
+	}
+	to{
+		-webkit-transform:translate3d(-50%,0,0);
+	}
+}
+
+.MS-anim-back{-webkit-transform:translate3d(0,0,0);-webkit-animation-name:s-slide-prev; }
+@-webkit-keyframes s-slide-prev{
+	from{
+		-webkit-transform:translate3d(-50%,0,0);
+	}
+	to{
+		-webkit-transform:translate3d(0,0,0);
+	}
+}

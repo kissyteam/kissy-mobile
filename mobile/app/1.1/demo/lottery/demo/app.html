@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<!-- @author: 栋寒(zhenn) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta charset="utf-8">
+<title>淘宝彩票</title>
+<link href="../css/reset.css" type="text/css" rel="stylesheet" />
+<link href="../css/slide.css" type="text/css" rel="stylesheet" />
+<link href="../css/bet.css" type="text/css" rel="stylesheet" />
+<link href="../css/taoplus2.css" type="text/css" rel="stylesheet" />
+<link href="../css/sport.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+<script type="text/javascript" src="../js/config.js"></script>
+<link rel="apple-touch-icon" sizes="57x57" href="http://img04.taobaocdn.com/tps/i4/T1ZZ_fXiprXXX1dP6j-57-57.png" />
+</head>
+
+<body>
+	<style type="text/css">
+	#MS {
+		position:relative;
+		width:100%;
+		margin:0 auto;
+	}
+	#MS-nav {
+		display:none;
+	}
+	.MS-con {
+		position:relative;
+	}
+	.MS-pal {
+		float:left;
+		position:relative;
+		-webkit-transform-style: preserve-3d; 
+		height: 100%;
+	}
+	</style>
+	
+<div id="MS">
+	<div class="MS-con">
+		<div class="MS-pal"></div>
+	</div>
+</div>
+<script>
+	var app = {};
+	var NS = {};
+	KISSY.use('mobile/app/1.1/' , function(S , MS) {
+		app = MS({
+			viewpath:'index/a.html',
+			forceReload:true,
+			fullRangeWidth:false,
+			//pageCache:true,
+			webkitOptimize: true,
+			positionMemory:true,
+			animWrapperAutoHeightSetting: true, //  默认为true
+			initPostData:{
+				a:1,b:2
+			}
+		});
+		NS = app;
+	});
+</script>
+</body>
+</html>

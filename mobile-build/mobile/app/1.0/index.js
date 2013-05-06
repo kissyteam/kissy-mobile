@@ -107,9 +107,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 	// 全局静态方法
 	S.mix(MS,{
 		READY:{},// 专场动画完成后，页面的执行函数，一个页面一个，类似Domready
-		STARTUP:{},// 来到页面时的启动函数，一个页面一个
-		TEARDOWN:{},// 离开页面时的清理函数，一个页面一个
-		INCLUDEONCE:{},// 该页面首次加载时执行一次
+		STARTUP:{},// 来到页面时的启动函数，一个页面多个
+		TEARDOWN:{},// 离开页面时的清理函数，一个页面多个
+		INCLUDEONCE:{},// 该页面首次加载时执行一次，一个页面多个
 		DESTORY:{},// 该页面被销毁时执行一次
 		PAGECACHE:{},//每个页面的镜像字符串，保存在这里
 		PAGESCROLL:{},//每个页面离开时的scrollTop高度
@@ -128,7 +128,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			 **/
 		},
 		includeOnce:function(cb){
-			if(!this.slide){
+			if(!MS.APP.slide){
 				cb.call(this.APP);
 			}else {
 				var k = this.APP.get('viewpath');
@@ -146,30 +146,46 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 		startup:function(cb){
 			// 单页面
-			if(!this.slide){
-				cb.call(this.APP);
+			if(!MS.APP.slide){
+				cb.call(MS.APP);
 			}else {
 				var k = this.APP.get('viewpath');
+				/*
 				if(!S.isFunction(this.STARTUP[k])){
 					this.STARTUP[k] = cb;
 				}
+				*/
+				this.STARTUP[k].push(cb);
 			}
 		},
 		ready:function(cb){
-			if(!this.slide){
+			if(!MS.APP.slide){
 				cb.call(this.APP);
 			}else {
 				var k = this.APP.get('viewpath');
+				/*
 				if(!S.isFunction(this.READY[k])){
 					this.READY[k] = cb;
 				}
+				*/
+				this.READY[k].push(cb);
 			}
 		},
 		teardown:function(cb){
 			var k = this.APP.get('viewpath');
+			/*
 			if(!S.isFunction(this.TEARDOWN[k])){
 				this.TEARDOWN[k] = cb;
 			}
+			*/
+			this.TEARDOWN[k].push(cb);
+		},
+		// 清空当前view的startup,ready,teardown
+		cleanup:function(){
+			var k = this.APP.get('viewpath');
+			this.STARTUP[k] = [];
+			this.READY[k] = [];
+			this.TEARDOWN[k] = [];
 		}
 	});
 
@@ -216,7 +232,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			MS.APP = self;
 			return this;
 		},
-
 		callDestory:function(){
 			var self = this;
 			var lastviewpath = self.get('signet').lastviewpath;
@@ -242,6 +257,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				path = self.get('viewpath');
 			}
 			var cb = self.MS.READY[path];
+			var param = self.get('param');
+
+			if(S.isArray(cb)){
+				S.each(cb,function(v,k){
+					setTimeout(function(){
+						v.call(self,param);
+					},200);
+				});
+			}
 
 			if(S.isFunction(cb)){
 				setTimeout(function(){
@@ -263,9 +287,16 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 			self.set('storage',self.MS.STORAGE[path] || {});
 
+			if(S.isArray(cb)){
+				S.each(cb,function(v,k){
+					v.call(self,param);
+				});
+			}
+
 			if(S.isFunction(cb)){
 				cb.call(self,param);
 			}
+
 			return this;
 		},
 		// teardown的时候应当恢复调用之前的hash
@@ -279,6 +310,15 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 			var cb = self.MS.TEARDOWN[path];
 			self.rememberPosition(path);
+
+			if(S.isArray(cb)){
+				S.each(cb,function(v,k){
+					setTimeout(function(){
+						v.call(self,self);
+					},0);
+				});
+			}
+
 			if(S.isFunction(cb)){
 				// TODO 这里的设计有点问题，理论上teardown事件不应当被阻止,类似onload和domready等
 				return cb.call(self,self); 
@@ -1038,6 +1078,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				case 'prev':
 					self.slide.add(el,self.slide.currentTab);
 					self.slide.relocateCurrentTab(self.slide.currentTab + 1);
+					self.MS.cleanup();
 					S.execScript(html);
 					// TODO: 重新考虑，是否在prev动画执行完成之后调用initPageStorage和callStartup
 					// TODO：切换之前作执行，有何风险
@@ -1067,6 +1108,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					// TODO: 只有异步加载新页面时，才会修正进入view的marginTop
 					self._fixScrollTopBefore(el,prel);
 					self.slide.add(el);
+					self.MS.cleanup();
 					S.execScript(html);
 					setTimeout(function(){
 						self.initPageStorage();
@@ -1097,6 +1139,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				case 'none':
 					self.slide.add(el,self.slide.currentTab);
 					self.callDestory();
+					self.MS.cleanup();
 					S.execScript(html);
 					setTimeout(function(){
 						self.initPageStorage();

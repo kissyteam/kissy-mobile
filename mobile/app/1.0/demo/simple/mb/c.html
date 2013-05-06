@@ -81,19 +81,21 @@
 					return false;
 				}
 
+				// “Get”回上一个页面
+				app.back({
+					name:form.one('.J_name').val(),
+					gender:form.one('.J_gender').val()
+				});
+				return;
+				// Post 回上一个页面
 				app.postback({
-					// path:'mb/b.html',
+					// path:'mb/b.html',//可以指定post回到的页面地址
 					data:{
 						name:form.one('.J_name').val(),
 						gender:form.one('.J_gender').val()
 					}
 				});
 
-				return;
-				app.back({
-					name:form.one('.J_name').val(),
-					gender:form.one('.J_gender').val()
-				});
 			});
 			
 			

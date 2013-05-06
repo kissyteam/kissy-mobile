@@ -172,13 +172,17 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 		},
 		teardown:function(cb){
-			var k = this.APP.get('viewpath');
-			/*
-			if(!S.isFunction(this.TEARDOWN[k])){
-				this.TEARDOWN[k] = cb;
+			if(!MS.APP.slide){
+				cb.call(this.APP);
+			}else{
+				var k = this.APP.get('viewpath');
+				/*
+				if(!S.isFunction(this.TEARDOWN[k])){
+					this.TEARDOWN[k] = cb;
+				}
+				*/
+				this.TEARDOWN[k].push(cb);
 			}
-			*/
-			this.TEARDOWN[k].push(cb);
 		},
 		// 清空当前view的startup,ready,teardown
 		cleanup:function(){

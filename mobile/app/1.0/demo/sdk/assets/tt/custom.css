@@ -1,0 +1,12 @@
+.header{height:50px;background:#e2e2e2;position: relative;}
+.header a{width:64px;height:30px;line-height: 30px;border-radius:4px;text-align:center;color:#676767;border:1px solid #d5d5d5;border-bottom-color:#B4B4B4;background:-webkit-gradient(linear,0 0,0 100%,from(white),to(#E8E8E8));}
+.header .leftbar{float: left;margin:10px 0 0 10px;}
+.header .rightbar{float: right;margin:10px 10px 0 0;}
+.header h2{position: absolute;width:100px;line-height:50px;height:50px;text-align: center;left:50%;top:0;margin-left:-50px;}
+
+.mainbody{text-align:center;}
+.mainbody .content{font-size:24px;font-weight: bold;padding-top:100px;}
+.develop{padding-top:40px;}
+.develop input{width:100px;}
+
+

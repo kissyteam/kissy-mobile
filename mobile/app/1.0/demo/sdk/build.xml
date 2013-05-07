@@ -1,0 +1,252 @@
+<!--
+build for zoo
+@author bachi@taobao.com
+
+	ant
+		直接发布
+	
+	ant prepub
+		预发布当前目录下所有assets
+	
+	ant pub
+		发布当前目录下所有assets
+-->
+<project name="compressor.build" default="pub" basedir="." xmlns:ac="antlib:net.sf.antcontrib">
+
+
+	<!--执行ant命令所在的位置-->
+	<dirname property="current.dir" file="${ant.file.compressor.build}"/>
+
+	<!--getFolder-->
+	<target name="getfolder" depends="getfolder_unix,getfolder_windows">
+		<echo>当前目录名：${folder.name}</echo>
+		<property name="pubpath" value="i/${folder.name}"/>
+		<property name="file.list" value="${folder.name}"/>
+	</target>
+
+	<target name="getfolder_unix" if="isUnix">
+		<propertyregex property="folder.name" input="${current.dir}" regexp="^.+\/" replace="" />
+	</target>
+
+	<target name="getfolder_windows" if="isWindows">
+		<propertyregex property="folder.name" input="${current.dir}" regexp="^.+\\" replace="" />
+	</target>
+	<!--/getFolder-->
+
+	<!--构建时间戳，留作备用-->
+	<tstamp>
+		<format property="build.time"
+				pattern="MMMM d, yyyy hh:mm:ss"
+				locale="en,US"/>
+	</tstamp>
+
+	<!--入口文件模块所在目录-->
+	<property name="git.dir" location="${current.dir}/../../"/>
+	<property name="assets.dir" location="${git.dir}/i"/>
+	<property name="svn.dir" location="${git.dir}/svn/i"/>
+	<property name="site.id" value="5265"/>
+
+	<!--项目文件编码-->
+	<property name="charset" value="utf-8"/>
+
+	<property environment="env" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">  
+		<classpath>  
+			<pathelement location="${git.dir}/build-tools/ant-contrib.jar"/>  
+		</classpath>  
+	</taskdef>
+
+	<!--操作系统判断-->
+	<condition property="isUnix">  
+		<os family="mac" />  
+	</condition>  
+
+	<condition property="isUnix">  
+		<os family="unix" />  
+	</condition> 
+
+	<condition property="isWindows">  
+		<os family="windows" />  
+	</condition>  
+
+	<!--解析less-->
+	<!--{{-->
+	<target name="less" depends="less_unix,less_windows" />
+
+	<target name="less_windows" if="isWindows">  
+		<exec executable="bake.exe" dir="./" failonerror="true">
+			<arg line="-L" />
+		</exec>
+	</target>  
+
+	<target name="less_unix" if="isUnix">  
+		<exec executable="bake" dir="./" failonerror="true">
+			<arg value="-L" />
+		</exec>
+	</target>  
+	<!--}}-->
+
+
+	<target name="svnup">
+		<exec executable="svn" dir="${svn.dir}">
+			<arg value="up" />
+		</exec>
+	</target>
+
+	<!--预发-->
+	<target name="prepub" depends="getfolder,svnup,prepub_unix,prepub_windows" />
+
+	<target name="prepub_unix" if="isUnix">
+		<echo message="PrePublishing..." />
+		<apply executable="bake" failonerror="true" parallel="true">
+			<fileset dir="${assets.dir}" includes="**/*.js" />
+			<arg value="-f" />
+			<arg value="${assets.dir}" />
+			<arg value="-t" />
+			<arg value="${svn.dir}" />
+			<arg value="-P" />
+			<arg value="${pubpath}" />
+			<arg value="-p" />
+			<arg value="4" />
+			<arg value="-u" />
+			<arg value="bake" />
+			<arg value="-c" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${file.list}" />
+		</apply>
+	</target>
+	<target name="prepub_windows" if="isWindows">  
+		<propertyregex property="_assets.dir" input="${assets.dir}" regexp="\\" replace="\/" defaultvalue="${assets.dir}" />
+		<propertyregex property="_svn.dir" input="${svn.dir}" regexp="\\" replace="\/" defaultvalue="${svn.dir}" />
+		<exec executable="bake.exe" dir="./" failonerror="true">
+			<arg value="-f" />
+			<arg value="${_assets.dir}" />
+			<arg value="-t" />
+			<arg value="${_svn.dir}" />
+			<arg value="-P" />
+			<arg value="${pubpath}" />
+			<arg value="-p" />
+			<arg value="4" />
+			<arg value="-u" />
+			<arg value="bake" />
+			<arg value="-c" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${file.list}" />
+		</exec>
+	</target>  
+
+	<!--发布-->
+	<target name="pub" depends="getfolder,svnup,pub_unix,pub_windows" />
+
+	<target name="pub_unix" if="isUnix">
+		<echo message="Publishing..." />
+		<apply executable="bake" failonerror="true" parallel="true">
+			<fileset dir="${assets.dir}" includes="**/*.js" />
+			<arg value="-f" />
+			<arg value="${assets.dir}" />
+			<arg value="-t" />
+			<arg value="${svn.dir}" />
+			<arg value="-P" />
+			<arg value="${pubpath}" />
+			<arg value="-p" />
+			<arg value="1" />
+			<arg value="-u" />
+			<arg value="bake" />
+			<arg value="-c" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${file.list}" />
+		</apply>
+	</target>
+	<target name="pub_windows" if="isWindows">  
+		<propertyregex property="_assets.dir" input="${assets.dir}" regexp="\\" replace="\/" defaultvalue="${assets.dir}" />
+		<propertyregex property="_svn.dir" input="${svn.dir}" regexp="\\" replace="\/" defaultvalue="${svn.dir}" />
+		<propertyregex property="_pubpath" input="${pubpath}" regexp="\\" replace="\/" defaultvalue="${pubpath}" />
+		<exec executable="bake.exe" dir="./" failonerror="true">
+			<arg value="-f" />
+			<arg value="${_assets.dir}" />
+			<arg value="-t" />
+			<arg value="${_svn.dir}" />
+			<arg value="-P" />
+			<arg value="${_pubpath}" />
+			<arg value="-p" />
+			<arg value="1" />
+			<arg value="-u" />
+			<arg value="bake" />
+			<arg value="-c" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${file.list}" />
+		</exec>
+	</target>  
+
+	<!--ant st-->
+	<target name="st" depends="getfolder,prepare_files_windows,prepare_files_unix">
+		<echo>文件更新：</echo>
+		<echo></echo>
+		<exec executable="svn" dir="${svn.dir}" outputproperty="xlog">
+			<arg value="add" />
+			<arg value="--non-recursive" />
+			<arg value="${folder.name}" />
+		</exec>
+		<exec executable="svn" dir="${svn.dir}/${folder.name}">
+			<arg value="st" />
+		</exec>
+		<exec executable="svn" dir="${svn.dir}" outputproperty="xlog">
+			<arg value="revert" />
+			<arg value="--recursive" />
+			<arg value="." />
+		</exec>
+	</target>
+	<target name="prepare_files_unix" if="isUnix">  
+		<apply executable="bake" failonerror="true" parallel="true">
+			<fileset dir="${assets.dir}" includes="**/*.js" />
+			<arg value="-f" />
+			<arg value="${assets.dir}" />
+			<arg value="-t" />
+			<arg value="${svn.dir}" />
+			<arg value="-P" />
+			<arg value="${pubpath}" />
+			<arg value="-p" />
+			<arg value="4" />
+			<arg value="-u" />
+			<arg value="bake" />
+			<arg value="-c" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${file.list}" />
+			<arg value="-a" />
+			<arg value="false" />
+		</apply>
+	</target>
+	<target name="prepare_files_windows" if="isWindows">  
+		<propertyregex property="_assets.dir" input="${assets.dir}" regexp="\\" replace="\/" defaultvalue="${assets.dir}" />
+		<propertyregex property="_svn.dir" input="${svn.dir}" regexp="\\" replace="\/" defaultvalue="${svn.dir}" />
+		<exec executable="bake.exe" dir="./" failonerror="true">
+			<arg value="-f" />
+			<arg value="${_assets.dir}" />
+			<arg value="-t" />
+			<arg value="${_svn.dir}" />
+			<arg value="-P" />
+			<arg value="${pubpath}" />
+			<arg value="-p" />
+			<arg value="4" />
+			<arg value="-u" />
+			<arg value="bake" />
+			<arg value="-c" />
+			<arg value="-s" />
+			<arg value="${site.id}" />
+			<arg value="-l" />
+			<arg value="${file.list}" />
+			<arg value="-a" />
+			<arg value="false" />
+		</exec>
+	</target>
+</project>

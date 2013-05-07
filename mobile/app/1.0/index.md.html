@@ -127,7 +127,7 @@
         页面被销毁
     </td>
     <td>
-        destory
+        destroy
     </td>
     <td>
         只有在页面被销毁时被触发，页面当移出视口而没有被销毁时，不会触发他
@@ -157,7 +157,7 @@
         // 这里的 s 永远是第一次注册事件时的时间
     });
 });</code></pre>
-<p><code>includeOnce</code>和<code>destory</code>事件也是如此。</p>
+<p><code>includeOnce</code>和<code>destroy</code>事件也是如此。</p>
 <h3>节点重复问题</h3>
 <p>由于KDK的机制规定了最终页面状态和滑动的树的路径有关系，和节点本身具有的语义和层次没有直接关系。因此，有可能会出现页面重复的问题，即同一时刻，存在两个相同的节点在整个浏览器声明周期内。比如从深目录层级的某个节点一节回退到首页时，会出现这种问题，如图，我从c节点执行“回退”操作到a节点，这里所指的“回退”操作是开发者赋予的语义，在整个KDK的历史记录管理机制中，仍然认为这是一次写历史记录的步骤，即这个“后退操作”导致历史记录加一。真正的问题在于，浏览器内同时存在了两个a节点。</p>
 <p><img src="http://img03.taobaocdn.com/tps/i3/T1TYQGXlxcXXbu1N2d-351-311.png" alt=""></p>
@@ -257,8 +257,8 @@
             // 注册 includeOnce
         });
 
-        MS.destory(function(){
-            // 注册destory
+        MS.destroy(function(){
+            // 注册destroy
         });
     });
 &lt;/script&gt;</code></pre>
@@ -284,7 +284,7 @@
         // 上下文2
     });
 
-    MS.destory(function(){
+    MS.destroy(function(){
         // 上下文2
     });
 });</code></pre>
@@ -340,15 +340,17 @@
 <hr class="smooth large" />
 
 <h2>API</h2>
-<p>KDK提供一个全局构造函数<code>MS</code>，类似<code>YUI</code>，用来生成app实例，理论上一个应用有一个app实例，<code>MS</code>挂有一些全局静态方法，整个浏览器生命周期内，只能构造一次，<code>var app = new MS({});</code>。<code>app</code>实例可以通过<code>MS.APP</code>来引用到，如果多次创建app实例，则MS.APP会被覆盖。<code>app</code>实例提供事件，但事件注册机制只是用方法来完成（比如MS.destory(callback)）。因为页面页面之间的关系理论上是平行的，原则上，一个页面无法知晓其他页面的存在，因此一个页面中的逻辑不能“主动”绑定其他页面的事件，只能绑定本页的事件，本页的事件为了避免多次绑定带来的代码冲突，只提供了通过方法来注册事件，而非app.on(&#39;eventType&#39;)的形式。</p>
+<p>KDK提供一个全局构造函数<code>MS</code>，类似<code>YUI</code>，用来生成app实例，理论上一个应用有一个app实例，<code>MS</code>挂有一些全局静态方法，整个浏览器生命周期内，只能构造一次，<code>var app = new MS({});</code>。<code>app</code>实例可以通过<code>MS.APP</code>来引用到，如果多次创建app实例，则MS.APP会被覆盖。<code>app</code>实例提供事件，但事件注册机制只是用方法来完成（比如MS.destroy(callback)）。因为页面页面之间的关系理论上是平行的，原则上，一个页面无法知晓其他页面的存在，因此一个页面中的逻辑不能“主动”绑定其他页面的事件，只能绑定本页的事件，本页的事件为了避免多次绑定带来的代码冲突，只提供了通过方法来注册事件，而非app.on(&#39;eventType&#39;)的形式。</p>
 <hr class="smooth" />
 
 <h3>全局静态方法</h3>
-<p>这四个全局静态方法类似于事件绑定，回调函数执行的上下文均为当前<code>MS</code>的实例对象。这些事件由于是“页面”具有的，因此和<code>onload</code>和<code>domready</code>一样，无法被阻止。</p>
+<p>这五个全局静态方法类似于事件绑定，回调函数执行的上下文均为当前<code>MS</code>的实例对象。这些事件由于是“页面”具有的，因此和<code>onload</code>和<code>domready</code>一样，无法被阻止。</p>
+<p><em>ready(callback)</em></p>
+<p>页面划入视口时执行callback，执行时机为转场动画完毕后。</p>
 <p><em>includeOnce(callback)</em></p>
 <p>callback 为回调函数，注册当前页面中的<code>includeOnce</code>事件的句柄，句柄将会把整个<code>app</code>实例作为参数传回。只会在页面首次构建的时候执行回调，再次构建时不会执行回调。一个页面这个方法只能被注册一次。</p>
-<p><em>destory(callback)</em></p>
-<p>callback 为回调函数，注册当前页面中的<code>destory</code>事件的句柄，句柄会将整个<code>app</code>实例作为参数传回。只要本页被销毁，都会调用这个函数，执行时机为beforeDestory。一个页面这个方法只能被注册一次。</p>
+<p><em>destroy(callback)</em></p>
+<p>callback 为回调函数，注册当前页面中的<code>destroy</code>事件的句柄，句柄会将整个<code>app</code>实例作为参数传回。只要本页被销毁，都会调用这个函数，执行时机为beforeDestroy。一个页面这个方法只能被注册一次。</p>
 <p><em>startup(callback)</em></p>
 <p>页面划入视口时执行回调，它会将从别的页面带入的参数当作回调函数的参数传入。只要页面划入视口，不管是从左还是从右，都会执行这个回调。一个页面这个方法只能被注册一次。</p>
 <pre><code>MS.startup(function(data){

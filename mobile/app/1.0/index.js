@@ -110,7 +110,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		STARTUP:{},// 来到页面时的启动函数，一个页面多个
 		TEARDOWN:{},// 离开页面时的清理函数，一个页面多个
 		INCLUDEONCE:{},// 该页面首次加载时执行一次，一个页面多个
-		DESTORY:{},// 该页面被销毁时执行一次
+		DESTROY:{},// 该页面被销毁时执行一次
 		PAGECACHE:{},//每个页面的镜像字符串，保存在这里
 		PAGESCROLL:{},//每个页面离开时的scrollTop高度
 		STORAGE:{},//每个页面对应的本地存储
@@ -138,10 +138,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				}
 			}
 		},
-		destory:function(cb){
+		destroy:function(cb){
 			var k = this.APP.get('viewpath');
-			if(!S.isFunction(this.DESTORY[k])){
-				this.DESTORY[k] = cb;
+			if(!S.isFunction(this.DESTROY[k])){
+				this.DESTROY[k] = cb;
 			}
 		},
 		startup:function(cb){
@@ -197,7 +197,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 		init: function() {
 			var self = this;
-
+			MS.APP = self;
 			self.MS = self.constructor;
 
 			if(S.one("#MS")){
@@ -233,13 +233,12 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.initPageStorage();
 			self.set('storage',self.MS.STORAGE[self.get('viewpath')]||{});
 
-			MS.APP = self;
 			return this;
 		},
-		callDestory:function(){
+		callDestroy:function(){
 			var self = this;
 			var lastviewpath = self.get('signet').lastviewpath;
-			var cb = self.MS.DESTORY[lastviewpath];
+			var cb = self.MS.DESTROY[lastviewpath];
 			if(S.isFunction(cb)){
 				cb.call(self,self);
 			}
@@ -661,7 +660,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				}else if(self.get('signet').forward < 0 && his.state.forward > 0){
 					// 如果上一帧在本帧右侧，回退时采用“进入”动作，但进入后要删除倒数第二帧
 					self.next(viewpath,function(){
-						self.callDestory();
+						self.callDestroy();
 						self.slide.remove(self.slide.length - 2);
 					});
 					self.recordSignet(-1,viewpath,his.state.forward);
@@ -726,7 +725,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 
 		// TODO: MS实例的销毁
-		destory: function(){
+		destroy: function(){
 
 		},
 		_go :function(path,type,callback){
@@ -1021,7 +1020,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					if(self.get('containerHeighTimmer')){
 						self.slide.addHeightTimmer();
 					}
-					self.callDestory();
+					self.callDestroy();
 					that.removeLast();
 					if(S.isFunction(callback)){
 						callback.call(self.slide,self.slide);
@@ -1097,7 +1096,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 							if(self.get('containerHeighTimmer')){
 								self.slide.addHeightTimmer();
 							}
-							self.callDestory();
+							self.callDestroy();
 							if(S.isFunction(callback)){
 								callback.call(self.slide,self.slide);
 							}
@@ -1125,7 +1124,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 						}
 						self.slide.next(function(){
 							// TODO: Android 2 下这里不执行？
-							self.callDestory();
+							self.callDestroy();
 							if(S.isFunction(callback)){
 								callback.call(self.slide,self.slide);
 							}
@@ -1142,7 +1141,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					break;
 				case 'none':
 					self.slide.add(el,self.slide.currentTab);
-					self.callDestory();
+					self.callDestroy();
 					self.MS.cleanup();
 					S.execScript(html);
 					setTimeout(function(){

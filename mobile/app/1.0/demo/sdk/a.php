@@ -95,7 +95,7 @@ Host.set_back();
 
 	<h1>Hello, world!</h1>
 	<p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-	<p><a class="btn btn-primary btn-large" href="test.php">Learn more &raquo;</a></p>
+	<p><a class="btn btn-primary btn-large" href="test.php?a=45">Learn more &raquo;</a></p>
 	<h1>Super awesome marketing speak!</h1>
 	<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
 	<a class="btn btn-large btn-success" href="javascript:void(0);" onclick="Host.open('test.php?a=1&b=2',{c:3,d:4})">GoTo Next Page</a>
@@ -119,20 +119,7 @@ Host.set_back();
 
 <script>
 
-	KISSY.config({
-		packages:[
-			{
-				name:"union",
-				tag:"201112299",
-				path:"http://a.tbcdn.cn/apps/ks/i", 
-				debug:true,
-				charset:"utf-8"
-			}
-		]
-	});
-
-
-	KISSY.use('mobile/app/1.0/,union/fixedbar',function(S,AppFramwork,FixedBar){
+	KISSY.use('mobile/app/1.0/',function(S,AppFramwork,FixedBar){
 
 
 		AppFramwork.startup(function(){
@@ -150,11 +137,6 @@ Host.set_back();
 			S.log(app.get('storage').get('aaa'));
 		
 			app.get('storage').set('aaa',1);
-
-			new FixedBar('#test',{
-				top:20,
-				floor:500
-			});
 			
 		});
 

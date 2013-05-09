@@ -13,6 +13,16 @@ KISSY.config({
 		}
 	]
 });
+		KISSY.config({
+			packages:[
+				{
+					name:"mobile",
+					tag:"20111220",
+					path:"../../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+					charset:"utf-8"
+				}
+			]
+		});
 
 (function(exports){
 	"use strict";

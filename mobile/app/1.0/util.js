@@ -38,7 +38,6 @@ KISSY.add('mobile/app/1.0/util',function(S){
 				}	
 			}	
 
-
 			for(i in data){
 				o[i] = data[i];
 			}
@@ -49,13 +48,18 @@ KISSY.add('mobile/app/1.0/util',function(S){
 			url = url.substr(0,url.length-1);
 			return url;
 		},
+		// url?a=1&b=2
+		// url?a=1&b=2#c=3&d=4
+		// url?a=1&b=2#c=3&d=4?e=5 错误的输入
 		getHash : function(sUrl){
 			var url = sUrl || window.location.href;
 			if(url.indexOf("#") < 0){
 				return {};
 			}else{
-				var hash = url.split('#')[1];
+				// var hash = url.split('#')[1];
+				var hash = new S.Uri(url).getFragment();
 				if(hash === '')return {};
+				/*
 				if(hash[hash.length-1] == '&')hash = hash.substr(0, hash.length-1);
 				hash = hash.replace(/"/ig,'\'');
 				// hash = hash.replace(/=/ig,'":"');
@@ -64,6 +68,8 @@ KISSY.add('mobile/app/1.0/util',function(S){
 				hash += '"';
 				hash = "{\""+ hash + "}";
 				var o = S.JSON.parse(hash);
+				*/
+				var o = S.unparam(hash);
 				return o;
 			}
 		},

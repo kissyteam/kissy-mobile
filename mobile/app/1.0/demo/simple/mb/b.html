@@ -89,8 +89,10 @@ var_dump($_POST);
 
 	KISSY.use('mobile/app/1.0/',function(S,MS){
 
-
 		S.one('title').html('本页的title');
+
+		MS.startup(function(data){
+		});
 		
 		MS.startup(function(data){
 

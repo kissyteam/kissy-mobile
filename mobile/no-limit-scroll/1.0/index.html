@@ -1,0 +1,88 @@
+<!doctype html>
+<html manifest="appcache.manifest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>无限制滚动列表</title>
+<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+<script>
+	KISSY.config({
+		packages:[
+			{
+				name:"mobile",
+				tag:"20111220",
+				path:"../../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+			}
+		]																																				});
+<link rel="apple-touch-icon" sizes="57x57" href="" />
+</head>
+
+<body>
+	<style type="text/css">
+		* { margin: 0; padding: 0; }
+		html , body { height: 100%; font-size: 14px; }
+		.km-scroll { width: 300px; padding: 0 10px; margin: 0 auto; height: 100%; }
+
+
+		.customBox { padding-top: 10px; }
+		.customBox  h3 { line-height: 20px; }
+		.customBox .content { line-height: 1.5; margin-top: 6px; }
+		.customBox .pic { margin-top: 10px; }
+	</style>
+
+	<!-- 无限滚动列表包裹器{{ -->
+	<section id="km-scroll" class="km-scroll">
+		<!-- 子包裹器{{ -->
+		<div id="km-pannal">
+
+			<!-- 最小显示单元{{ -->
+			<div id="km-scroll-unit1">
+				<div class="customBox">
+					<h3><a href="#">@坏先生图片文集</a></h3>
+					<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+					<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+				</div>
+				<div class="customBox">
+					<h3><a href="#">@坏先生图片文集</a></h3>
+					<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+					<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+				</div>
+				<div class="customBox">
+					<h3><a href="#">@坏先生图片文集</a></h3>
+					<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+					<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+				</div>
+			</div>
+			<!-- 最小显示单元}} -->
+
+		</div>
+		<!-- 子包裹器}} -->
+	</section>
+	<!-- 无限滚动列表包裹器}} -->
+
+
+	<!-- 非组件必须DOM,用于模拟加载额外信息 {{ -->
+	<div class="unnecessaries">
+		<div class="customBox">
+			<h3><a href="#">@坏先生图片文集</a></h3>
+			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+			<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+		</div>
+		<div class="customBox">
+			<h3><a href="#">@坏先生图片文集</a></h3>
+			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+			<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+		</div>
+		<div class="customBox">
+			<h3><a href="#">@坏先生图片文集</a></h3>
+			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+			<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+		</div>
+	</div>
+	<!-- 非组件必须DOM}} -->
+
+
+</body>
+</html>

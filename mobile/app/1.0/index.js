@@ -1157,7 +1157,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					break;
 				}
 
-
 			};
 
 			var handleHTML = function(str){

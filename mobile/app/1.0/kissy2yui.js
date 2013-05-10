@@ -2,7 +2,7 @@
 
 KISSY.add('mobile/app/1.0/kissy2yui',function(S){
 
-	"use strict";
+	// "use strict";
 
 	// KISSY 2 YUI3
 	S.augment(S.Node,{

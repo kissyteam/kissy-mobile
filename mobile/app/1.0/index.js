@@ -361,13 +361,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var self = this;
 
 			if(!S.isUndefined(S.getHash()['viewpath'])){
-				self.set('viewpath',(S.getHash()['viewpath']));
+				self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
 			}
 
 			if(!S.isNull(self.get('initPostData'))){
 				self.__post = self.get('initPostData');
 			}
 
+			// 进去时，viewpath是未uriencode的
 			self._go(self.get('viewpath'),'none');
 
 			var hisurl = self.formatUrlTail(self.get('viewpath'),S.getHash());
@@ -384,7 +385,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('signet',state);
 			his.replaceState(state,"",hisurl);
 
-			self.set('viewpath',(S.getHash()['viewpath']));
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
 
 		},
 		// 此方法暂时废弃
@@ -405,7 +406,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			self.set('signet',state);
 			his.replaceState(state,"",hisurl);
 
-			self.set('viewpath',(S.getHash()['viewpath']));
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
 
 		},
 		// 调用Loading
@@ -498,8 +499,11 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 
 		// 点击a标签时，意欲发生跳转时，只应当调用这个方法
+		// path一定是未encode的值
 		setRouteHash:function(path,param){
 			var self = this;
+
+			var path = decodeURIComponent(path);
 
 			self.set('viewpath',(path));
 
@@ -511,12 +515,16 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				param = S.unparam(param);
 			}
 
+			// hisurl中的viewpath 是encode后的
 			var hisurl = self.formatUrlTail(path,S.getHash());
 
+			// TODO !!! setHash有问题，如果设置的是
+			// url#viewpath=aadsf?a=3&b=5
+			// 就搞不清楚&b=5是谁的了
 			var state = {
 				level:self.get('signet').level + 1,
 				viewpath:path,
-				hisurl:S.setHash(decodeURIComponent(hisurl),param),
+				hisurl:S.setHash(hisurl,param),
 				forward:1,
 				lastviewpath:path,
 				scrollTop:S.DOM.scrollTop()  // 暂时无用
@@ -706,7 +714,10 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				forward = 1;
 			}
 
+			var path = decodeURIComponent(path);
+
 			var olevel = self.get('signet').level;
+			// 确保执行formatUriTail时，一定是未uriencode的值
 			var hisurl = self.formatUrlTail(path,S.getHash());
 
 			var state = {
@@ -860,13 +871,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				his.back();
 			}
 
-			self.set('viewpath',(S.getHash()['viewpath']));
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
 
 			return this;
 		},
 
 
 		// 前进时需要给定path
+		// path 一定是urlendoce之前的
 		forward: function(path,param,callback){
 			var self = this;
 
@@ -907,7 +919,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 			var state = self.recordSignet(1,path);
 			his.pushState(state,"",S.setHash(state.hisurl,param));
-			self.set('viewpath',S.getHash()['viewpath']);
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
 			return self;
 		},
 

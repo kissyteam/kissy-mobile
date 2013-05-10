@@ -6,7 +6,7 @@ KISSY.config({
 		{
 			name:"mobile",
 			tag:"201112299",
-			path:"http://a.tbcdn.cn/s/kissy/mobile",
+			path:"../../../",
 			ignorePackageNameInUri:true,
 			debug:true,
 			charset:"utf-8"
@@ -98,6 +98,7 @@ KISSY.config({
 				} else {
 					var url = el.attr('href');
 					that.open(that.wrapUrl(url));
+					// App.setRouteHash(that.wrapUrl(url));
 					e.preventDefault();
 				}
 			});
@@ -109,7 +110,12 @@ KISSY.config({
 				client_type:that.client_type,
 				client_nav:that.client_nav
 			});
-			url = new S.Uri(url).setQuery(S.param(nsearch)).toString();
+			// url = new S.Uri(url).setQuery(S.param(nsearch)).toString();
+			if(url.indexOf('?')<0){
+				url += '?' + S.param(nsearch);
+			}else{
+				url += '&' + S.param(nsearch);
+			}
 			return url;
 		}
 

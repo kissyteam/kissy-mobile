@@ -119,20 +119,7 @@ Host.set_back();
 
 <script>
 
-	KISSY.config({
-		packages:[
-			{
-				name:"union",
-				tag:"201112299",
-				path:"http://a.tbcdn.cn/apps/ks/i", 
-				debug:true,
-				charset:"utf-8"
-			}
-		]
-	});
-
-
-	KISSY.use('mobile/app/1.0/,union/fixedbar',function(S,AppFramwork,FixedBar){
+	KISSY.use('mobile/app/1.0/',function(S,AppFramwork,FixedBar){
 
 
 		AppFramwork.startup(function(){
@@ -151,10 +138,6 @@ Host.set_back();
 		
 			app.get('storage').set('aaa',1);
 
-			new FixedBar('#test',{
-				top:20,
-				floor:500
-			});
 			
 		});
 

@@ -12,10 +12,12 @@
 		packages:[
 			{
 				name:"mobile",
-				tag:"20111220",
-				path:"../../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+				tag:"20130511",
+				path:"../../../",  // 开发时目录, 发布到cdn上需要适当修改
 			}
-		]																																				});
+		]
+	});
+</script>
 <link rel="apple-touch-icon" sizes="57x57" href="" />
 </head>
 
@@ -23,39 +25,63 @@
 	<style type="text/css">
 		* { margin: 0; padding: 0; }
 		html , body { height: 100%; font-size: 14px; }
-		.km-scroll { width: 300px; padding: 0 10px; margin: 0 auto; height: 100%; }
+		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
 
+		#km-scroll { width: 300px; padding: 0 10px; margin: 0 auto; height: -webkit-calc(100% - 40px); position: relative; }
+		#km-scroll-loading { height: 40px; line-height: 40px; text-align: center; padding: 10px 0; }
+		#km-scroll-status  img { vertical-align: middle; margin-left: 50px; -webkit-animation: loading 2s infinite linear; }
+		@-webkit-keyframes loading {
+			from {
+				-webkit-transform: rotate(0deg) translateZ(0);	
+			}	
+			to {
+				-webkit-transform: rotate(360deg) translateZ(0);	
+			}
+		}
 
 		.customBox { padding-top: 10px; }
 		.customBox  h3 { line-height: 20px; }
 		.customBox .content { line-height: 1.5; margin-top: 6px; }
 		.customBox .pic { margin-top: 10px; }
+
+		.hidden { display: none; }
 	</style>
 
+	<h1>无限制滚动列表</h1>
+
 	<!-- 无限滚动列表包裹器{{ -->
-	<section id="km-scroll" class="km-scroll">
+	<section id="km-scroll">
 		<!-- 子包裹器{{ -->
 		<div id="km-pannal">
-
-			<!-- 最小显示单元{{ -->
-			<div id="km-scroll-unit1">
-				<div class="customBox">
-					<h3><a href="#">@坏先生图片文集</a></h3>
-					<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
-					<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+			<div id="km-content">
+				<!-- 最小显示单元{{ -->
+				<div id="km-scroll-unit1">
+					<div class="customBox">
+						<h3><a href="#">@坏先生图片文集</a></h3>
+						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+						<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+					</div>
+					<div class="customBox">
+						<h3><a href="#">@坏先生图片文集</a></h3>
+						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+						<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+					</div>
+					<div class="customBox">
+						<h3><a href="#">@坏先生图片文集</a></h3>
+						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+						<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+					</div>
 				</div>
-				<div class="customBox">
-					<h3><a href="#">@坏先生图片文集</a></h3>
-					<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
-					<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
-				</div>
-				<div class="customBox">
-					<h3><a href="#">@坏先生图片文集</a></h3>
-					<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
-					<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
-				</div>
+				<!-- 最小显示单元}} -->	
 			</div>
-			<!-- 最小显示单元}} -->
+			
+			
+			<!-- 加载更多{{ -->
+			<div id="km-scroll-loading">
+				<span>更多...</span>
+				<div id="km-scroll-status" class="hidden">加载中...<img src="loading.png" /></div>
+			</div>
+			<!-- 加载更多}} -->
 
 		</div>
 		<!-- 子包裹器}} -->
@@ -63,8 +89,8 @@
 	<!-- 无限滚动列表包裹器}} -->
 
 
-	<!-- 非组件必须DOM,用于模拟加载额外信息 {{ -->
-	<div class="unnecessaries">
+	<!-- 非组件必须DOM,用于模拟加载更多信息 {{ -->
+	<div class="assist hidden">
 		<div class="customBox">
 			<h3><a href="#">@坏先生图片文集</a></h3>
 			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
@@ -83,6 +109,16 @@
 	</div>
 	<!-- 非组件必须DOM}} -->
 
+	<script>
+		KISSY.use('mobile/no-limit-scroll/1.0/' , function(S , Scroll) {
+			var myscroll = new Scroll();
+			
+			S.one('#km-scroll-loading span').on('click' , function() {
+				var str = S.one('.assist').html();
+				myscroll.addContent(str);
+			});
+		});
 
+	</script>
 </body>
 </html>

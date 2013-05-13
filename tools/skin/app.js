@@ -60,6 +60,9 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 					'</div>'
 				 ].join(''));
 				S.each(d,function(v,k){
+					if(v.name == 'kpm'){
+						return;
+					}
 					S.one('#gallerys').append([
 						'<tr>',
 						'<td>',

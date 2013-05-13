@@ -137,7 +137,7 @@ Host.set_back();
 			S.log(app.get('storage').get('aaa'));
 		
 			app.get('storage').set('aaa',1);
-			
+		
 		});
 
 		AppFramwork.ready(function(){

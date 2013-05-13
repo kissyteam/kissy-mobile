@@ -56,20 +56,24 @@ KISSY.add('mobile/app/1.0/util',function(S){
 			if(url.indexOf("#") < 0){
 				return {};
 			}else{
-				// var hash = url.split('#')[1];
-				var hash = new S.Uri(url).getFragment();
+				var hash = url.split('#')[1];
+				// Uri.getFragment() 得到的是decode之后的？why?
+				// var hash = new S.Uri(url).getFragment();
 				if(hash === '')return {};
-				/*
-				if(hash[hash.length-1] == '&')hash = hash.substr(0, hash.length-1);
-				hash = hash.replace(/"/ig,'\'');
-				// hash = hash.replace(/=/ig,'":"');
-				hash = hash.replace(/=/ig,'":"');
-				hash = hash.replace(/&/ig,'","');
-				hash += '"';
-				hash = "{\""+ hash + "}";
-				var o = S.JSON.parse(hash);
-				*/
-				var o = S.unparam(hash);
+				try{
+					if(hash[hash.length-1] == '&')hash = hash.substr(0, hash.length-1);
+					hash = hash.replace(/"/ig,'\'');
+					// hash = hash.replace(/=/ig,'":"');
+					hash = hash.replace(/=/ig,'":"');
+					hash = hash.replace(/&/ig,'","');
+					hash += '"';
+					hash = "{\""+ hash + "}";
+					var o = S.JSON.parse(hash);
+				}catch(e){
+					var o = S.unparam(hash);
+				}
+				// S.unparam() 得到的也是decode之后的？why？
+				// var o = S.unparam(hash);
 				return o;
 			}
 		},

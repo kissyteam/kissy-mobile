@@ -55,7 +55,7 @@
 
 	<target name="getname_windows" if="isWindows">
 		<propertyregex property="xtmp" input="${current.dir}" regexp="\\[^\\]+$" replace="" />
-		<propertyregex property="mod.name" input="${current.dir}" regexp="^.+\\" replace="" />
+		<propertyregex property="mod.name" input="${xtmp}" regexp="^.+\\" replace="" />
 	</target>
 	<!--/getname-->
 

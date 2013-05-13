@@ -33,18 +33,75 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 		S.IO({
 			url:url+'?t='+S.now(),
 			success:function(d){
-				S.one('#doc').html(d).append([
-					'<div class="comment">',
-					'	<div id="disqus_thread"></div>',
-					'</div>'
-				 ].join(''));
-				initCom();
+				if(url == 'mobile/startup/components.html'){
+					showGallerys();
+				}else{
+					S.one('#doc').html(d).append([
+						'<div class="comment">',
+						'	<div id="disqus_thread"></div>',
+						'</div>'
+					 ].join(''));
+					initCom();
+				}
 			},
 			error:function(){
 				S.one('#doc').html('<h2>404. Not Found</h2>');
 			}
 		});
 	};	
+
+	var showGallerys = function(){
+		S.IO({
+			url:'/tools/skin/repos.json',	
+			success:function(d){
+				S.one('#doc').html('<h2>Components</h2>').append([
+					'<div>',
+					'	<table class="table" id="gallerys">',
+						'<tr>',
+						'<td>',
+							'<strong>名称</strong>',
+						'</td>',
+						'<td>',
+							'<strong>描述</strong>',
+						'</td>',
+						'<td>',
+							'',
+						'</td>',
+						'<td>',
+							'',
+						'</td>',
+						'</tr>',
+					'</table>',
+					'</div>'
+				 ].join(''));
+				S.each(d,function(v,k){
+					if(v.name == 'kpm'){
+						return;
+					}
+					S.one('#gallerys').append([
+						'<tr>',
+						'<td>',
+							'<span class="label label-info">'+v.name+'</span>',
+						'</td>',
+						'<td>',
+							v.description,
+						'</td>',
+						'<td>',
+							'<a href="'+v.html_url+'">source</a>',
+						'</td>',
+						'<td>',
+							'<a href="/mobile/'+v.name+'/">doc</a>',
+						'</td>',
+						'</tr>'
+					].join(''));
+				});
+			},
+			error:function(){
+				S.one('#doc').html('<h2>服务器错误，稍候重试</h2>');
+			}
+		});
+
+	};
 
 	S.Event.on(window,'hashchange',function(e){
 		showDetail();

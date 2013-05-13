@@ -1,0 +1,3 @@
+[submodule "slide"]
+	path = mobile/slide
+	url = git://github.com/jayli/slide.git

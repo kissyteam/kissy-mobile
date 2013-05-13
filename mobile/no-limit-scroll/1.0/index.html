@@ -55,7 +55,7 @@
 		<div id="km-pannal">
 			<div id="km-content">
 				<!-- 最小显示单元{{ -->
-				<div id="km-scroll-unit1">
+				<div class="km-scroll-unit">
 					<div class="customBox">
 						<h3><a href="#">@坏先生图片文集</a></h3>
 						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
@@ -88,34 +88,20 @@
 	</section>
 	<!-- 无限滚动列表包裹器}} -->
 
-
-	<!-- 非组件必须DOM,用于模拟加载更多信息 {{ -->
-	<div class="assist hidden">
-		<div class="customBox">
-			<h3><a href="#">@坏先生图片文集</a></h3>
-			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
-			<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
-		</div>
-		<div class="customBox">
-			<h3><a href="#">@坏先生图片文集</a></h3>
-			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
-			<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
-		</div>
-		<div class="customBox">
-			<h3><a href="#">@坏先生图片文集</a></h3>
-			<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
-			<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
-		</div>
-	</div>
-	<!-- 非组件必须DOM}} -->
-
 	<script>
 		KISSY.use('mobile/no-limit-scroll/1.0/' , function(S , Scroll) {
-			var myscroll = new Scroll();
-			
-			S.one('#km-scroll-loading span').on('click' , function() {
-				var str = S.one('.assist').html();
-				myscroll.addContent(str);
+			var myscroll = new Scroll({
+				getMoreInfo: function() {
+					// this 指向当前实例对象
+					var self = this;
+					S.io.get('moreinfo.php' , function(data) {
+						self.addContent(data);
+
+						// 恢复加载更多区域 的初始状态 (必须)
+						self.resetLoad();
+					});
+
+				}
 			});
 		});
 

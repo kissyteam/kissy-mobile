@@ -1,0 +1,3 @@
+[submodule "slide"]
+	path = slide
+	url = git://github.com/jayli/slide.git

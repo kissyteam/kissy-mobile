@@ -72,7 +72,7 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 							'<a href="'+v.html_url+'">source</a>',
 						'</td>',
 						'<td>',
-							'<a href="/mobile/'+v.name+'">doc</a>',
+							'<a href="/mobile/'+v.name+'/">doc</a>',
 						'</td>',
 						'</tr>'
 					].join(''));

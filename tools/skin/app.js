@@ -56,7 +56,22 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 			success:function(d){
 				S.one('#doc').html('<h2>Components</h2>').append([
 					'<div>',
-					'	<table class="table" id="gallerys"></table>',
+					'	<table class="table" id="gallerys">',
+						'<tr>',
+						'<td>',
+							'<strong>名称</strong>',
+						'</td>',
+						'<td>',
+							'<strong>描述</strong>',
+						'</td>',
+						'<td>',
+							'',
+						'</td>',
+						'<td>',
+							'',
+						'</td>',
+						'</tr>',
+					'</table>',
 					'</div>'
 				 ].join(''));
 				S.each(d,function(v,k){
@@ -66,7 +81,7 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 					S.one('#gallerys').append([
 						'<tr>',
 						'<td>',
-							v.name,
+							'<span class="label label-info">'+v.name+'</span>',
 						'</td>',
 						'<td>',
 							v.description,

@@ -1803,6 +1803,7 @@ p img {
 
 
   <div class="container">
+	<div style="height:30px;"></div>
 
 HTML;
 echo $my_html;

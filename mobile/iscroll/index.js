@@ -1,5 +1,5 @@
 
-KISSY.add('mobile/iscroll/iscroll' , function(S) {
+KISSY.add('mobile/iscroll/', function(S) {
 	
 	/*!
 	 * iScroll v4.2.5 ~ Copyright (c) 2012 Matteo Spinelli, http://cubiq.org
@@ -1105,7 +1105,7 @@ KISSY.add('mobile/iscroll/iscroll' , function(S) {
 	else window.iScroll = iScroll;
 
 	})(window, document);
-	
+
 	return iScroll;
 
 });

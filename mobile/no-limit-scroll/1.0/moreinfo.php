@@ -1,5 +1,5 @@
 <?php
-sleep(1);
+ //sleep(3);
 echo <<< HTML
 		<div class="customBox">
 			<h3><a href="#">@坏先生图片文集</a></h3>

@@ -10,6 +10,9 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 	
 
 	Scroll.ATTRS = {
+		wrap: {
+			value: S.one('#km-scroll')	
+		},
 		contentWrap: {
 			value: S.one('#km-content')
 		},
@@ -29,10 +32,13 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 			value: null	   
 		},
 		unitQueue: {
-			value: [S.clone(S.one('.km-scroll-unit'))]	
+			value: [S.one('.km-scroll-unit').clone(true)]	
 		},
 		unitHeightQueue: {
 			value: [S.one('.km-scroll-unit').height()]				  
+		},
+		y: {
+			value: 0		
 		}
 
 	};
@@ -44,7 +50,10 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 			unit0.css({
 				height: unit0.height() + 'px'
 			});
-			
+
+			var wrapH = self.get('initWrapHeight').call(self);
+			self.get('wrap').height(wrapH);
+
 			self.scrollObj = new iScroll('km-scroll' , {
 				onScrollMove: function(a) {
 					var that = this;
@@ -69,42 +78,30 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 			self.get('timer') && clearTimeout(self.timer);
 			self.set('timer' , setTimeout(function() {
 				// iscroll 滚动至最底部超过10px即触发回调
-				if (that.y <= that.maxScrollY - 10) {
+				if (that.y <= that.maxScrollY - 20) {
 					self.get('trigMore').addClass('hidden');
 					self.get('loadStatus').removeClass('hidden');
 					return;
 				}
 
-				var unitHeightQueue = self.get('unitHeightQueue') , unitQueue = self.get('unitQueue') , 
-					y = Math.abs(that.y) , curIndex = 0 ,units = S.all('.km-scroll-unit');
-				for (var i = 0 , len = unitHeightQueue.length; i < len; i++) {
-					if (y > unitHeightQueue[i] && y < unitHeightQueue[i + 1]) {
-						// 当前视图所占全部视图的索引
-						//curIndex = i + 1;
-						if (unitQueue[i]) {
-							debugger;
-							units.item(i).html(unitQueue[i].html());
-						}
-						break;
-					}
-				}	
+				self.set('y' , that.y);
 
-			} , 50));	 
+			} , 100));	 
 		},
 		/**
 		 * 滚动结束后的回调
 		 * @param void
 		 */
 		endCallback: function(that) {
-			// 是否在滚动至最底部以后才停止滚动的
-			if (this.get('trigMore').hasClass('hidden')) {
-				this.get('getMoreInfo').call(this);	
-			}			 
-			
+			var self = this;
+			S.later(function() {
+				// 是否在滚动至最底部以后才停止滚动的
+				if (self.get('trigMore').hasClass('hidden')) {
+					self.get('getMoreInfo').call(self);	
+				}			 
+			} , 0);
 		},
-		scrolls: function() {
-
-		},
+		// 绑定事件
 		bindEvent: function() {
 			var self = this;
 			self.get('trigMore').on('click' , function() {
@@ -112,9 +109,73 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 				self.get('loadStatus').removeClass('hidden');
 				self.get('getMoreInfo').call(self);
 			});		
-			
+			self.on('afterYChange' , function(e) {
+				self.YChangeHandler(e);
+			});
+		},
+		
+		YChangeHandler: function (e) {
+			var prevVal = e.prevVal , newVal = e.newVal;
+			// 向上滚动
+			if (prevVal > newVal) {
+
+				this.upScroll(newVal);
+
+					
+			} else {
+				// 向下滚动	
+				this.downScroll(newVal);
+			}
 		},
 
+		upScroll: function (val) {
+			
+			var unitHeightQueue = this.get('unitHeightQueue') , 
+				unitQueue = this.get('unitQueue') , 
+				y = Math.abs(val) , 
+				curIndex = 0 ,
+				units = S.all('.km-scroll-unit'),
+				wrapperH = this.scrollObj.wrapperH ;
+
+			for (var i = 0 , len = unitHeightQueue.length; i < len; i++) {
+				if (y > unitHeightQueue[i] && y < unitHeightQueue[i + 1]) {
+					// 当前视图所占全部视图的索引
+					curIndex = i + 1;
+					if (unitQueue[curIndex - 1]) {
+						S.log(unitHeightQueue);
+						units.item(curIndex -1).empty();
+					}
+						
+					if (unitQueue[curIndex + 1]) {
+						units.item(curIndex + 1).html(unitQueue[curIndex + 1].html());	
+					}
+					break;
+				}
+			}		
+		},
+
+		downScroll: function (val) {
+			var unitHeightQueue = this.get('unitHeightQueue') , 
+				unitQueue = this.get('unitQueue') , 
+				y = Math.abs(val) , 
+				curIndex = 0 ,
+				units = S.all('.km-scroll-unit') ,
+				wrapperH = this.scrollObj.wrapperH;
+
+			for (var i = 0 , len = unitHeightQueue.length; i < len; i++) {
+				if (y > unitHeightQueue[i] - wrapperH && y < unitHeightQueue[i + 1] - wrapperH) {
+					// 当前视图所占全部视图的索引
+					curIndex = i + 1;
+					if (unitQueue[curIndex - 1]) {
+						units.item(curIndex - 1).html(unitQueue[curIndex - 1].html());
+					}
+					if (unitQueue[curIndex + 1]) {
+						units.item(curIndex + 1).empty()
+					}
+					break;
+				}
+			}		
+		},
 		/**
 		 * 向已有信息盒子增加内容 
 		 * @param str {string} 获取的dom字符串
@@ -131,7 +192,7 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 				self.scrollObj.refresh();
 				targetDom.css('height' , targetHeight + 'px');
 				
-				self.litePredom();
+				//self.litePredom();
 			} , 0);
 
 
@@ -153,7 +214,7 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 		 */ 
 		addUnitHeightQueue: function (h) {
 			var unitHeightQueue = this.get('unitHeightQueue');
-			unitHeightQueue.push(this.sum(unitHeightQueue) + h);
+			unitHeightQueue.push(unitHeightQueue[unitHeightQueue.length - 1] + h);
 			this.set('unitHeightQueue' , unitHeightQueue);
 		},
 
@@ -161,17 +222,17 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 		 * 精简当前显示单元之前的dom结构
 		 * @param void
 		 */ 
-		litePredom: function() {
+		/*litePredom: function() {
 			var unitQueue = this.get('unitQueue') , units = S.all('.km-scroll-unit');
 			units.item(units.length - 3).empty();
-		},
+		},*/
 
 		resetLoad: function() {
 			this.get('trigMore').removeClass('hidden');
 			this.get('loadStatus').addClass('hidden');
 		},
 
-		sum: function(arr) {
+		lastsum: function(arr) {
 			var result = 0;
 			for (var i = 0 , len = arr.length; i < len; i++) {
 				var val = arr[i];

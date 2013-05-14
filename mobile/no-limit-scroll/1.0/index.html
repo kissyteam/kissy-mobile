@@ -27,9 +27,10 @@
 		html , body { height: 100%; font-size: 14px; }
 		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
 
-		#km-scroll { width: 300px; padding: 0 10px; margin: 0 auto; height: -webkit-calc(100% - 40px); position: relative; }
-		#km-scroll-loading { height: 40px; line-height: 40px; text-align: center; padding: 10px 0; }
-		#km-scroll-status  img { vertical-align: middle; margin-left: 50px; -webkit-animation: loading 2s infinite linear; }
+		#km-scroll { width: 300px; padding: 0 10px; margin: 0 auto;  position: relative; }
+		#km-scroll-loading { height: 40px; margin-top: 10px; position: relative; border-top: 1px solid #eee; }
+		#km-scroll-loading span , #km-scroll-loading em { position: absolute; width: 60px; left: 50%; top: 13px; margin-left: -30px; font-style: normal;}
+		#km-scroll-status  img { position: absolute; right: 50px; top: 6px; -webkit-animation: loading 2s infinite linear; }
 		@-webkit-keyframes loading {
 			from {
 				-webkit-transform: rotate(0deg) translateZ(0);	
@@ -79,7 +80,7 @@
 			<!-- 加载更多{{ -->
 			<div id="km-scroll-loading">
 				<span>更多...</span>
-				<div id="km-scroll-status" class="hidden">加载中...<img src="loading.png" /></div>
+				<div id="km-scroll-status" class="hidden"><em>加载中...</em><img src="loading.png" /></div>
 			</div>
 			<!-- 加载更多}} -->
 
@@ -90,7 +91,12 @@
 
 	<script>
 		KISSY.use('mobile/no-limit-scroll/1.0/' , function(S , Scroll) {
-			var myscroll = new Scroll({
+
+			window. myscroll = new Scroll({
+				initWrapHeight: function() {
+					window.scrollTo(0 , 1);
+					return window.innerHeight - 40 + 'px';
+				},
 				getMoreInfo: function() {
 					// this 指向当前实例对象
 					var self = this;

@@ -90,9 +90,10 @@
 	<!-- 无限滚动列表包裹器}} -->
 
 	<script>
+
 		KISSY.use('mobile/no-limit-scroll/1.0/' , function(S , Scroll) {
 
-			window. myscroll = new Scroll({
+			var myscroll = new Scroll({
 				initWrapHeight: function() {
 					window.scrollTo(0 , 1);
 					return window.innerHeight - 40 + 'px';

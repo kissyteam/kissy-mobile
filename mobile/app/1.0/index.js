@@ -1147,13 +1147,13 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 							if(self.get('forceReload')){
 								self.slide.remove(self.slide.length - 2);
 							}
-							setTimeout(function(){
-								self.callReady();
-							},0);
 							self._fixScrollTopAfter(el,prel);
 							self.slide.animwrap.css({
 								'-webkit-transform':'none'
 							});
+							setTimeout(function(){
+								self.callReady();
+							},150);
 						});
 					},150);
 
@@ -1237,6 +1237,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					self.slide.addHeightTimmer();
 				}
 			};
+
+			// TODO 2013-05-14 清除transform，才能让positon:fixed起作用
+			// 考虑要不要加
+			/*
+			self.slide.animwrap.css({
+				'-webkit-transform':'none'
+			});
+			*/
 
 			// Info: 必须将子节点挂载到body下，position:fixed 才起作用,不知道原因
 			el.appendTo('body').css({

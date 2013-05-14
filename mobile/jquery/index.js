@@ -9595,3 +9595,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 }
 
 })( window );
+
+KISSY.add('mobile/jquery/',function(S){
+	return jQuery;
+});

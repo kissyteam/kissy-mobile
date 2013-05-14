@@ -213,7 +213,9 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			// bugfix,防止移动设备中的闪屏
 			if(self.transitions){
 				self.con.css({
-					display:'none'
+					// display:'none'
+					//TODO 2013-05-14 加上visibility后导航宽度100%无法自适应，浏览器bug?，js问题？
+					visibility:'hidden'
 				});
 			}
 
@@ -224,7 +226,8 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			// bugfix,防止移动设备中的闪屏
 			if(self.transitions){
 				self.con.css({
-					display:'block'
+					display:'block',
+					visibility:''
 				});
 			}
 

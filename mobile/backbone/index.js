@@ -1569,3 +1569,7 @@
   };
 
 }).call(this);
+
+KISSY.add('mobile/backbone/',function(){
+	return Backbone;
+});

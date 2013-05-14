@@ -48,7 +48,9 @@ KISSY.config({
             that.bridge = window[that.bridgeName];
 
             if(that.platform === 'ios') {
-                that.buildProxy();
+                S.ready(function() {
+                    that.buildProxy();
+                });
             }
         },
 

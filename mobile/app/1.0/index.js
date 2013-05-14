@@ -346,6 +346,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var scrollTop = self.MS.PAGESCROLL[vp];
 			if(scrollTop){
 				// window.scrollTo(0,scrollTop);
+				
 				if(S.DOM.scrollTop() === 0){
 					setTimeout(function(){
 						S.Anim(window,{
@@ -1116,6 +1117,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 								self.callReady();
 							},0);
 							that.removeLast();
+							self.slide.animwrap.css({
+								'-webkit-transform':'none'
+							});
 						});
 					},150);
 					break;
@@ -1147,6 +1151,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 								self.callReady();
 							},0);
 							self._fixScrollTopAfter(el,prel);
+							self.slide.animwrap.css({
+								'-webkit-transform':'none'
+							});
 						});
 					},150);
 
@@ -1166,6 +1173,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					},0);
 					self.slide.removeLast();
 					// self.slide.next(callback);
+					self.slide.animwrap.css({
+						'-webkit-transform':'none'
+					});
 					break;
 				}
 

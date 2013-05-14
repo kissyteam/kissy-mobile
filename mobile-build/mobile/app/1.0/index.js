@@ -346,6 +346,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var scrollTop = self.MS.PAGESCROLL[vp];
 			if(scrollTop){
 				// window.scrollTo(0,scrollTop);
+				
 				if(S.DOM.scrollTop() === 0){
 					setTimeout(function(){
 						S.Anim(window,{
@@ -1116,6 +1117,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 								self.callReady();
 							},0);
 							that.removeLast();
+							self.slide.animwrap.css({
+								'-webkit-transform':'none'
+							});
 						});
 					},150);
 					break;
@@ -1147,6 +1151,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 								self.callReady();
 							},0);
 							self._fixScrollTopAfter(el,prel);
+							self.slide.animwrap.css({
+								'-webkit-transform':'none'
+							});
 						});
 					},150);
 
@@ -1166,6 +1173,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					},0);
 					self.slide.removeLast();
 					// self.slide.next(callback);
+					self.slide.animwrap.css({
+						'-webkit-transform':'none'
+					});
 					break;
 				}
 
@@ -1578,7 +1588,9 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			// bugfix,防止移动设备中的闪屏
 			if(self.transitions){
 				self.con.css({
-					display:'none'
+					// display:'none'
+					//TODO 2013-05-14 加上visibility后导航宽度100%无法自适应，浏览器bug?，js问题？
+					visibility:'hidden'
 				});
 			}
 
@@ -1589,7 +1601,8 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			// bugfix,防止移动设备中的闪屏
 			if(self.transitions){
 				self.con.css({
-					display:'block'
+					display:'block',
+					visibility:''
 				});
 			}
 

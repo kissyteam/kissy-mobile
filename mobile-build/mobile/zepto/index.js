@@ -1563,3 +1563,7 @@ window.Zepto = Zepto
 
   testEl = null
 })(Zepto)
+
+KISSY.add('mobile/zepto/',function(S){
+	return Zepto;
+});

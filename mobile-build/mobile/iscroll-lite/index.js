@@ -592,3 +592,7 @@ if (typeof exports !== 'undefined') exports.iScroll = iScroll;
 else window.iScroll = iScroll;
 
 })();
+
+KISSY.add('mobile/iscroll-lite/',function(S){
+	return iScroll;
+});

@@ -278,3 +278,7 @@
   };
   
 }));
+
+KISSY.add('mobile/zepto-gfx/',function(S){
+	return Zepto;
+});

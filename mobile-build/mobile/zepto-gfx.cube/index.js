@@ -150,3 +150,6 @@
   }
   
 }));
+KISSY.add('mobile/zepto-gfx.cube/',function(S){
+	return Zepto;
+});

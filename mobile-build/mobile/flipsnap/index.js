@@ -574,3 +574,7 @@ function some(ary, callback) {
 window.Flipsnap = Flipsnap;
 
 })(window, window.document);
+
+KISSY.add('mobile/flipsnap/',function(S){
+	return window.Flipsnap;
+});

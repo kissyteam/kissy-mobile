@@ -73,3 +73,6 @@
   };
 
 }));
+KISSY.add('mobile/zepto-gfx.flip/',function(S){
+	return Zepto;
+});

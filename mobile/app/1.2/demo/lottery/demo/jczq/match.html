@@ -1,0 +1,93 @@
+<section id="sport-match">
+	<!--页头{{-->
+	<header class="header">
+		<a class="return" href="index/a.html" dir="back">返回</a>
+		<a class="type" href="jczq/filter.html">赛事筛选</a>
+		<h2>竞彩足球</h2>
+	</header>
+	<!--页头}}-->
+
+	<section id="header">	
+		<!-- 页头 -->
+		<ul>
+			<li class="w1">赛事/截止</li>
+			<li class="w2">主胜(让球)</li>
+			<li class="w3">平</li>
+			<li class="w4">主负</li>
+		</ul>
+	</section>
+
+	<section id="content">
+		<!-- 页面可滚动区域 -->
+		<div>
+			<div id="match-box"></div>
+			<div id="loading"><img width="30" height:12 src="http://a.tbcdn.cn/mw/base/styles/component/more/images/loading.gif" /></div>
+			<div class="hidden" id="more">点击查看更多</div>
+		</div>
+	</section>
+
+	<section id="footer" class="hidden">
+		<div class="pannel">
+			<span id="delall">清空</span>
+			<a  id="submit" class="submit" href="jczq/bet.html">
+				<span class="l">已选0场比赛</span>
+				<span class="r">确定</span>
+			</a>
+		</div>
+	</section>
+
+</section>
+
+
+<!-- 比赛单元 -->
+<script type="text/template" id="ItemTemp">
+	<dt class="w1">
+		<p>${gameName}</p>
+		<p>${matchWeek}<s></s>${matchTime}</p>
+	</dt>
+	<dd class="win w2 {@if win}on{@/if}" rel="win">
+		<div class="box">
+			<p>
+				${hostTeam}{@if adjust > 0}<span class="neg">(${adjust})</span>{@else if adjust < 0}<span class="pos">(${adjust})</span>{@/if}
+			</p>
+			<p>SP<s></s><span class="sp">${winSp}</span></p>
+		</div>
+	</dd>
+	<dd class="even w3 {@if even}on{@/if}" rel="even">
+		<div class="box">
+			<p>VS</p>
+			<p>SP<s></s><span class="sp">${evenSp}</span></p>
+		</div>
+	</dd>
+	<dd class="negative w4 {@if negative}on{@/if}" rel="negative">
+		<div class="box">
+			<p>${visTeam}</p>
+			<p>SP<s></s><span class="sp">${negativeSp}</span></p>
+		</div>
+	</dd>
+</script>
+
+<script>
+	KISSY.use('mobile/app/1.2/' , function(S , MS) {
+		"use strict";
+
+        MS.startup(function(data) {
+			S.use('mobile/app/1.2/demo/lottery/js/jczq/jczqmatch' , function(S , match) {
+				match.initialize();
+			});
+		});
+
+		MS.teardown(function() {
+		    // 注册 teardown
+	    });
+
+		MS.includeOnce(function() {
+			// 注册 includeOnce
+		});
+
+		MS.destory(function() {
+			// 注册destory
+		});
+	});
+</script>
+

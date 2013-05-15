@@ -1,6 +1,6 @@
 /*jshint browser:true,devel:true */
 
-KISSY.add('mobile/app/1.0/kissy2yui',function(S){
+KISSY.add('mobile/app/1.2/kissy2yui',function(S){
 
 	// "use strict";
 

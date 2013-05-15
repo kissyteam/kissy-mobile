@@ -1,0 +1,53 @@
+<section id="rewardList">
+	<!--页头{{-->
+	<header class="header">
+		<span class="return" href="javascript:history.back()">返回</span>
+		<a class="type short hidden" href="nbet/index.html" dir="back" data-param="lotype=2">购买</a>
+		<h2>开奖公告</h2>
+	</header>
+	<!--页头}}-->
+	<div class="loading"><img width="30" height:12 src="http://a.tbcdn.cn/mw/base/styles/component/more/images/loading.gif" /></div>
+	<div id="rewardListMain" class="appMenu">
+		<div class="box">
+			<ul style="padding-bottom:0;"></ul>
+			<div class="getMore hidden">点击查看更多...</div>
+			<div class="load hidden"><img width="30" height:12 src="http://a.tbcdn.cn/mw/base/styles/component/more/images/loading.gif" /></div>
+		</div>
+	</div>
+</section>
+<script type="javascript/template" id="rewardDataListTemp">
+    <p class="other"><em>第<%= issue %>期</em><span><%= C.Template.getCommonTime(award_time.time) %></span></p>  
+    <p class="lucky">
+        <%
+            //双色球、七乐彩
+            if(lotteryType == 1 || lotteryType == 7){
+                var lucky = lucky_number.split(':');
+                print(lucky[0].replace(/(\d{2})/gi,'<em>$1</em>') + lucky[1].replace(/(\d{2})/gi,'<span>$1</span>'));
+            }else if(lotteryType == 8){   
+                //大乐透
+                var lucky = lucky_number.split('-');
+                print(lucky[0].replace(/(\d{2})/gi,'<em>$1</em>') + lucky[1].replace(/(\d{2})/gi,'<span>$1</span>'));
+            }else if(lotteryType == 22){   
+                //十五选五
+                print(lucky_number.replace(/(\d{2})/gi,'<em>$1</em>'));
+            }else if(lotteryType == 15){
+    			//十一运夺金
+    			print(lucky_number.replace(/(\d{2})(,?)/gi,'<em>$1</em>'));
+    		}else{
+                //福彩3d、排列三、排列五、七星彩、新时时彩
+                print(lucky_number.replace(/,/gi,'').replace(/(\d{1})/gi,'<em>$1</em>'));
+            }
+        %>
+    </p>
+</script>
+
+<script>
+
+	KISSY.use('mobile/app/1.2/' , function(S , MS) {
+		var lotype = MS.queryKey('lotype' , 'hash');	
+		S.use('mobile/app/1.2/demo/lottery/js/reward/list' , function(S , list) {
+			list.initialize(lotype)	;
+		});
+	});
+
+</script>

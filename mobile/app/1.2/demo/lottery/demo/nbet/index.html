@@ -1,0 +1,306 @@
+<section id="betBasket" class="betBasket">
+	<!--页头{{-->
+	<header class="header">
+		<a class="return" href="index/a.html" dir="back">返回</a>
+		<a class="type" href="#">手动选号</a>
+		<h2></h2>
+	</header>
+	<!--页头}}-->
+	
+	<div id="issueInfo" class="hidden">
+		<span id="issueTime">获取彩期中...</span>
+		<span id="remainTime" class="hidden">投注截止：<em class="time">-</em>分<em class="time">-</em>秒</span>
+		<span id="nextIssue" class="hidden">距离下期开售：<em class="time">-</em>分<em class="time">-</em>秒</span>
+	</div>
+	
+	<section id="betScroll">
+		<section id="pullSelect">
+			<div class="pbox">
+				<div class="tip"><span>下拉可以机选...</span><s></s></div>
+				<ul id="selectList">
+					  <li class="except"></li>             	
+	            </ul>
+	    
+	            <div id="guide" class="hidden">
+	                <s></s>
+	            </div>
+	            
+			</div>
+		</section>
+
+		
+	</section>
+<!--页面全尺寸的占位符-->
+<div class="J-placeholder"></div>
+	
+	<div id="bottom" class="hidden">
+		<div class="relinfo">
+			<ul>
+				<li><span class="l">投</span><input type="tel" id="bt" value="1" /><span class="r">倍</span></li>
+				<li><span class="l">买</span><input type="tel" id="zh" value="1" /><span class="r">期</span></li>
+			</ul>
+		</div>
+		
+		<div class="extraInfo">
+			<ul class="pannel">
+				<li><em id="dlt_append_vote" class="siuCheck"></em><span>追加投注选项</span></li>
+				<li class="hidden"><em id="agree" class="siuCheck selected"></em><span>同意<a href="treaty/index" animDir="forward" dataRole="inline">《网上购彩协议》</a></span></li>
+			</ul>
+		</div>
+		
+		<div class="actarea">
+			<div class="pannel">
+				<span id="delall">清空</span>
+				<a href="#" id="submit" class="submit disabled">
+					<span class="l">共<em id="fee">0</em>元</span>
+					<span class="r">立即投注</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	<a id="paybtn" class="hidden" href="#" target="_blank"></a>
+</section>
+<!--双色球(大乐透)投注列表渲染模板{{-->
+<script type="javascript/template" id="ssqBetViewTemp">
+    <%
+        _.each(value.l1,function(n){
+            print('<em>' + n + '</em>');
+        });
+        _.each(value.l2,function(n){
+            print('<span>' + n + '</span>');
+        });
+    %>
+    <a href="#" class="del">删除</a>
+</script>
+<!--双色球(大乐透)投注列表渲染模板}}-->
+
+<!--七乐彩投注列表渲染模板{{-->
+<script type="javascript/template" id="qlcBetViewTemp">
+    <%
+        _.each(value.l1,function(n){
+            print('<em>' + n + '</em>');
+        });
+    %>
+    <a href="#" class="del">删除</a>
+</script>
+<!--七乐彩投注列表渲染模板}}-->
+
+<!--福彩3d投注列表渲染模板{{-->
+<script type="javascript/template" id="fc3dBetViewTemp">
+    <%
+        var key = key, des = '';
+        switch(key){
+            case 'fc3d_zhx':
+                des = '[直选]';
+                break;
+            case 'fc3d_z3':
+                des = '[组三]';
+                break;
+            case 'fc3d_z6':
+                des = '[组六]';
+                break;
+            default:
+                break;
+        }
+        if(value.l3){
+            print('<em>' + value.l1.toString() + '</em><em>' + value.l2.toString() + '</em><em>' + value.l3.toString() + '</em><s>' + des + '<s>');
+        }else{
+            _.each(value.l1,function(b){
+                print('<em>' + b + '</em>');
+            });
+            print('<s>' + des + '</s>');
+        }
+    %>
+    <a href="#" class="del">删除</a>
+</script>
+<!--福彩3d投注列表渲染模板}}-->
+
+<script type="javascript/template" id="syyBetViewTemp">
+    <%
+        var key = key, des = '';
+        switch(key){
+            case 'syy_rx2':
+                des = '[任选二]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+            case 'syy_rx3':
+                des = '[任选三]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+			case 'syy_rx4':
+                des = '[任选四]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+			case 'syy_rx5':
+                des = '[任选五]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+			case 'syy_rx6':
+                des = '[任选六]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+			case 'syy_rx7':
+                des = '[任选七]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+			case 'syy_rx8':
+                des = '[任选八]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<s>' + des + '</s>');
+                break;
+			case 'syy_q1':
+				des = '[前一]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<em>|</em><em>-</em><em>|</em><em>-</em><em>|</em><em>-</em><em>|</em><em>-</em><s>' + des + '<s>');
+				break;
+			case 'syy_q2zhx':
+				des = '[直选前二]';
+				_.each(value.l1,function(v){
+					print('<em>' + v + '</em>');
+				});
+				print('<em>|</em>');
+				_.each(value.l2,function(v){
+					print('<em>' + v + '</em>');
+				});
+				print('<em>|</em><em>-</em><em>|</em><em>-</em><em>|</em><em>-</em><s>' + des + '<s>');
+				
+				break;
+			case 'syy_q2zx':
+				des = '[组选前二]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<em>|</em><em>-</em><em>|</em><em>-</em><em>|</em><em>-</em><s>' + des + '<s>');
+				break;
+			case 'syy_q3zhx':
+				des = '[直选前三]';
+				_.each(value.l1,function(v){
+					print('<em>' + v + '</em>');
+				});
+				print('<em>|</em>');
+				_.each(value.l2,function(v){
+					print('<em>' + v + '</em>');
+				});
+				print('<em>|</em>');
+				_.each(value.l3,function(v){
+					print('<em>' + v + '</em>');
+				});
+
+				print('<em>|</em><em>-</em><em>|</em><em>-</em><s>' + des + '<s>');
+				break;
+			case 'syy_q3zx':
+				des = '[组选前三]';
+				_.each(value.l1,function(b){
+					print('<em>' + b + '</em>');
+				});
+				print('<em>|</em><em>-</em><em>|</em><em>-</em><s>' + des + '<s>');
+				break;
+            default:
+                break;
+        }
+        
+    %>
+    <a href="#" class="del">删除</a>
+</script>
+
+<script>
+
+	KISSY.use('mobile/app/1.2/' , function(S , MS) {
+		"use strict";
+
+        MS.startup(function(data) {
+			var app = this , 
+				lotype = MS.queryKey('lotype' , 'hash') , 
+				subtype = MS.queryKey('subtype' , 'hash');
+
+			app.resetPageHeight = function(){
+				S.one('.MS-con').css({
+					height:S.DOM.viewportHeight() + 'px'
+				});
+				app.slide.animcon.css({
+					overflow:''	
+				});
+				app.get('page').one('.J-placeholder').css({
+					height:(S.DOM.viewportHeight() - 51) + 'px'
+				});
+				app.slide.getCurrentPannel().css({
+					height:S.DOM.viewportHeight() + 'px'
+				});
+			}
+
+			S.Event.on(window,'resize',app.resetPageHeight);
+
+			app.resetPageHeight();
+
+			switch(lotype){
+				case 'ssq':
+					S.use('mobile/app/1.2/demo/lottery/js/ssq/ssqbet' , function(S , Bet) {
+						Bet.initialize();
+					});
+					break;
+				case 'dlt':
+					S.use('mobile/app/1.2/demo/lottery/js/dlt/dltbet' , function(S , Bet) {
+						Bet.initialize();
+					});
+					break;
+				case 'qlc':
+					S.use('mobile/app/1.2/demo/lottery/js/qlc/qlcbet' , function(S , bet){
+						bet.initialize();
+					});
+					break;
+				case 'swxw':
+					S.use('mobile/app/1.2/demo/lottery/js/swxw/swxwbet' , function(S , bet){
+						bet.initialize();
+					});
+					break;
+				case 'fc3dzhx':
+					S.use('mobile/app/1.2/demo/lottery/js/fc3d/fc3dzhxbet' , function(S , bet){
+						bet.initialize();
+					});
+					break;
+				case 'fc3dz3':
+					S.use('mobile/app/1.2/demo/lottery/js/fc3d/fc3dz3bet' , function(S , bet){
+						bet.initialize();
+					});
+					break;
+				case 'fc3dz6':
+					S.use('mobile/app/1.2/demo/lottery/js/fc3d/fc3dz6bet' , function(S , bet){
+						bet.initialize(subtype);
+					});
+					break;
+				case 'syy':
+					
+					S.use('mobile/app/1.2/demo/lottery/js/syy/bet' , function(S , Bet) {
+						Bet.initialize(subtype);
+					});
+					break;
+				default:
+					alert('default');
+					break;
+			}
+		});
+	});
+</script>

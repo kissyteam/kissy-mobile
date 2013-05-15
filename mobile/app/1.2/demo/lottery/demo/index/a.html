@@ -1,0 +1,187 @@
+<section id="appnav">
+	<div>	
+		<header class="header">
+			<a class="return" href="http://m.taobao.com">首页</a>
+			<figure><img src="http://img03.taobaocdn.com/tps/i3/T10UE.XiVbXXaZQZ2o-227-43.png" /></figure>
+		</header>
+		<section id="slideBox"></section>
+		<menu class="appMenu" id="appMenu">
+			<ul>
+				<li class="lottype ssq" rel="ssq">
+					<a href="nbet/index.html"  data-param="lotype=ssq">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">双色球</em><!-- 第<em class="issueCount"> -.-.- </em>期--></p>
+							<p>每注2元，最高奖1000万</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				
+				<li class="lottype dlt" rel="dlt">
+					<a href="nbet/index.html" data-param="lotype=dlt">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">大乐透</em><!-- 第<em class="issueCount"> -.-.- </em>期--></p>
+							<p>3元赢取最高奖1500万</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				<li class="lottype jczq" rel="jczq">
+					<a href="jczq/match.html">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">竞彩足球</em></p>
+							<p>返奖率最高69%</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				<li class="lottype syy" rel="syy">
+					<a href="syy/rx5.html">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">十一运夺金</em></p>
+							<p>返奖率59%，最高奖金1170元</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				
+				<li class="lottype qlc" rel="qlc">
+					<a href="nbet/index.html" data-param="lotype=qlc">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">七乐彩</em><!-- 第<em class="issueCount"> -.-.- </em>期--></p>
+							<p>每注2元，最高奖1000万</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				
+				<li class="lottype fc3d" rel="fc3d">
+					<a href="nbet/index.html" data-param="lotype=fc3dzhx">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">福彩3D</em><!-- 第<em class="issueCount"> -.-.- </em>期--></p>
+							<p>2元赢取1000元，中奖率高</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				<li class="lottype swxw" rel="swxw">
+					<a href="nbet/index.html" data-param="lotype=swxw">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">15选5</em><!-- 第<em class="issueCount">-.-.-</em>期--></p>
+							<p>每天1期，最高奖500万</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				<li class="wap">
+					<a href="http://caipiao.m.taobao.com" target="_blank">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">更多彩种</em></p>
+							<p>WAP版彩票投注</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				<li class="rewardNotice">
+					<a href="reward/all.html">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">开奖公告</em></p>
+							<p>查看各彩种开奖数据</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+				
+				<li class="native">
+					<a href="#">
+						<span class="icon"></span>
+						<div class="txt">
+							<p><em class="lotname">彩票客户端</em></p>
+							<p>官方iPhone版+Android版</p>
+						</div>
+						<s></s>
+					</a>
+				</li>
+			</ul>
+		</menu>
+		<!--菜单}}-->
+		
+		<!--页脚{{-->
+		<footer class="footer">
+			<section class="footer-t">
+				<p class="user-info"><span class="l"><a href="#">登录</a></span><span class="r"><a href="#">注册</a></span></p>
+				<a id="returnTop" href="javascript:window.scrollTo(0,0)">top</a>
+			</section>
+			
+			<nav class="footer-l"><span><a href="http://caipiao.m.taobao.com/lottery/wap/index.htm">标准版</a></span><a href="http://caipiao.taobao.com">电脑版</a></nav>
+			<p class="copyright"><span>2012 浙B2-20080224</span><a class="cr-sv" href="http://m.taobao.com/channel/act/customerservice.html" id="J_service">客服</a></p>
+		</footer>
+		<!--页脚}}-->
+	</div>
+</section>
+<script>
+	KISSY.use('mobile/app/1.2/' , function(S , MS) {
+		"use strict";
+		
+		function yunosMode() {
+			S.one('.footer').addClass('hidden');	
+			S.one('.return').addClass('hidden');	
+			S.use('mobile/appnav/nav' , function(S , nav){
+				nav.initialize();
+			});
+		}
+
+		function webMode(str) {
+			S.use('mobile/app/1.2/demo/lottery/js/appnav/nav , mobile/app/1.2/demo/lottery/js/widget/taoplus/taoplus2' , function(S , nav , taojia) {
+				nav.initialize();	
+				taojia.initialize();
+			});
+			S.IO({
+				dataType: 'jsonp',
+				url: 'http://www.taobao.com/go/rgn/caipiao/mobile/index-banner.php',
+				jsonp: 'jsoncallback',
+				success: function(data) {
+					S.one('#slideBox').html(data.str);
+					S.use('mobile/app/1.2/demo/lottery/js/widget/slide/slide' , function(S , slider) {
+						$('.in-slider').slider({
+							wrap:".in-slider-cont",
+							wrapUl:"#inslist",
+							wrapStatus:'.in-slider-status',
+							inter: 5000,
+							isLoop:true,
+							isPlay:true
+						});			
+					});
+				}
+			});
+		};
+
+        MS.startup(function(data) {
+			this.config({
+				viewHeight: 'auto'
+			});
+			// 用于区分宿主模式：web\云os
+			var mode = MS.queryKey('mode');
+			switch (mode) {
+				case 'yunos':
+					yunosMode();		
+					break;	
+				case 'web':
+				default:
+					webMode();	
+					break;
+			}
+		});
+
+	});
+	
+</script>

@@ -1,98 +1,116 @@
 ![](http://img04.taobaocdn.com/tps/i4/T1IuoMXgNaXXaZVCTS-300-100.png)
 
-> KISSY Mobile App Develop Toolkit（简称*KDK*）是[MSlide](https://github.com/zhenn/mslide)的增强版，是整个 KISSY<sup>Mobile</sup> 项目的根基。它给出了一套网页应用化的基本思路和开发实践，配备有多种典型的API，基于此可以快速完成_“应用化”_的web页面的架设，如果你希望让你的产品有OPOA一样的体验，你真的需要尝试一下。
-> 初次使用该控件，请完整阅读本篇文档。下文将本控件简称为KDK。
+> Kissy Mobile App Toolkit 是一款实现web页面应用化的框架，可以快速完成"应用化"的web页面搭建
+> 除了专场动画的AppFramework之外，1.2版还提供一套SDK规范，用以将你的页面运行于Native环境
 
-- Version 1.0
+扩展阅读：<https://speakerdeck.com/lijing00333/kissy-mobile>
+
+- Version 1.2
 - Author 拔赤
-- Update 2012-12-24
-- [Demo](mobile/app/1.0/demo/simple/mb.html#viewpath=mb/a.html)
+- Update 2013-05-15
+- [Demo with SDK](mobile/app/1.2/demo/sdk/demo.html)
+- [Demo](mobile/app/1.2/demo/simple/mb.html)
+- [1.0版文档](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)
 
 <hr class="smooth large" />
 
-## 基本需求
+## 使用场景
 
-如何能基于Web Page做到类似原生移动设备App一样的体验呢？HTML5？CSS3？当然，是的，但远不够，除了新标签和更花哨的样式增强之外，还需要一套机制来管理页面切换行为，包括切换特效、多页面的管理、多页面的业务逻辑依赖关系等。这套机制实际上在一个页面中完成，整体交互模式和原生应用那种“划入”和“划出”完全一致。换句话说，我需要自行实现一套页面中的*浏览器*，管理上面提到的多页切换等功能。
+三种典型的场景：
 
-对于交互模式来说，需求是：
+- 单页面，运行于浏览器环境，可以是iphone和android里的浏览器，类似传统的wap页
+- 单页面，运行于App Native的 WebView内，Native带动转场动画
+- 多页面，运行于iPhone中的safari里，由浏览器本身驱动转场动画，运行于ios环境内。**多页面的实现原理参照[文档1.0版](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)**
 
-- 进入操作（新页面从右侧划入）
-- 退出操作（旧页面从左侧划入）
-- 通过点击历史记录的前进后退，完成进入和退出的操作
-- 跨页面退出（比如从很深的层级一次性退出到首页）
-- 新页面对旧页面的修改（即新旧页面业务逻辑有耦合）
-- 进入退出操作过程可以被录制（即可自动划入和划出，无须人工干预）
+三个概念：框架（AppFramework）/页面（WebView）/SDK（Host）
 
-上述需求是从产品交互体验的角度来分析的，从开发者角度（一线前端工程师），需要了解KDK的这些需求特征：
+- 框架（AppFramework）：单框架下辖多页面，用来管理多页面的前进和后退
+- 页面（WebView）：一个页面单元，承载页面的内容
+- SDK（Host）：SDK提供一些标准方法，供JS调用，根据不同的场景和硬件环境，将这次调用转发至具体的实现
 
-- 快速将网页刷新的Wap站，切换为多页滑动的Wap应用，这种迁移应当容易理解并相对容易的做到
-- KDK应当对URL规则做到侵入最小化（KDK目前无法做到对URL的无侵入）
-- 工程师无需关注历史记录如何管理，只专心实现业务逻辑即可
-- 多页面之间有逻辑耦合的情况，除了可以自行解决JS数据的多页共享，推荐使用KDK提供的API
-- 页面的创建和销毁有多种状态，页面具有初始化和销毁两种互斥行为
-- KDK提供API来解决页面多次显示和多次创建的问题
+单个页面是一个独立的html片段，包含普通页面应当包含的所有特征，页面中的富应用交由页面开发者负责，包括模板、样式、初始化等。
 
-简言之，KDK考虑到了两种典型的应用场景，一是页面之间无耦合（只是纯粹的跳转），二是页面之间有耦合（下一帧的显示依赖于上一帧的操作结果）。KDK提供两种典型的交互：“进入”和“退出”。
-
-<hr class="smooth large" />
-
-## 实现原理
-
-### 基本的交互模式
-
-划入和划出无非是切换上一帧和下一帧。只是切换操作是由KDK更新URL（的hash）来触发，由KDK对hashchange的监听来完成切换操作。因此，KDK默认监听了页面中的所有`a`标签，`a`标签的`href`属性是要进入到的页面，比如：
-
-	<a href="b.html">进入到B页面</a>
-
-我们定义，所有`a`标签上的点击都是“进入”操作，即页面从右侧划入视口。也就是说，自然状态下，用户在页面（正文）中的操作都应当是“进入”，只有`history.back()`或点击页面导航的“后退”（大部分场景下也是调用`history.back()`）才会发生退出操作，即上一个页面从左侧划入。
+View的行为：
 
 ![](http://img02.taobaocdn.com/tps/i2/T1P7wFXXBeXXba_uLI-504-409.png)
 
-每个页面包含自己的HTML代码和JS代码，每次进入都会重新创建，因此JS代码可能会被多次执行，下文还会提到，KDK提供了四个基础方法来解决多次执行的问题。
+对于多页面的场景，页面之间的切换是通过监听hashchange来实现的，如果冠以sdk，则监听通过sdk完成，Mobile App Toolkit不监听。最终触发跳转行为都是通过函数调用来完成。
+
+比如：跳转链接写成：
+
+	<a href="b.html">进入到B页面</a>
+
+进入B页面时，会自动带上`?client_type=xx&client_nav=xx`。
+
+自然会退始终是`history.back()`。在SDK中实现为`Host.back();`。
 
 <hr class="smooth" />
 
-### 多页切换过程
+### SDK 和 AppFramework 的关系
 
-KDK只关注页面与页面之间的调用关系，而不会关注层次关系，比如，从一个很深的目录层级可以跳级后退到根。因此，KDK管理的数据结构是一个链表，每个节点是一个页面，如图，从根（第一个页面）开始的访问过程可能是如下可能，每个叶子节点都是一种滑动过程的可能性，视口在节点树上移动，方向有左右两种，视口默认停留的节点始终保持链表的最后一个节点，之前的节点可以选择保留（层级少时可以避免后退时重新载入页面，提高速度），也可以选择不保留（防止层级过多带来DOM节点太多，导致动画性能下降）。
+AppFramework（框架部分）可以独立运行在多页面场景中，SDK 是为了实现另外两种场景的兼容，因此SDK中包含了对AppFramework的初始化。统一对外提供两个全局对象：
 
-![](http://img03.taobaocdn.com/tps/i3/T1Z5IFXj0eXXXohXnQ-373-243.png)
+- App：AppFramework（MS）的实例
+- Host：SDK 中提供的工具集
 
-现在描述一下某一时刻真实的页面状态和滑动路径的关系：
+如果引入了SDK，开发者默认知晓这两个已经存在的全局对象
 
-如果视口滑动到上图中的叶子节点，我们定义视口向左划为减法，向右划为加法，则路径分别为：
+![](http://img01.taobaocdn.com/tps/i1/T1SqGGXq8eXXbO8wws-533-386.png)
 
-- e: a+b+c-d-e
-- f: a+b+c-d+f
-- h: a+b+c+g+h
+### 框架初始化
 
-由于我们规定视口只能停留于最右侧的页面，因此，减法会消除掉上一个节点，即当前节点替换上一个节点。加法则为简单的累加，比如，视口移动到节点C时的页面状态：
+如果没有引入SDK，则需要自己初始化框架，初始化方如下，页面样式需要自行引入，不管有没有SDK，页面正文都需要添加HTML代码：
 
-![](http://img04.taobaocdn.com/tps/i4/T10.sFXfXeXXaQ1djY-376-318.png)
+	<section id="MS"><!--控件所在的容器-->
+		<div class="MS-con"><!--页面内容所在的包裹器-->
+			<div class="MS-pal"><!--第一个页面默认所在的面板容器-->
+				<!-- 这里的内容可以自定义，通常为loading -->
+				loading...
+				<!--/-->
+			</div>
+		</div>
+	</section>
 
-这时视口向左移动（从视口的角度来看，页面是从左侧进入，类似“划出效果”），发生一次减法，节点d替换了节点c，页面状态为：
+全局 CSS 样式示例：
 
-![](http://img01.taobaocdn.com/tps/i1/T10uEGXg8cXXX92XTQ-373-319.png)
+	#MS {
+		/* 占视口100%宽度 */
+		position:relative;
+		width:100%;
+	}
+	#MS-nav {
+		display:none; /*默认隐藏Slide控件中的触碰点*/
+	}
+	.MS-con {
+		position:relative;
+	}
+	.MS-pal {
+		float:left;
+		position:relative;
+		/* 建议加上这一句，优化移动设备中的动画性能 */
+		-webkit-backface-visibility:hidden;
+	}
 
-这时视口向右移动（从视口的角度看，页面是从右测进入，即“划入效果”），发生一次加法，累加上了节点f，页面状态为：
+JavaScript:
 
-![](http://img02.taobaocdn.com/tps/i2/T1okZGXkXbXXcO4b6n-355-322.png)
+	KISSY.use('mobile/app/1.2/',function(S,AppFramework){
 
-到这里，是整个滑动过程的复现，要注意，这里每一次滑动操作（不管向左还是向右），历史记录都会增加，而历史记录保存了整个过程，因此`history.back()`将会是每次滑动的逆操作，比如从节点f执行`history.back()`时，视口应当从f向左滑动到上一个节点，即d节点，是从d进入到f节点的逆操作，即“划出”。这时会销毁被划出的节点f，页面状态为：
+		"use strict";
 
-![](http://img04.taobaocdn.com/tps/i4/T1fbAGXlBcXXcBKEvf-349-311.png)
+		var app = AppFramework({
+			viewpath:'a.html', // 默认加载的页面地址
+			forcereload:true, //划过的页面均销毁
+			fullrangewidth:false,//不要程序指定浏览器视口宽度
+			pagecache:true, //加载过的页面是否要缓存
+			webkitoptimize:true //是否在webkit中开启硬件加速
+			//...
+		});
 
-这时再次`history.back()`时，视口将会从d“进入”到节点c，也是从c“退出”到d的逆操作，这时KDK会监听到这是一次`history.back()`，会将d也同时删除，保留c，这一步操作是和之前的描述不一致的，即历史记录后退时发生的前进操作，被划出的节点也会销毁，尽管这看起来是一次“划入”动作
+	});
 
-![](http://img01.taobaocdn.com/tps/i1/T1ZhoHXddaXXaSxEDf-349-321.png)
+### 节点（WebView）的构造和析构
 
-这时，通过历史记录的后退，视口停留在c节点时，页面状态和从根节点进入到c节点时的状态一样。这就保证了数据结构对历史记录的真实复现，保证了操作的完整性。
-
-<hr class="smooth" />
-
-### 节点的构造和析构
-
-在整个过程中，页面切换行为会触发四个事件，由于每个页面可能会被多次构造，则其包含的JS代码也会被执行多次，为了控制JS执行的次数，这里提炼了四个事件，这四个事件以方法的形式给出。
+在页面加载和销毁的全过程中，供包含五个事件，由于每个页面可能会被多次构造，开发者需要按照下文规范使用这五个方法。
 
 <table class="table table-bordered">
 <tr style="font-weight:bold;">
@@ -145,7 +163,7 @@ KDK只关注页面与页面之间的调用关系，而不会关注层次关系�
 		includeOnce
 	</td>
 	<td>
-		只有在页面首次构建时被触发的初始化，即使中途被销毁了，再次load该页面也不会再次执行
+		只有在页面首次构建时被触发的初始化，即使中途被销毁了，再次load该页面也不会再次执行，一个页面只能有一个
 	</td>
 </tr>
 <tr>
@@ -156,272 +174,122 @@ KDK只关注页面与页面之间的调用关系，而不会关注层次关系�
 		destroy
 	</td>
 	<td>
-		只有在页面被销毁时被触发，页面当移出视口而没有被销毁时，不会触发他
+		只有在页面被销毁时被触发，页面当移出视口而没有被销毁时，不会触发他，一个页面只能有一个
 	</td>
 </tr>
 </table>
 
-当页面划入视口时，页面中的代码也会被渲染，JS代码会被解析，但注册事件只在首次有效，比如，我在某个子页面中注册了startup和teardown函数，这里的注册操作只被执行了一次，页面离开视口再次划入视口时，不会被二次绑定。子页面JS代码：
+样例：
 
-	KISSY.use('mobile/app/1.0/',function(S,MS){
+	<script src="kissy.js" /><!--kissy 种子文件-->
+	<script src="sdk/h4.js" /><!--sdk文件（单页面）-->
+	...
+	<script>
+		KISSY.use('mobile/app/1.2/',function(S,AppFramework){
 
-		"use strict";
+			// 页面加载时执行
+			AppFramework.startup(function(){
+				alert('hello kissy mobile');
+			});
 
-		// 获取划入视口的时间
-		var s = S.now();
-
-		alert(s); // 每划入视口时都会执行这里的代码，s 都是不一样的
-
-		// 注册事件
-		MS.startup(function(){
-			alert(s);
-			// 每划入视口都会执行这里的代码
-			// 这里的 s 永远是第一次注册事件时的时间
+			// 退出页面时执行
+			AppFramework.teardown(function(){
+				alert('goodbye kissy mobile');	
+			});
+			
 		});
-		MS.teardown(function(){
-			alert(s);
-			// 每划出视口都会执行这里的代码
-			// 这里的 s 永远是第一次注册事件时的时间
-		});
-	});
+	</script>
 
-`includeOnce`和`destroy`事件也是如此。
+加载时这几个事件的执行顺序：
+
+includeOnce -> startup -> ready
+
+退出时的执行顺序：
+
+teardown -> destroy
 
 ### 节点重复问题
 
-由于KDK的机制规定了最终页面状态和滑动的树的路径有关系，和节点本身具有的语义和层次没有直接关系。因此，有可能会出现页面重复的问题，即同一时刻，存在两个相同的节点在整个浏览器声明周期内。比如从深目录层级的某个节点一节回退到首页时，会出现这种问题，如图，我从c节点执行“回退”操作到a节点，这里所指的“回退”操作是开发者赋予的语义，在整个KDK的历史记录管理机制中，仍然认为这是一次写历史记录的步骤，即这个“后退操作”导致历史记录加一。真正的问题在于，浏览器内同时存在了两个a节点。
+因为每个页面如果可能出现重复的情况，则不推荐使用`id`选择器。
 
-![](http://img03.taobaocdn.com/tps/i3/T1TYQGXlxcXXbu1N2d-351-311.png)
-
-因此，每个页面如果可能出现重复的情况，则不能使用`id`选择器。
-
-这种场景只有在配置了`forcereload:false`时才有可能出现，即当KDK被配置为只保留当前视口内的页面，视口范围外的页面均被销毁时，是不需要考虑这种场景的。
+这种场景只有在给AppFramework配置了`forcereload:false`时才有可能出现，即当Mobile App Toolkit被配置为只保留当前视口内的页面，视口范围外的页面均被销毁时，此外是不需要考虑这种场景的。
 
 ### 页面的缓存
 
-页面默认是以异步形式加载进来的，加载过的页面可以缓存在本地，二次划入时不需重新加载，配置参数`pagecache:true`即可，该参数默认为`false`。
+页面默认是以异步形式加载进来的，加载过的页面可以缓存在本地，二次划入时不需重新加载，给AppFramework配置参数`pagecache:true`即可，该参数默认为`false`。
 
 ### 兼容性
 
 整套历史记录管理机制依赖HTML5的History特性，因此整套机制不支持IE8及以下版本，在Android 4.2 及以下版本中由于不支持H5的History，因此采用了简化的实现，即只处理了单层的前进后退。如果需要夸级别后退，需要自行管理app.MS.AndroidHis对象，改对象记录当前状态下曾经访问过的页面，只要回退到访问过的页面，都认为是从左侧划入视口。
 
-比如：有这样的访问路径，`a->b->c<-a`后，节点为`a->b->a`，这时需要手动清空`MS.AndroidHis = {}`。Android 4.2 以下的后退时scrollTop复原的操作，需要开发者自行添加（框架不知道是否是后退还是人为）。
+比如：有这样的访问路径，`a->b->c<-a`后，节点为`a->b->a`，这时需要手动清空`AppFramework.AndroidHis = {}`。Android 4.2 以下的后退时scrollTop复原的操作，需要开发者自行添加（框架不知道是否是后退还是人为）。
 
 <hr class="smooth large" />
 
-## KDK 使用方法
+## Mobile App Toolkit 使用方法
 
-### 框架搭建
+### 单页场景和多页场景在网页内容上的交集
 
-分为框架页面和内容页面，框架页面只负责对页面框架进行初始化和配置，框架页面是完整的html，需要引入kissy：
-
-	<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed-min.js"></script>
-
-KISSY提供的reset css也要随之引入：
-
-	<link rel="stylesheet" href="http://a.tbcdn.cn/s/kissy/1.3.0/css/dpl/base.css" />
-
-页面样式需要自行引入，页面正文需要添加框架代码：
-
-	<section id="MS"><!--控件所在的容器-->
-		<div class="MS-con"><!--页面内容所在的包裹器-->
-			<div class="MS-pal"><!--第一个页面默认所在的面板容器-->
-				<!-- 这里的内容可以自定义，通常为loading -->
-				loading...
-				<!--/-->
-			</div>
-		</div>
-	</section>
-
-全局 CSS 样式示例：
-
-	#MS {
-		/* 占视口100%宽度 */
-		position:relative;
-		width:100%;
-	}
-	#MS-nav {
-		display:none; /*默认隐藏Slide控件中的触碰点*/
-	}
-	.MS-con {
-		position:relative;
-	}
-	.MS-pal {
-		float:left;
-		position:relative;
-		/* 建议加上这一句，优化移动设备中的动画性能 */
-		-webkit-backface-visibility:hidden;
-	}
-
-配置Mobile App KDK，这段代码中给出了一些配置参数
-
-	KISSY.use('mobile/app/1.0/',function(S,MS){
-
-		"use strict";
-
-		var app = MS({
-			viewpath:'a.html', // 默认加载的页面地址
-			forcereload:true, //划过的页面均销毁
-			fullrangewidth:false,//不要程序指定浏览器视口宽度
-			pagecache:true, //加载过的页面是否要缓存
-			webkitoptimize:true //是否在webkit中开启硬件加速
-		});
-
-	});
-
-<hr class="smooth" />
-
-### 内容页面代码
-
-内容页面是通过Ajax加载进来的，页面地址为相对路径，比如框架页面地址为
-
-	http://url.com/index.html
-
-则相对路径`a.html`就对应：
-
-	http://url.com/a.html
-
-这里的`a.html`的内容可以是一个html片段，也可以是完整的页面，KDK会截取一段内容进行解析：
+单页面中的一段内容会被AppFramework拿出来解析，注释过滤方法为：
 
 ![](http://img01.taobaocdn.com/tps/i1/T11co5XlRfXXaUhmbj-178-97.jpg)
 
-这段片段会被插入到框架HTML代码的`<div class="MS-pal" />`中。比如这样一个页面代码：
-
-	<header class="header">
-		页面标题
-	</header>
-
-	<section class="mainbody">
-		<div class="content">
-			页面正文
-		</div>
-	</section>
-	<script>
-		KISSY.use('mobile/app/1.0/',function(S,MS){
-
-			"use strict";
-
-			MS.startup(function(data){
-				var app = this;
-				// 注册 startup
-				// 如果从别的页面跳转过来带有参数，则回写在data中
-				// this 为MS的实例，即app
-			});
-
-			MS.teardown(function(){
-				// 注册 teardown
-			});
-
-			MS.includeOnce(function(){
-				// 注册 includeOnce
-			});
-
-			MS.destroy(function(){
-				// 注册destroy
-			});
-		});
-	</script>
-
-JS代码会被解析，但注册操作只会在首次解析这段代码时执行，即注册操作不会因为页面被多次渲染而被执行多次。
+中间的这段片段会被插入到框架HTML代码的`<div class="MS-pal" />`中。
 
 <hr class="smooth" />
 
 ### 上下文
 
-	KISSY.use('mobile/app/1.0/',function(S,MS){
+	KISSY.use('mobile/app/1.2/',function(S,AppFramework){
 
 		// 上下文1
 
-		MS.startup(function(data){
+		AppFramework.startup(function(data){
 			var app = this;
 
 			// 上下文2
 		});
 
-		MS.teardown(function(){
+		AppFramework.teardown(function(){
 			// 上下文2
 		});
 
-		MS.includeOnce(function(){
+		AppFramework.includeOnce(function(){
 			// 上下文2
 		});
 
-		MS.destroy(function(){
+		AppFramework.destroy(function(){
 			// 上下文2
 		});
 	});
 
-上下文1为KISSY默认上下文，MS为当前框架（app）的构造函数。
+上下文1为KISSY默认上下文，AppFramework为当前框架（app）的构造函数。
 
-上下文2为当前框架（app）的实例（注意，不是页面）。上下文2中常用的方法为：
+上下文2为当前框架的实例（App）（注意，不是页面）。上下文2中常用的方法为：
 
 - app.get('page') // 得到当前页面的DOM根节点
 - app.get('viewpath') // 得到当前页面对应的url片段，相当于页面的key
 - app.get('stroage') // 得到当前页面的本地数据仓库，只在框架所在的生命周期内有效，不会写入本地存储，用于存取本地私有变量，比如`app.get('storage').get('mydate')`或`app.get('storage').set('mydate',{...})`
 
-<hr class="smooth" />
-
 ### Hash规则
-
-页面的跳转会体现在浏览器的hashchange中，KDK使用`#a=b&c=d`的形式来管理hash中的参数，开发者在开发页面时，也应当遵照这种规则来读写hash。
 
 hash中只有一个参数`viewpath`指定当前视口所位于的页面相对路径。比如`viewpath=a.html`。如果直接通过url首次装载进来页面，页面会读取url中的hash里的`viewpath`参数，从参数值指定的路径加载初始数据，如果hash中没有此参数，会从框架页面的配置项中读取，若都没有指定，则默认加载`index.html`。
 
-<hr class="smooth" />
-
 ### 跳转行为的触发
 
-KDK提供两种触发页面跳转的方法，一类是通过监听`hashchange`，即只要hash有修改，KDK就会去hash中寻找新的`viewpath`参数，异步加载并处理滑动方向。因此`history.back()`是可以触发hashchange的，进而可以触发页面的跳转。
+App Toolkit提供两种触发页面跳转的方法，一类是通过监听`hashchange`，即只要hash有修改，KDK就会去hash中寻找新的`viewpath`参数，异步加载并处理滑动方向。因此`history.back()`是可以触发hashchange的，进而可以触发页面的跳转。
 
-第二种触发页面跳转的方法是通过方法调用，有两个方法可以调用，`back()`和`forward()`，可以传参，传入的参数在目标页面的`startup`函数回调中可以拿到，给出要跳转的地址，两个方法分别是划出动作和划入动作。
-
-<hr class="smooth" />
-
-### KDK构造函数
-
-KDK通过KISSY.use形式引入进来，传回的对象即是构造函数，我们称为`MS`。构造函数实例化的结果是配置好的应用，我们称为`app`。构造函数可以使用new来创建（`new MS({})`），也可以直接用工厂方法创建`MS({})`。
-
-	KISSY.use('mobile/app/1.0/',function(S,MS){
-		
-		/*
-		*	MS 为KDK构造器，通过new MS()或MS()初始化实例
-		*	整个页面只能有一个框架实例
-		*/
-
-		var app = MS();
-
-		/*
-		*	其中 
-		*	MS.APP == app
-		*	app.MS == MS
-		*/
-
-		/*
-		*	app 对外暴露两个API
-		*	app.back();
-		*	app.forward();
-		*/
-
-		/*
-		*	获得当前页面的根节点
-		*	app.get('page')
-		*/
-
-	});
-
-对于开发者来说，最常用的两个对象就是全局`MS`对象和app实例对象（`MS.APP`）。
-
-<hr class="smooth large" />
-
-## API
-
-KDK提供一个全局构造函数`MS`，类似`YUI`，用来生成app实例，理论上一个应用有一个app实例，`MS`挂有一些全局静态方法，整个浏览器生命周期内，只能构造一次，`var app = new MS({});`。`app`实例可以通过`MS.APP`来引用到，如果多次创建app实例，则MS.APP会被覆盖。`app`实例提供事件，但事件注册机制只是用方法来完成（比如MS.destroy(callback)）。因为页面页面之间的关系理论上是平行的，原则上，一个页面无法知晓其他页面的存在，因此一个页面中的逻辑不能“主动”绑定其他页面的事件，只能绑定本页的事件，本页的事件为了避免多次绑定带来的代码冲突，只提供了通过方法来注册事件，而非app.on('eventType')的形式。
+第二种触发页面跳转的方法是通过方法调用，有两个方法可以调用，`App.back()`和`App.forward()`，可以传参，传入的参数在目标页面的`startup`函数回调中可以拿到，给出要跳转的地址，两个方法分别是划出动作和划入动作。
 
 <hr class="smooth" />
+
+## Mobile App Toolkit API
+
+App Toolkit提供一个全局构造函数`AppFramework`，类似`YUI`，用来生成app实例，理论上一个应用有一个app实例，`AppFramework`挂有一些全局静态方法，整个浏览器生命周期内，只能构造一次，`var app = new AppFramework({});`。`app`实例可以通过`AppFramework.APP`来引用到，如果多次创建app实例，则AppFramework.APP会被覆盖。`app`实例提供事件，但事件注册机制只是用方法来完成（比如AppFramework.destroy(callback)）。因为页面页面之间的关系理论上是平行的，原则上，一个页面无法知晓其他页面的存在，因此一个页面中的逻辑不能“主动”绑定其他页面的事件，只能绑定本页的事件，本页的事件为了避免多次绑定带来的代码冲突，只提供了通过方法来注册事件，而非app.on('eventType')的形式。
 
 ### 全局静态方法
 
-这五个全局静态方法类似于事件绑定，回调函数执行的上下文均为当前`MS`的实例对象。这些事件由于是“页面”具有的，因此和`onload`和`domready`一样，无法被阻止。
+这五个全局静态方法类似于事件绑定，回调函数执行的上下文均为当前`AppFramework`的实例对象。这些事件由于是“页面”具有的，因此和`onload`和`domready`一样，无法被阻止。
 
 *ready(callback)*
 
@@ -439,7 +307,7 @@ callback 为回调函数，注册当前页面中的`destroy`事件的句柄，�
 
 页面划入视口时执行回调，它会将从别的页面带入的参数当作回调函数的参数传入。只要页面划入视口，不管是从左还是从右，都会执行这个回调。一个页面这个方法只能被注册一次。
 
-	MS.startup(function(data){
+	AppFramework.startup(function(data){
 		if(data){
 			// YourApp.init(data);
 		}
@@ -453,7 +321,7 @@ callback 为回调函数，注册当前页面中的`destroy`事件的句柄，�
 
 ### 配置参数
 
-构建`app`（`var app = MS({})`）实例的时候可以传入一些配置参数，这些参数包括：
+构建`app`（`var app = AppFramework({})`）实例的时候可以传入一些配置参数，这些参数包括：
 
 *viewpath* (String)
 
@@ -513,11 +381,15 @@ Ajax取各自页面时的根路径，如果不传，和框架所在的目录路�
 
 如果页面固定高度，或者页面高度是我自己来计算，而不需要框架来自适应，此项设为false，此项默认为true。
 
+*hideURIbar*
+
+在App的模式中比较常用，动画结束后是否隐藏地址栏，这时页面的高度需要页面开发者自行控制
+
 <hr class="smooth" />
 
 ### 实例方法
 
-这里列出了MS实例的方法
+这里列出了AppFramework实例的方法
 
 *error()* （未实现）
 
@@ -586,11 +458,19 @@ back如果涉及到新页面的加载，则以get方式载入
 
 使用方法同上，加载新页面以get方式
 
+*isSinglePage*
+
+返回当前场景是否是单页面场景
+
+*isMultiplePage*
+
+返回当前场景是否是多页面场景
+
 <hr class="smooth" />
 
 ### 跳转触发器标签的写法
 
-实例化MS时，传入默认监听tapTrigger时，会监听全局的a标签，当点击a标签的时候，发生跳转。a标签属性的写法有三种。
+实例化AppFramework时，传入默认监听tapTrigger时，会监听全局的a标签，当点击a标签的时候，发生跳转。a标签属性的写法有三种。
 
 *第一种*，普通的链接跳转，其中`data-param`给出了回写到hash里的参数
 
@@ -607,17 +487,93 @@ back如果涉及到新页面的加载，则以get方式载入
 
 只要a标签里定义了`target`属性，都不会使这个链接被监听到。
 
+## SDK 中约定的导航条的行为
+
+- 回退，显示与不显示
+- title，标题，文本
+- 右侧操作区，点击触发回调
+
+尺寸：
+
+- 回退和右侧icon尺寸：原图尺寸 45x45，展现大小：23x23
+- 导航条高度：44px
+
+### 给带有SDK的页面传递指令
+
+url中带有一些参数，来告知页面当前的运行环境，和是否带有导航，两个重要参数，形如
+
+	url?client_type=ios&client_nav=false   （当前是ios App环境，页面本身不需显示导航，导航由Native提供）
+
+*client_type*
+
+当前环境类型，三个取值：ios、android、pc，不传值默认为pc
+
+*client_nav*
+
+页面是否需要带导航，两个取值：true，false，不传默认为true
+
+注意：在多页面环境中，导航始终存在，但导航内容的提供，应当包含在页面中，而非框架里
+
+## SDK 方法集
+
+SDK提供了对普通链接（a标签）的事件监听，a标签属性的写法有三种。
+
+*第一种*，普通的链接跳转，其中`data-param`给出了回写到hash里的参数
+
+	<a href="b.html" data-param="a=1&b=2&c=3">跳转</a>
+
+*第二种*，无链接跳转
+
+	<a href="javascript:void(0);">这个链接不会被监听到</a>
+
+*第三种*，打开新页面或页面刷新
+
+	<a href="url" target="top">这个链接会刷新页面</a>
+	<a href="url" target="_blank">这个链接会打开新页面</a>
+
+手动指定跳转的方向（不推荐使用，新页面应当总是“进入”）：
+
+	<a href="" dir="back">回退</a>
+	<a href="" dir="forward">前进</a>
+
+只要a标签里定义了`target`属性，都不会使这个链接被监听到。
+
+### SDK Api
+
+SDK提供全局对象App和Host，App即AppFramework的实例，Host是SDK包含工具集的命名空间，Host包含这些方法：
+
+*open(url)* 
+
+执行`Host.open(url)`为打开（或切换至）新的view
+
+*back(callback)*
+
+回退
+
+*set_browser_title(title)*
+
+设置导航条或浏览器的title
+
+*set_back(flag)*
+
+设置是否显示导航条的回退按钮，flag为true或false
+
+*set_icon(img,callback)*
+
+设置导航条右上角的图标，以及点击图标的回调
+
+*nav_exist()*
+
+判断导航是否存在，也可以根据url中的参数判断
+
 <hr class="smooth large" />
 
-## TODO
+## Changelog
 
-- <del>loading & closeLoading</del>
-- <del>页面缓存</del>
-- <del>四个全局静态事件的阻止</del>
-- 在当前视图增加查找hash参数的方法：query
-- Ajax Error 处理
-- 前进后退到已经加载过的页面，垂直位置的恢复
-- 专门面向应用的配置，即考虑浏览器不存在地址栏的情况
-- currentpannel 改为 page
-- 补全demo
-- 向下滚动
+- MS.startup/ready/teardown 的沙箱特性
+- view的autoHeight的bugfix
+- 配合iscroll执行的代码
+- SDK和AppFramework的解偶和分层
+- SDK的设计与实现（第一版）
+
+以上

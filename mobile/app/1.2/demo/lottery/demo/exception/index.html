@@ -1,0 +1,16 @@
+<section id="exception" class="temp">
+	<!--页头{{-->
+	<header class="header">
+		<a class="return" href="index/a.html" dir="back">返回</a>
+		<h2>淘宝彩票</h2>
+	</header>
+	<!--页头}}-->
+	<div id="errShow"></div>
+</section>
+
+<script>
+	KISSY.use('mobile/app/1.2/ , mobile/base/exception' , function(S , MS , exception) {
+		var errcode = MS.queryKey('errcode' , 'hash');
+		exception.initialize(errcode);
+	});
+</script>

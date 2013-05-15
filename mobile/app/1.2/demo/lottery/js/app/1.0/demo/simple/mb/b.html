@@ -1,0 +1,97 @@
+<!--kdk{{-->
+<div class="navbar navbar-inverse">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<a class="brand" href="#">Project name</a>
+			<div class="nav-collapse collapse">
+				<ul class="nav">
+					<li class="active"><a href="javascript:void(0);" onclick="NS.back('mb/a.html');">上一步</a></li>
+					<li><a href="javascript:void(0);" onclick="NS.forward('mb/c.html');">下一步</a></li>
+				</ul>
+			</div><!--/.nav-collapse -->
+		</div>
+	</div>
+</div>
+
+<style>
+	.container {
+		width:100%;
+	}
+</style>
+<div class="container">
+	<div class="row-fluid">
+		<span class="span12">
+		
+		
+			<div class="J_MSG" >
+				loading
+			</div>
+
+			<ul class="nav nav-list">
+				<li class="nav-header">操作列表</li>
+				<li class="active"><a href="" onclick="NS.back('mb/a.html')">Home</a></li>
+				<li><a href="mb/c.html" data-param="aaa=234">进入选项c.html(填写登录信息)</a></li>
+				<!--li><a href="mb/d.html">进入选项d.html(列表)</a></li>
+				<li><a href="mb/e.html">进入选项e.html(另一个页面)</a></li-->
+				<li><a href="javascript:void(0);" onclick="history.back();">执行history.back()</a></li>
+				<li class="nav-header">history.back()有可能返回下一帧，而非上一帧</li>
+				<li><a href="http://m.taobao.com" target=_blank>打开新页面m.taobao.com</a></li>
+				<li><a href="http://m.taobao.com" target="top">本页刷新打开m.taobao.com</a></li>
+				<li><a href="javascript:void(0);" onclick="window.location.reload();">本页强制刷新</a></li>
+			</ul>
+		
+		
+		</span>
+<?php
+//	sleep(1);
+
+var_dump($_POST);
+?>
+
+
+
+	</div>
+</div>
+<p>iiiii</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<p>增加行数</p>
+<script>
+
+	KISSY.use('mobile/app/1.0/',function(S,MS){
+
+		S.one('title').html('本页的title');
+		
+		MS.startup(function(data){
+
+			var app = this;
+
+			var str = '这里显示下一步的操作结果，请进入下一页面重新操作';
+
+			S.log(app.get('storage').get('aaa'));
+			app.get('storage').set('aaa',2);
+
+			if(data){
+				str = '姓名：'+ data.name +', 性别：'+ data.gender;
+			}
+
+			app.get('page').one('.J_MSG').html(str);
+
+		});
+		
+	});
+
+</script>
+<!--kdk}}-->

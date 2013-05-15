@@ -9,7 +9,7 @@
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/slide",function(S){
+KISSY.add("mobile/app/1.2/slide",function(S){
 
 	"use strict";
 
@@ -482,6 +482,30 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			return this;
 		},
 
+		/**
+		 * 隐藏浏览器地址栏
+		 * added bydonghan - 2013-04-13
+		 * 执行时机：app加载完成后初始化操作、切换应用视图后
+		 */
+		hideURIbar: function() {
+			this.animcon.height('2500px');
+			window.scrollTo(0 , 1);
+			this.animcon.height(window.innerHeight + 'px');
+		},
+
+		/**
+		 * 重置动画包裹器尺寸，fixed和auto两种
+		 * added by donghan - 2013-04-13
+		 */
+		setViewSize: function(type) {
+			var body = S.one('body') , 
+				html = S.one('html') ,
+				size = type === 'auto' ? 'auto' : '100%';
+			body.setStyle('height' , size);
+			html.setStyle('height' , size);
+			this.animcon.setStyle('height' , size);
+			this.animcon.parent().height(size);
+		},
 		// timmer 是指的动态监控wrapperCon高度的定时器
 		// wrapperCon在很多时候高度是可变的
 		// 这时就需要timmer来监听了

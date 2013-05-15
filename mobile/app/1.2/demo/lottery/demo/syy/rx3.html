@@ -1,0 +1,66 @@
+<section id="syy_rx3" class="manualBall">
+	<header class="header">
+		<a class="return" href="index/a.html" dir="back">返回</a>
+		<a class="type" href="reward/single.html" dir="forward" data-param="lotype=15">往期开奖</a>
+		<h2>十一运夺金</h2>
+	</header>
+
+	<section id="selPlayType">
+        <div class="typeList" id="typeList">
+            <ul>
+                <li><a href="syy/rx2.html" dir="back">任选二</a></li>
+                <li class="cur">任选三</li>
+                <li><a href="syy/rx4.html" dir="forward">任选四</a></li>
+                <li><a href="syy/rx5.html" dir="forward">任选五</a></li>
+                <li><a href="syy/rx6.html" dir="forward">任选六</a></li>
+                <li><a href="syy/rx7.html" dir="forward">任选七</a></li>
+				<li><a href="syy/rx8.html" dir="forward">任选八</a></li>
+				<li><a href="syy/q1.html" dir="forward">前一</a></li>
+				<li><a href="syy/q2zhx.html" dir="forward">前二直选</a></li>
+				<li><a href="syy/q2zx.html" dir="forward">前二组选</a></li>
+				<li><a href="syy/q3zhx.html" dir="forward">前三直选</a></li>
+				<li><a href="syy/q3zx.html" dir="forward">前三组选</a></li>
+            </ul>
+            <span class="more"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAJCAYAAAD6reaeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABTSURBVBhXXY4xDsAwCAPz/z0kAyyQRyE+Q+VGaUuRWM5nyW2tle1/vfc0sxowcxJRDQBh41V1NwBPgEZEZBOR2xpjpLtvE2DO+QLAYpxpT+Wz9QKHZkmxI57UzAAAAABJRU5ErkJggg==" /></span>
+        </div>
+    </section>
+    
+	
+	<!--选号球{{-->
+	<div id="Abacus" class="abacus lower">
+		<div class="box">
+			<div class="hd"><span>摇一摇机选!</span><em>至少选择3个号码</em></div>
+			<ul class="ballList red">
+                <li>01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+                <li>11</li>
+            </ul>
+		</div>
+	</div>
+	<!--选号球}}-->
+	<div class="actarea">
+    	<div class="pannel">
+    		<span id="delall">清空</span>
+    		<a id="selectDone" href="nbet/index.html" dir="forward" data-param="lotype=syy&subtype=rx3">完成</a>
+    	</div>
+    </div>
+</section>
+<script>
+	KISSY.use('mobile/app/1.2/' , function(S , MS) {
+		"use strict";
+        MS.startup(function(data) {
+			var isEdit = MS.queryKey('edit' , 'hash');
+			S.use('mobile/app/1.2/demo/lottery/js/syy/rx3',function(S , ball){
+				ball.initialize(isEdit);	
+			});
+		});
+	});
+</script>

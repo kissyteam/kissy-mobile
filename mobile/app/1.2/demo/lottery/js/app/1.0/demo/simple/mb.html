@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]><html class="no-js"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="assets/bootstrap.css" />
+	<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+	<script>
+		KISSY.config({
+			packages:[
+				{
+					name:"mobile",
+					tag:"20111220",
+					path:"../../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+					charset:"utf-8"
+				}
+			]
+		});
+	</script>
+
+
+</head>
+<body>
+
+<style>
+	#MS {
+		position:relative;
+		width:100%;
+		margin:0 auto;
+	}
+	#MS-nav {
+		display:none;
+	}
+	.MS-con {
+		position:relative;
+	}
+	.MS-pal {
+		float:left;
+		position:relative;
+		-webkit-backface-visibility:hidden;
+	}
+
+	.mt0 {
+		margin-top:0px !important;
+		height:300px !important;
+	}
+
+</style>
+
+
+<div id="MS">
+	<div class="MS-con">
+		<div class="MS-pal">
+			loading...
+		</div>
+	</div>
+</div>
+
+<style>
+	#test {
+		position:fixed;
+		top:0;
+		left:0;
+		background:yellow;
+	}
+
+</style>
+<div id="test">
+	fixed
+</div>
+
+
+<script>
+var app = {};
+var NS = {};
+	KISSY.use('mobile/app/1.0/',function(S,MS){
+		app = MS({
+			viewpath:'mb/a.html',
+			forceReload:true,
+			fullRangeWidth:false,
+			pageCache:true,
+			webkitOptimize:true,
+			positionMemory:true,
+			animWrapperAutoHeightSetting:false, //  默认为true
+			initPostData:{
+				a:1,b:2
+			}
+		});
+		NS = app;
+	});
+
+</script>
+
+</body>
+</html>

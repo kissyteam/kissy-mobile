@@ -1,0 +1,26 @@
+<!--页头{{-->
+<header class="header">
+	<a class="return" href="jczq/match.html" dir="back">返回</a>
+	<a class="type short" href="jczq/match.html" dir="back">确定</a>
+	<h2>赛事筛选</h2>
+</header>
+<!--页头}}-->
+
+<section id="filter-content"> </section>
+
+<!-- 比赛单元 -->
+<script type="text/template" id="FilterTemp">
+	<div class="hd">共有<span id="num">${length}</span>场比赛</div>
+	<div class="bd" id="filter-scroll">
+		<ul>
+			{@each data as game, key}
+				<li {@if game.select}class="on"{@/if}>${key}</li>
+			{@/each}
+		</ul>
+	</div>
+</script>
+<script>
+	KISSY.use('mobile/app/1.2/demo/lottery/js/jczq/jczqfilter', function(S , filter) {
+		filter.initialize();
+	});
+</script>

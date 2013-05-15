@@ -1,0 +1,70 @@
+<section id="sport-bet">
+	<!--页头{{-->
+	<header class="header">
+		<a class="return" href="jczq/match.html" dir="back">返回</a>
+		<h2>竞彩足球</h2>
+	</header>
+	<!--页头}}-->
+
+	<section id="bet-content">
+		<div id="match-list">
+			<div>
+				<ul> </ul>
+			</div>
+		</div>
+
+		<div id="actarea">
+			<div id="pass-type">
+				<span class="require"> </span>	
+				<h3>过关方式</h3>
+				<ul>
+					<li class="disable" rel="1">单关</li>
+					<li class="disable" rel="2">2串1</li>
+					<li class="disable" rel="3">3串1</li>
+					<li class="disable" rel="4">4串1</li>
+					<li class="disable" rel="5">5串1</li>
+					<li class="disable" rel="6">6串1</li>
+					<li class="disable" rel="7">7串1</li>
+					<li class="disable" rel="8">8串1</li>
+				</ul>
+			</div>
+				
+			<div id="extra">
+				<ul>
+					<li><span class="l">投</span><input type="tel" id="bt" value="1" /><span class="r">倍</span></li>
+					<li><em id="agree" class="checked"> </em><span>同意<b id="treaty">《网上购彩协议》</b></span></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section id="footer" class="bet-footer">
+		<div class="pannel">
+			<span id="delall">清空</span>
+			<a href="#" id="submit" class="submit">
+				<span class="l">
+					支付金额:<em id="fee">0元</em><br />
+					奖金范围:<em id="award">0.00-0.00</em>
+				</span>
+				<span class="r">立即投注</span>
+			</a>
+		</div>
+	</section>
+
+</section>
+<a id="paybtn" class="hidden" href="#" target="_blank"></a>
+<!-- 比赛单元 -->
+<script type="text/template" id="ItemTemp1">
+	<span rel="win" class="bet long {@if win}on{@/if}">${hostTeam}</span>
+	<span rel="even" class="bet short {@if even}on{@/if}">平</span>
+	<span rel="negative" class="bet long {@if negative}on{@/if}">${visTeam}</span>
+	<span class="hr"> </span>
+	<span class="dt short {@if isDt}on{@/if}">胆</span>
+</script>
+
+<script>
+	KISSY.use('mobile/app/1.2/demo/lottery/js/jczq/jczqbet', function(S , bet) {
+		bet.initialize();
+	});
+</script>
+

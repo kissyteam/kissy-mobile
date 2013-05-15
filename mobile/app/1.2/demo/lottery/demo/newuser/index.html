@@ -1,0 +1,39 @@
+<section id="exception" class="temp">
+	<!--页头{{-->
+	<header class="header">
+		<a class="return" href="index/a.html" dir="back">返回</a>
+		<h2>领奖人信息</h2>
+	</header>
+	<!--页头}}-->
+	
+	<section class="newInfo">
+		<h3>以下信息是中大奖后领奖的唯一凭证</h3>
+		<ul class="con">
+			<li>
+				<h4>真实姓名</h4>
+				<input class="txt" type="text" id="userName" />
+			</li>
+			<li>
+				<h4>身份证号</h4>
+				<input class="txt" type="text" id="cardId" />
+			</li>
+			<li>
+				<h4>手机号码</h4>
+				<input class="txt" type="tel" id="phoneNumber" />
+			</li>
+		</ul>
+		
+	</section>
+	
+	<a href="#" id="submitInfo">提交</a>
+
+</section>
+
+<script>
+
+	KISSY.use('mobile/app/1.2/ , mobile/newuser/userinfo' , function(S , MS , userinfo) {
+		var betfrom = MS.queryKey('betfrom' , 'hash');
+		userinfo.initialize(betfrom);
+	});
+
+</script>

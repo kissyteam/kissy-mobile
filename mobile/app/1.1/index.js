@@ -543,7 +543,6 @@ KISSY.add("mobile/app/1.1/index", function (S,Slide) {
 						return true;
 					}
 					e.preventDefault();
-					
 					// 增加超链接上定义slide方向
 					// 如果dir不是back\forward之一，则执行默认进入操作
 					// <a href="url" dir="back"></a>

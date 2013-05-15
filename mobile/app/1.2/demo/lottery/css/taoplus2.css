@@ -1,0 +1,44 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
+.none{display:none;}
+.taoplus{position:fixed;border-left:1px solid #eee;bottom:10px;left:0px;padding-left:10px;z-index:998;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(0, 0, 0, 0);-webkit-transform:translate3d(0, 0, 0);}.taoplus .tpbtn,.taoplus .icontao,.taoplus .iconlogis,.taoplus .iconww,.taoplus .iconcar,.taoplus .tpicons,.taoplus .cart span{background:url(http://a.tbcdn.cn/mw/base/styles/component/taoplus/images/sprite1.png) no-repeat;-webkit-background-size:195px 274px;}
+.taoplus .more .bg,.taoplus .logis .bg,.taoplus .ww .bg,.taoplus .individ .bg,.taoplus .car .bg,.taoplus .search .bg,.taoplus .tplogo .bg{background:url(http://a.tbcdn.cn/mw/base/styles/component/taoplus/images/sprite2.png) no-repeat;-webkit-background-size:216px 212.5px;}
+.taoplus .tpbtn{position:relative;width:54px;height:54px;}.taoplus .tpbtn.on{background-position:1px -197px;}
+.taoplus .tpbtn.off{background-position:-55.2px -197px;}
+.taoplus .tpbtn.off .num{display:none;}
+.taoplus .tpbtn .num{position:absolute;right:0px;top:3px;width:18px;height:18px;line-height:18px;font-size:12px;text-align:center;color:#f40;font-weight:bold;background-color:rgba(255, 255, 255, 0.8);border-radius:200px;-webkit-border-radius:200px;}
+.taoplus .tpbtn div{position:absolute;left:8px;top:8px;width:40px;height:40px;overflow:hidden;border-radius:200px;-webkit-border-radius:200px;}
+.taoplus .tpbtn ul{position:absolute;left:0px;top:0px;height:100%;overflow:hidden;}.taoplus .tpbtn ul li{width:40px;height:40px;float:left;overflow:hidden;}
+.taoplus .tpbtn .icontao{background-position:-107px -200px;}
+.taoplus .tpbtn .iconlogis{background-position:-148px -198px;}
+.taoplus .tpbtn .iconww{background-position:-106px -238px;}
+.taoplus .tpbtn .iconcar{background-position:-146px -236px;}
+.taoplus .tpbtn .iconact{-webkit-animation:'iconaction' 0.2s linear 5;}@-webkit-keyframes iconaction{0%{margin-top:0px;} 50%{margin-top:5px;} 100%{margin-top:0px;}}
+.taoplus .circle{position:absolute;left:30px;bottom:30px;width:195px;height:195px;overflow:hidden;-webkit-transition:all linear 0.15s;}.taoplus .circle.show{opacity:1;-webkit-transform:translate(0px, 0px) scale(1);pointer-events:auto;}
+.taoplus .circle.hide{opacity:0;-webkit-transform:translate(-100px, 100px) scale(0.2);pointer-events:none;}
+.taoplus .tpicons{position:absolute;right:0;top:0;width:195px;height:195px;overflow:hidden;}.taoplus .tpicons ul li{position:absolute;}
+.taoplus .tpicons a{display:inline-block;position:absolute;width:40px;height:30px;}
+.taoplus .tpicons a .num{position:absolute;width:15px;height:15px;font-size:12px;text-align:center;background:#f40;color:#fff;border-radius:200px;-webkit-border-radius:200px;}
+.taoplus .tpicons a+.bg{display:block;height:100%;background-position:-100px 100px;}
+.taoplus .tpicons .more{right:22px;bottom:9px;width:76px;height:64px;}.taoplus .tpicons .more a{top:20px;left:10px;}
+.taoplus .tpicons .more a:hover+.bg{background-position:0px 0px;}
+.taoplus .tpicons .logis{left:22px;bottom:10px;width:78px;height:63px;}.taoplus .tpicons .logis a{top:20px;left:30px;}
+.taoplus .tpicons .logis a .num{top:-3px;left:-8px;}
+.taoplus .tpicons .logis a:hover+.bg{background-position:-80px 0;}
+.taoplus .tpicons .ww{left:9px;top:54px;width:51px;height:91px;}.taoplus .tpicons .ww a{top:30px;left:0px;}
+.taoplus .tpicons .ww a .num{top:0px;left:8px;}
+.taoplus .tpicons .ww a:hover+.bg{background-position:-165px 0;}
+.taoplus .tpicons .individ{left:20px;top:10px;width:79px;height:67.5px;}.taoplus .tpicons .individ a{top:15px;left:25px;}
+.taoplus .tpicons .individ a:hover+.bg{background-position:0 -67.5px;}
+.taoplus .tpicons .car{right:20px;top:10px;width:77px;height:69px;}.taoplus .tpicons .car a{top:15px;left:15px;}
+.taoplus .tpicons .car a .num{top:0;left:18px;}
+.taoplus .tpicons .car a:hover+.bg{background-position:0 -140px;}
+.taoplus .tpicons .search{right:10px;top:56px;width:51px;height:91px;}.taoplus .tpicons .search a{top:25px;left:10px;z-index:99;}
+.taoplus .tpicons .search a:hover+.bg{background-position:-165px -95px;}
+.taoplus .tplogo{position:absolute;left:58px;top:58px;width:81px;height:82px;}.taoplus .tplogo a{position:absolute;left:15px;top:15px;display:block;width:50px;height:50px;background-position:-100px 100px;text-indent:-999px;z-index:1;}
+.taoplus .tplogo a+.bg{position:absolute;width:82px;height:82px;left:0;top:0;background-position:-100px 100px;z-index:0;}
+.taoplus .tplogo a:hover+.bg{background-position:-84px -67px;}
+.taoplus .cart{position:absolute;width:37px;height:150px;left:0;bottom:10px;opacity:0;pointer-events:none;}.taoplus .cart span{position:absolute;bottom:1px;width:25px;height:25px;background-position:-33px -250px;}
+.taoplus .cart span.addact{-webkit-animation:'caraction' 0.4s linear 1;}@-webkit-keyframes caraction{0%{margin-bottom:0px;} 20%{margin-bottom:0px;} 40%{margin-bottom:0px;} 60%{margin-bottom:-5px;} 80%{margin-bottom:0px;} 100%{margin-bottom:0px;}}
+.taoplus .cart img{position:absolute;top:0;left:0;width:20px;-webkit-transition:all linear 0.2s;}
+.taoplus .cart img.down{-webkit-transform:translate(0px, 115px);}
+#J_Shade{width:100%;height:100%;position:fixed;top:0;left:0;background:#000;opacity:0.2;-webkit-transform:translate3d(0, 0, 0);z-index:97;}

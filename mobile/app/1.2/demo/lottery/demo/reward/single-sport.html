@@ -1,0 +1,146 @@
+<section id="reward">
+	<!--页头{{-->
+	<header class="header">
+		<a class="return" href="reward/all.html" dir="back">返回</a>
+		<span class="type">往期赛果</span>
+		<h2>开奖公告</h2>
+	</header>
+	<!--页头}}-->
+	<section id="match-box" class="match-reward-box">
+		<div class="child"></div>
+	</section>
+	<div id="loading"><img width="30" height:12 src="http://a.tbcdn.cn/mw/base/styles/component/more/images/loading.gif" /></div>
+	<section>
+		<a href="#" id="simulateDom"> </a>
+		<div id="issueList"> </div>
+		<div id="myCalendar"> </div>
+		<button id="calendar" class="hidden" type="button"> </button>
+	</section>
+</section>
+
+<!-- 比赛单元 -->
+<script type="text/template" id="ZQItemTemp">
+	<div class="hd">
+		<h2><%= matchsTimes %> 共<%= matchList.length %>场比赛</h2>
+		<s></s>
+	</div>
+	<div class="bd">
+		<%
+			_.each(matchList, function(match) {
+		%>
+			<dl>
+				<dt class="w1">
+					<p><%= match.gameName %></p>
+					<p><%= match.matchWeek %> <%= match.matchOrder %></p>
+				</dt>
+				<dd class="w2">
+					<%= match.hostTeam %><% 
+						if (match.adjust < 0) {
+							print('<span class="neg">(' + match.adjust + ')</span>');
+						} else if (match.adjust > 0) {
+							print('<span class="pos">(' + match.adjust + ')</span>');
+						}
+					%>
+				</dd>
+				<dd class="w3 result">
+					<%
+					//如果已开奖
+					if (match.drawed) {
+						if ((match.hostTeamFscore == -1) && (match.visTeamFscore == -1)) {
+							print('<div class="reward-null">取消</div>');
+						} else if(match.hostTeamFscore + Number(match.adjust) > match.visTeamFscore){
+							print('<div class="reward-win">胜<em>(' + match.hostTeamFscore + ':' + match.visTeamFscore + ')</em></div>');
+						}else if(match.hostTeamFscore + Number(match.adjust) < match.visTeamFscore){
+							print('<div class="reward-negative">负<em>(' + match.hostTeamFscore + ':' + match.visTeamFscore + ')</em></div>');
+						}else{
+							print('<div class="reward-even">平<em>(' + match.hostTeamFscore + ':' + match.visTeamFscore + ')</em></div>');
+						}
+					}else{
+						print('<div class="reward-null">-:-</div>');
+					}
+					%>
+				</dd>
+				<dd class="w4">
+					<%= match.visTeam %>
+				</dd>
+			</dl>	
+		<% }); %>
+	</div>
+</script>
+
+<!-- 比赛单元 -->
+<script type="text/template" id="LQItemTemp">
+	<div class="hd">
+		<h2><%= matchsTimes %> 共<%= matchList.length %>场比赛</h2>
+		<s></s>
+	</div>
+	<div class="bd">
+		<%
+			_.each(matchList, function(match) {
+		%>
+			<dl>
+				<dt class="w7">
+					<p><%= match.gameName %></p>
+					<p><%= match.matchWeek %> <%= match.matchOrder %></p>
+				</dt>
+				<dd class="w8">
+					<%= match.visTeam %>
+				</dd>
+				<dd class="w9 result">
+					<%
+					//如果已开奖
+					if (match.drawed) {
+						if ((match.hostTeamFscore == -1) && (match.visTeamFscore == -1)) {
+							print('<div class="reward-null">取消</div>');
+						} else {
+							print('<div class="reward-null">' + match.visTeamFscore + ':' + match.hostTeamFscore + '</div>');
+						}
+					}else{
+						print('<div class="reward-null">-:-</div>');
+					}
+					%>
+				</dd>
+				<dd class="w8">
+					<%= match.hostTeam %>
+				</dd>
+			</dl>	
+		<% }); %>
+	</div>
+</script>
+
+<!-- 彩期列表 -->
+<script type="text/template" id="IssueTemp">
+	<dl>
+		<dt>最近10期赛果</dt>
+		<%
+			_.each(issueList, function(issue, index) {
+				if (index == 0) {
+					print('<dd class="cur" data-id="' + issue.issue_id + '" data-issue="' + issue.issue + '">第' + issue.issue + '期</dd>');
+				} else {
+					print('<dd data-id="' + issue.issue_id + '" data-issue="' + issue.issue + '">第' + issue.issue + '期</dd>');
+				}
+			});
+		%>
+	</dl>
+</script>
+
+<script>
+
+	KISSY.use('mobile/app/1.2/' , function(S , MS) {
+		'use strict'
+
+		var lotype = MS.queryKey('lotype' , 'hash') , path;
+		for (var i in C.Config.lotTypeNumberId) {
+			if (C.Config.lotTypeNumberId[i] == lotype) {
+				path = i;
+			}
+		}
+		MS.startup(function(data) {
+			S.use('mobile/app/1.2/demo/lottery/js/reward/list-' + path , function(S , list) {
+				list.initialize(lotype);
+			});	
+		});
+		
+	});
+	
+</script>

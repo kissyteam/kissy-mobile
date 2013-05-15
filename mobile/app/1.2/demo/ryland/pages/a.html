@@ -1,0 +1,116 @@
+<div class="navbar"></div>
+<div class="container">
+    <div class="sub-navbar"></div>
+    <div class="result-list">
+        <ul>
+            <li class="state-tab">ARIZONA</li>
+            <li class="city-tab" data-city="phoenix">Phoenix</li>
+            <li class="state-tab">FLORIDA</li>
+            <li class="city-tab" data-city="orlando">Orlando</li>
+            <li class="city-tab" data-city="tampa">Tampa</li>
+        </ul>
+    </div>
+</div>
+<div class="footer"></div>
+
+<style>
+    .navbar {
+        background-image: -webkit-linear-gradient(top, #255984, #16344E);
+        background-image: -moz-linear-gradient(top, #255984, #16344E);
+        background-image: -ms-linear-gradient(top, #255984, #16344E);
+        background-image: -o-linear-gradient(top, #255984, #16344E);
+        background-image: linear-gradient(top, #255984, #16344E);
+        width: 100%;
+        height: 42px;
+        text-shadow: 0 -1px 1px black;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .sub-navbar {
+        background-image: -webkit-linear-gradient(top, #8accf0, #ebf6fc);
+        background-image: -moz-linear-gradient(top, #8accf0, #ebf6fc);
+        background-image: -ms-linear-gradient(top, #8accf0, #ebf6fc);
+        background-image: -o-linear-gradient(top, #8accf0, #ebf6fc);
+        background-image: linear-gradient(top, #8accf0, #ebf6fc);
+        width: 100%;
+        height: 60px;
+    }
+
+    .result-list {
+        width: 100%;
+    }
+
+    .result-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .result-list li.state-tab {
+        padding: .2em 15px;
+        text-transform: uppercase;
+        border: 1px solid #456F9A;
+        background: #5E87B0;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        text-shadow: 0 -1px 1px #254F7A;
+        background-image: -webkit-linear-gradient(top, #64B9E7, #3989B5);
+        background-image: -moz-linear-gradient(top, #64B9E7, #3989B5);
+        background-image: -ms-linear-gradient(top, #64B9E7, #3989B5);
+        background-image: -o-linear-gradient(top, #64B9E7, #3989B5);
+        background-image: linear-gradient(top, #64B9E7, #3989B5);
+    }
+
+    .result-list li.city-tab {
+        padding: .7em 15px;
+        border-top: 1px solid #ccc;
+        font-weight: bold;
+        color: #111;
+        text-shadow: 0 1px 1px white;
+        cursor: pointer;
+        background-image: -webkit-linear-gradient(top, #EEE, #FDFDFD);
+        background-image: -moz-linear-gradient(top, #EEE, #FDFDFD);
+        background-image: -ms-linear-gradient(top, #EEE, #FDFDFD);
+        background-image: -o-linear-gradient(top, #EEE, #FDFDFD);
+        background-image: linear-gradient(top, #EEE, #FDFDFD);
+    }
+
+    .result-list li.city-tab:hover {
+        background-image: -webkit-linear-gradient(top, #ededed, #dadada);
+        background-image: -moz-linear-gradient(top, #ededed, #dadada);
+        background-image: -ms-linear-gradient(top, #ededed, #dadada);
+        background-image: -o-linear-gradient(top, #ededed, #dadada);
+        background-image: linear-gradient(top, #ededed, #dadada);
+    }
+</style>
+
+<script>
+
+    console.log('a.html loaded');
+
+    KISSY.use('mobile/app/1.0/', function(S, MS) {
+
+        MS.startup(function(data) {
+            var app = this;
+
+            app.get('page').all('.city-tab').on('click', function() {
+				var tab = S.one(this);
+				/*
+				app.postforward({
+					path: 'pages/b.html',
+					data: {
+                    	city: tab.attr('data-city')
+					}
+				});
+				*/
+				app.forward('pages/b.html', {
+					city: tab.attr('data-city')
+				})
+            });
+        });
+    });
+</script>

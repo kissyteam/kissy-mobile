@@ -1,0 +1,22 @@
+<header class="header">
+	<a class="leftbar" href="javascript:void(0);" onclick="history.back();">返回</a>
+	<a class="leftbar" href="javascript:void(0);" onclick="app.back('a2.html');">返回到新页面A2</a>
+	<h2>mslide框架</h2>
+</header>
+
+<section class="mainbody">
+	<div class="content">C</div>
+</section>
+<script>
+	KISSY.use('mobile/app/1.0/',function(S,MS){
+		console.log('c.html loaded');
+		var s = S.now();
+		MS.startup(function(){
+			console.log('c.html 创建 '+s);	
+		});
+		MS.teardown(function(){
+			console.log('c.html 销毁 '+s);	
+		});
+	});
+	
+</script>

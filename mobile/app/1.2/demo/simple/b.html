@@ -1,0 +1,30 @@
+<header class="header">
+	<a class="leftbar" href="javascript:void(0);" onclick="app.back();" dataRole="inline" animDir="back">返回</a>
+	<h2>mslide框架</h2>
+	<a href="c.html" diiiiiata-direction="next">下一步到C</a>
+</header>
+
+<section class="mainbody">
+	<div class="content">B</div>
+</section>
+<script>
+	KISSY.use('mobile/app/1.0/',function(S,MS){
+		console.log('b.html loaded');
+		var s = S.now();
+		MS.startup(function(){
+			console.log('b.html 进入时执行的初始化 '+s);	
+		});
+		MS.startup(function(){
+			console.log('b.html 进入时执行的初始化 '+s);	
+		});
+		MS.teardown(function(){
+			console.log('b.html 离时执行开销毁 '+s);	
+		});
+		MS.includeOnce(function(){
+			console.log('b.html 初始化一次 '+s);	
+		});
+		MS.destroy(function(){
+			console.log('b.html 被销毁时的destory '+s);	
+		});
+	});
+</script>

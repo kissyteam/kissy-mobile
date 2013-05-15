@@ -8,7 +8,7 @@
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/index", function (S,Slide) {
+KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 
 	// Jayli TODO: Android下未完全测试
 
@@ -29,6 +29,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 	// MS.ATTR
 	MS.ATTRS = {
+		hideURIbar:{
+			value:false
+		},
 		viewpath: {
 			value: 'index.html',
 			setter: function(v){
@@ -140,6 +143,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 		destroy:function(cb){
 			var k = this.APP.get('viewpath');
+			if(this.APP.isSinglePage()){
+				S.Event.on(window,'unload',cb);
+			}
 			if(!S.isFunction(this.DESTROY[k])){
 				this.DESTROY[k] = cb;
 			}
@@ -155,6 +161,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					this.STARTUP[k] = cb;
 				}
 				*/
+				if(this.APP.get('page').attr('data-startup') == 'true'){
+					cb.call(this.APP);
+				}
 				this.STARTUP[k].push(cb);
 			}
 		},
@@ -168,12 +177,16 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					this.READY[k] = cb;
 				}
 				*/
+				if(this.APP.get('page').attr('data-ready') == 'true'){
+					cb.call(this.APP);
+				}
 				this.READY[k].push(cb);
 			}
 		},
 		teardown:function(cb){
 			if(!MS.APP.slide){
-				cb.call(this.APP);
+				// cb.call(this.APP);
+				S.Event.on(window,'beforeunload',cb);
 			}else{
 				var k = this.APP.get('viewpath');
 				/*
@@ -190,6 +203,27 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			this.STARTUP[k] = [];
 			this.READY[k] = [];
 			this.TEARDOWN[k] = [];
+		},
+		/**
+		 * 查询当前视图节点所对应URL中hash参数值或search参数值
+		 * 应用场景：
+		 * --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
+		 * @name queryKey
+		 * @param name {string} 查询的key值 
+		 * @param scope {string} 查询key的范围，可选值有search、hash，分别代表location的search和hash，默认值为search
+		 * @returns 返回对应的value
+		 * @type string | null
+		 * @author 栋寒(zhenn)
+		 * @time 2013-04-11
+		 */
+		queryKey: function(name , scope) {
+			scope = ((typeof scope === 'undefined') || (scope !== 'hash')) ? 'search' : 'hash';
+			var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)','i'),
+				r = location[scope].substr(1).match(reg);
+			if (r != null) {
+				return unescape(r[2]);
+			}
+			return null;
 		}
 	});
 
@@ -235,6 +269,18 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 			return this;
 		},
+		// 作为单页面引用
+		isSinglePage:function(){
+			if(this.slide){
+				return false;
+			} else {
+				return true;
+			}
+		},
+		// 作为多页面框架引用
+		isMultiplePage:function(){
+			return !this.isSinglePage();
+		},
 		callDestroy:function(){
 			var self = this;
 			var lastviewpath = self.get('signet').lastviewpath;
@@ -262,6 +308,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			var cb = self.MS.READY[path];
 			var param = self.get('param');
 
+			// 执行过后就在dom节点上打标记
+			self.get('page').attr('data-ready','true');
+
 			if(S.isArray(cb)){
 				S.each(cb,function(v,k){
 					setTimeout(function(){
@@ -279,10 +328,28 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		},
 		callStartup:function(path){
 			var self = this;
+			// added by 栋寒，只在App场景下使用，用hash来标识view，可能会不准确
+			self[location.hash] = {
+				node: self.get('page'),
+				viewHeight: 'fixed',
+				config: function(obj) {
+					obj = {
+						viewHeight: (typeof obj.viewHeight === 'undefined' || obj.viewHeight !== 'auto') ? 'fixed' : 'auto'
+					};
+					for (var i in obj) {
+						this[i] = obj[i];
+						//self[location.hash][i] = obj[i];
+					}
+				}
+			};
+
 			if(S.isUndefined(path)){
 				path = self.get('viewpath');
 			}
 			var cb = self.MS.STARTUP[path];
+
+			// 执行过后就在dom节点上打标记
+			self.get('page').attr('data-startup','true');
 
 			var param = self.get('param');
 			// 取到参数后立即清空，防止其他页面也会拿到这个参数
@@ -297,7 +364,14 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 			if(S.isFunction(cb)){
+				// cb.call(self[location.hash],param) ?不可取
 				cb.call(self,param);
+				// added by 栋寒
+				S.later(function() {
+					if(self[location.hash]){
+						self.slide.setViewSize(self[location.hash]['viewHeight']);
+					}
+				} , 0);
 			}
 
 			return this;
@@ -593,11 +667,25 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					self.__clickEvent = true;
 					var path = el.attr('href');
 					var param = el.attr('data-param');
+					// 获取slide方向
+					var	dir = el.attr('dir');
 					if(path === ''){
 						return true;
 					}
-					self.setRouteHash(path,param);
 					e.preventDefault();
+					// added by 栋寒
+					// 增加超链接上定义slide方向
+					// 如果dir不是back\forward之一，则执行默认进入操作
+					// <a href="url" dir="back"></a>
+					// <a href="url" dir="forward"></a>
+					// eidt by 栋寒(zhenn) - 2013-4-13
+					if (dir === 'back') {
+						self.back(path , param);
+					} else if (dir === 'forward') {
+						self.forward(path , param);	
+					} else {
+						self.setRouteHash(path , param);
+					}
 					// self.next(path);
 				}
 				
@@ -743,7 +831,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 		_go :function(path,type,callback){
 			var self = this;
 
-			if(self.callTeardown(self.get('signet').viewpath) === false){
+			if(self.isMultiplePage() && self.callTeardown(self.get('signet').viewpath) === false){
 				self.rollback();
 				return this;
 			}
@@ -973,7 +1061,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 			if(S.isUndefined(path)){
-				if(self.callTeardown(self.get('signet').viewpath) === false){
+				if(self.isMultiplePage() && self.callTeardown(self.get('signet').viewpath) === false){
 					self.rollback();
 					return this;
 				}
@@ -1023,7 +1111,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 			}
 
 			if(S.isUndefined(path)){
-				if(self.callTeardown(self.get('signet').viewpath) === false){
+				if(self.isMultiplePage() && self.callTeardown(self.get('signet').viewpath) === false){
 					self.rollback();
 					return this;
 				}
@@ -1147,6 +1235,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 							if(self.get('forceReload')){
 								self.slide.remove(self.slide.length - 2);
 							}
+							if(self.get('containerHeighTimmer')){
+								self.slide.addHeightTimmer();
+							}
 							self._fixScrollTopAfter(el,prel,function(){
 								setTimeout(function(){
 									self.callReady();
@@ -1166,17 +1257,17 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					S.execScript(html);
 					setTimeout(function(){
 						self.initPageStorage();
-						self.callStartup();
 					},0);
 					callback.call(self.slide,self.slide);
-					setTimeout(function(){
-						self.callReady();
-					},0);
 					self.slide.removeLast();
 					// self.slide.next(callback);
 					self.slide.animwrap.css({
 						'-webkit-transform':'none'
 					});
+					setTimeout(function(){
+						self.callStartup();
+						self.callReady();
+					},0);
 					break;
 				}
 
@@ -1238,6 +1329,9 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 				if(self.get('containerHeighTimmer')){
 					self.slide.addHeightTimmer();
 				}
+				if(self.get('hideURIbar')){
+					self.slide.hideURIbar();
+				}
 				callback();
 			};
 
@@ -1270,6 +1364,16 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 					doReset();
 				}).run();
 			}
+		},
+
+		// 配合iScroll使用时，增加一个页面的全尺寸高度的占位
+		initPlaceholder:function(){
+			var self = this;
+			if(!self.slide){
+				return;
+			}
+
+
 		}
 	});
 
@@ -1287,7 +1391,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 /*jshint browser:true,devel:true */
 
-KISSY.add('mobile/app/1.0/kissy2yui',function(S){
+KISSY.add('mobile/app/1.2/kissy2yui',function(S){
 
 	// "use strict";
 
@@ -1393,7 +1497,7 @@ KISSY.add('mobile/app/1.0/kissy2yui',function(S){
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/slide",function(S){
+KISSY.add("mobile/app/1.2/slide",function(S){
 
 	"use strict";
 
@@ -1866,6 +1970,30 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			return this;
 		},
 
+		/**
+		 * 隐藏浏览器地址栏
+		 * added bydonghan - 2013-04-13
+		 * 执行时机：app加载完成后初始化操作、切换应用视图后
+		 */
+		hideURIbar: function() {
+			this.animcon.height('2500px');
+			window.scrollTo(0 , 1);
+			this.animcon.height(window.innerHeight + 'px');
+		},
+
+		/**
+		 * 重置动画包裹器尺寸，fixed和auto两种
+		 * added by donghan - 2013-04-13
+		 */
+		setViewSize: function(type) {
+			var body = S.one('body') , 
+				html = S.one('html') ,
+				size = type === 'auto' ? 'auto' : '100%';
+			body.setStyle('height' , size);
+			html.setStyle('height' , size);
+			this.animcon.setStyle('height' , size);
+			this.animcon.parent().height(size);
+		},
 		// timmer 是指的动态监控wrapperCon高度的定时器
 		// wrapperCon在很多时候高度是可变的
 		// 这时就需要timmer来监听了
@@ -2995,7 +3123,7 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 	requires:['node','event','json','./util','./kissy2yui']	
 });
 
-KISSY.add('mobile/app/1.0/util',function(S){
+KISSY.add('mobile/app/1.2/util',function(S){
 
 	"use strict";
 

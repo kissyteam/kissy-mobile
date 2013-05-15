@@ -166,20 +166,21 @@
 		};
 
         MS.startup(function(data) {
-			this.config({
-				viewHeight: 'auto'
+			var foo = function(){
+				app.slide.animcon.css({
+					overflow:''	,
+					height:(S.DOM.viewportHeight()) + 'px'
+				});
+				app.slide.animcon.one('div').css({
+					overflow:''	,
+					height:(S.DOM.viewportHeight()) + 'px'
+				});
+			};
+			foo();
+			S.Event.on(window,'resize',function(){
+				foo();
 			});
-			// 用于区分宿主模式：web\云os
-			var mode = MS.queryKey('mode');
-			switch (mode) {
-				case 'yunos':
-					yunosMode();		
-					break;	
-				case 'web':
-				default:
-					webMode();	
-					break;
-			}
+
 		});
 
 	});

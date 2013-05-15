@@ -94,6 +94,7 @@
 		KISSY.use('mobile/no-limit-scroll/1.0/' , function(S , Scroll) {
 
 			var myscroll = new Scroll({
+				threshold: 5,
 				initWrapHeight: function() {
 					window.scrollTo(0 , 1);
 					return window.innerHeight - 40 + 'px';

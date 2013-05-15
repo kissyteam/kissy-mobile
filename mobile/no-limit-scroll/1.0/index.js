@@ -38,6 +38,11 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 				S.log('你还没有设置获取更多信息的方法')	   
 			}			 
 		},
+		// 当scroll内部视图（最小显示单元）超过threshold时，则会触发优化操作
+		// 相反的，小于threshold时则不会做任何处理
+		threshold: {
+			value: 3		   
+		},
 		timer: {
 			value: null	   
 		},
@@ -136,6 +141,10 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 		 * @return void
 		 */ 
 		YChangeHandler: function (e) {
+			if (this.get('unitHeightQueue').length <= this.get('threshold') ) {
+				return
+			}
+
 			var prevVal = e.prevVal , newVal = e.newVal;
 			// 向上滚动
 			if (prevVal > newVal) {
@@ -162,15 +171,17 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 				units = S.all('.km-scroll-unit'),
 				wrapperH = this.scrollObj.wrapperH ;
 
-			for (var i = 0 , len = unitHeightQueue.length; i < len; i++) {
+			for (var i = unitHeightQueue.length; i --; ) {
 				if (y > unitHeightQueue[i] && y < unitHeightQueue[i + 1]) {
 					// 当前视图所占全部视图的索引
 					curIndex = i + 1;
 					if (unitQueue[curIndex - 1]) {
 						units.item(curIndex -1).empty();
 					}
-						
-					if (unitQueue[curIndex + 1]) {
+
+					// 对dom的innerHTML判断至关重要,若删除此判断，则严重影响滑动的流畅度	
+					// !units.item(curIndex + 1).html()
+					if (unitQueue[curIndex + 1] && !units.item(curIndex + 1).html() ) {
 						units.item(curIndex + 1).html(unitQueue[curIndex + 1].html());	
 					}
 					break;
@@ -191,11 +202,15 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 				units = S.all('.km-scroll-unit') ,
 				wrapperH = this.scrollObj.wrapperH;
 
-			for (var i = 0 , len = unitHeightQueue.length; i < len; i++) {
+			for (var i = unitHeightQueue.length; i --; ) {
 				if (y > unitHeightQueue[i] - wrapperH && y < unitHeightQueue[i + 1] - wrapperH) {
 					// 当前视图所占全部视图的索引
 					curIndex = i + 1;
-					if (unitQueue[curIndex - 1]) {
+
+					// 对dom的innerHTML判断至关重要,若删除此判断，则严重影响滑动的流畅度	
+					// !units.item(curIndex + 1).html()
+					//
+					if (unitQueue[curIndex - 1] && !units.item(curIndex - 1).html() ) {
 						units.item(curIndex - 1).html(unitQueue[curIndex - 1].html());
 					}
 					if (unitQueue[curIndex + 1]) {

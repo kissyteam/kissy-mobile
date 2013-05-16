@@ -26,42 +26,9 @@
 
   <body data-spy="scroll" data-target=".bs-docs-sidebar">
 
-    <!-- Navbar
-    ================================================== -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-
-          <a class="brand" href="http://docs.kissyui.com">Kissy</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li>
-                <a href="/">首页</a>
-              </li>
-              <li>
-                <a href="#">起步</a>
-              </li>
-              <li>
-                <a href="#mobile/startup/start.md.html">开发说明</a>
-              </li>
-              <li>
-                <a href="#mobile/startup/components.html">Components</a>
-              </li>
-              <li>
-                <a href="#mobile/startup/gbs.md.html">GBS</a>
-              </li>
-              <li>
-                <a href="https://github.com/kissyteam/kissy-mobile">源码</a>
-              </li>
-              <li>
-                <a href="http://docs.kissyui.com">Kissy</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<?php
+	include("tools/skin/nav.php");
+?>
 <!-- Subhead
 ================================================== -->
 
@@ -74,34 +41,17 @@
 		  <h2>Loading...</h2>
       </div>
 		
-	  <div class="span2">
-		<div class="widget widget_text" id="text-4">
-			<h4 class="widgettitle">Components</h4>			
-			<div class="textwidget">
-				<a href="markdown.php?mobile/app/1.0/index.md">Mobile App Toolkit</a><br />
-				<a href="http://docs.kissyui.com/kissy-gallery/gallery/slide/">Slide</a><br />
-				<a href="#">Sth else..</a>
-			</div>
-			<h4 class="widgettitle">Docs</h4>			
-			<div class="textwidget">
-				<a href="#">Comming Soon...</a><br />
-			</div>
-		</div>
-	  </div>
+	<?php
+		include("tools/skin/sidebar.php");
+	?>
     </div>
 
   </div>
 
-    <!-- Footer
-    ================================================== -->
-    <footer class="footer">
-      <div class="container">
-        <p>©2009 - 2029 KISSY UI LIBRARY</p>
-        <p><a href="http://jayli.github.com">拔赤</a> 、舒文、承玉</p>
-      </div>
-    </footer>
 
-	<p><a href="https://github.com/kissyteam/kissy-mobile"><img style="z-index: 99999999; width: 149px; height:149px; position: absolute; top: -6px; left: -6px; border: 0;" src="tools/skin/forkme_left_green_007200.png" alt="Fork me on GitHub" data-original="tools/skin/forkme_left_green_007200.png"></a></p>
+<?php
+	include("tools/skin/footer.php");
+?>
          
 
     <!-- Le javascript

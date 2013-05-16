@@ -1765,63 +1765,30 @@ p img {
 <title>kissy mobile - markdown</title>
 </head>
 <body data-spy="scroll" data-target=".bs-docs-sidebar">
-    <!-- Navbar
-    ================================================== -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
+HTML;
 
-          <a class="brand" href="http://docs.kissyui.com">Kissy</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li>
-                <a href="/">首页</a>
-              </li>
-              <li>
-                <a href="#">起步</a>
-              </li>
-              <li>
-                <a href="/#mobile/startup/start.md.html">开发说明</a>
-              </li>
-              <li>
-                <a href="/#mobile/startup/components.html">Components</a>
-              </li>
-              <li>
-                <a href="/#mobile/startup/gbs.md.html">GBS</a>
-              </li>
-              <li>
-                <a href="https://github.com/kissyteam/kissy-mobile">源码</a>
-              </li>
-              <li>
-                <a href="http://docs.kissyui.com">Kissy</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+include("tools/skin/nav.php");
 
+echo <<<HTML
 
   <div class="container">
 	<div style="height:30px;"></div>
 
+		<div class="row">
+		  <div class="span8" id="doc">
+
 HTML;
+
 echo $my_html;
 
-echo <<<HTML
-  </div>
+echo "</div><!--/row-->";
+include("tools/skin/sidebar.php");
+echo "</div><!--/doc-->";
+echo "</div><!--/container-->";
 
-    <!-- Footer
-    ================================================== -->
-    <footer class="footer">
-      <div class="container">
-        <p>©2009 - 2029 KISSY UI LIBRARY</p>
-        <p><a href="http://jayli.github.com">拔赤</a> 、舒文、承玉</p>
-      </div>
-    </footer>
-
-	<p><a href="https://github.com/kissyteam/kissy-mobile"><img style="z-index: 99999999; width: 149px; height:149px; position: absolute; top: -6px; left: -6px; border: 0;" src="tools/skin/forkme_left_green_007200.png" alt="Fork me on GitHub" data-original="tools/skin/forkme_left_green_007200.png"></a></p>
+include("tools/skin/footer.php");
          
+echo <<<HTML
 </body>
 </html>
 HTML;

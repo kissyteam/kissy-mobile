@@ -1,13 +1,21 @@
 
 window['S'] = KISSY;
 
+var bachi_debug = (function(){
+	var t = new S.Uri(window.location.href).getQuery().get('bachi');
+	if(S.isUndefined(t)){
+		return false;
+	} else {
+		return true;
+	}
+})();
+
 KISSY.config({
 	packages:[
 		{
 			name:"mobile",
-			tag:"201112299",
-			path:"http://a.tbcdn.cn/s/kissy/mobile",
-			// path:"http://a.zoojs.org/jayli/kissy-mobile/mobile",
+			tag:'20130517',
+			path:bachi_debug?"http://a.zoojs.org/jayli/kissy-mobile/mobile":"http://a.tbcdn.cn/s/kissy/mobile",
 			ignorePackageNameInUri:true,
 			debug:true,
 			charset:"utf-8"
@@ -85,7 +93,7 @@ KISSY.config({
 		},
 		nav_exist: function(){
 			var that = this;
-			return !!App.get('page').one('.J-top-nav');
+			return !!App.get('page').one('.J-mok');
 		},
 		// tap 事件的委托
 		// <a target=top>链接不会被委托</a>
@@ -114,9 +122,11 @@ KISSY.config({
 		wrapUrl: function(url){
 			var that = this;
 			var nsearch = S.unparam(new S.Uri(url).getQuery().toString());
+			var client_type = new S.Uri(url).getQuery().get('client_type');
+			var client_nav = new S.Uri(url).getQuery().get('client_nav');
 			S.mix(nsearch,{
-				client_type:that.client_type,
-				client_nav:that.client_nav
+				client_type:S.isUndefined(client_type)?that.client_type:client_type,
+				client_nav:S.isUndefined(client_nav)?that.client_nav:client_nav
 			});
 			url = new S.Uri(url).setQuery(S.param(nsearch)).toString();
 			return url;
@@ -146,7 +156,9 @@ KISSY.config({
 			// 		切换开始的时候，首先滚动到顶部,如果带有iscroll控件，此项应当置为false
 			// animWrapperAutoHeightSetting: false
 			// 		切换开始的时候，不滚动到顶部，如果页面很长，要求切换过程水平平滑
-			animWrapperAutoHeightSetting:autoHeightSetting, //  默认为true
+			// TODO
+			// 		设置为false时，总是会有闪屏,待解决
+			animWrapperAutoHeightSetting:true, //  默认为true
 			containerHeighTimmer:true,
 			tapTrigger:'.not-available'
 		});

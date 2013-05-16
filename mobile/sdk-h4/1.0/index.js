@@ -258,9 +258,11 @@ KISSY.config({
 		wrapUrl: function(url){
 			var that = this;
 			var nsearch = S.unparam(new S.Uri(url).getQuery().toString());
+			var client_type = new S.Uri(url).getQuery().get('client_type');
+			var client_nav = new S.Uri(url).getQuery().get('client_nav');
 			S.mix(nsearch,{
-				client_type:that.client_type,
-				client_nav:that.client_nav
+				client_type:S.isUndefined(client_type)?that.client_type:client_type,
+				client_nav:S.isUndefined(client_nav)?that.client_nav:client_nav
 			});
 			url = new S.Uri(url).setQuery(S.param(nsearch)).toString();
 			return url;

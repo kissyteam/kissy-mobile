@@ -1,0 +1,118 @@
+<!doctype html>
+<html manifest="appcache.manifest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>无限制滚动列表</title>
+<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+<script>
+	KISSY.config({
+		packages:[
+			{
+				name:"mobile",
+				tag:"20130511",
+				path:"../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+			}
+		]
+	});
+</script>
+<link rel="apple-touch-icon" sizes="57x57" href="" />
+</head>
+
+<body>
+	<style type="text/css">
+		* { margin: 0; padding: 0; }
+		html , body { height: 100%; font-size: 14px; }
+		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
+
+		#km-scroll { width: 300px; padding: 0 10px; margin: 0 auto;  position: relative; }
+		#km-scroll-loading { height: 40px; margin-top: 10px; position: relative; border-top: 1px solid #eee; }
+		#km-scroll-loading span , #km-scroll-loading em { position: absolute; width: 60px; left: 50%; top: 13px; margin-left: -30px; font-style: normal;}
+		#km-scroll-status  img { position: absolute; right: 50px; top: 6px; -webkit-animation: loading 2s infinite linear; }
+		@-webkit-keyframes loading {
+			from {
+				-webkit-transform: rotate(0deg) translateZ(0);	
+			}	
+			to {
+				-webkit-transform: rotate(360deg) translateZ(0);	
+			}
+		}
+
+		.customBox { padding-top: 10px; }
+		.customBox  h3 { line-height: 20px; }
+		.customBox .content { line-height: 1.5; margin-top: 6px; }
+		.customBox .pic { margin-top: 10px; }
+
+		.hidden { display: none; }
+	</style>
+
+	<h1>无限制滚动列表</h1>
+
+	<!-- 无限滚动列表包裹器{{ -->
+	<section id="km-scroll">
+		<!-- 子包裹器{{ -->
+		<div id="km-pannal">
+			<div id="km-content">
+				<!-- 最小显示单元{{ -->
+				<div class="km-scroll-unit">
+					<div class="customBox">
+						<h3><a href="#">@坏先生图片文集</a></h3>
+						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+						<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+					</div>
+					<div class="customBox">
+						<h3><a href="#">@坏先生图片文集</a></h3>
+						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+						<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+					</div>
+					<div class="customBox">
+						<h3><a href="#">@坏先生图片文集</a></h3>
+						<div class="content">有的人因为太重要，便选择做朋友，因为朋友永远比恋人走的远。</div>
+						<div class="pic"><img src="scroll.jpg" width="200" height="150" /></div>
+					</div>
+				</div>
+				<!-- 最小显示单元}} -->	
+			</div>
+			
+			
+			<!-- 加载更多{{ -->
+			<div id="km-scroll-loading">
+				<span>更多...</span>
+				<div id="km-scroll-status" class="hidden"><em>加载中...</em><img src="loading.png" /></div>
+			</div>
+			<!-- 加载更多}} -->
+
+		</div>
+		<!-- 子包裹器}} -->
+	</section>
+	<!-- 无限滚动列表包裹器}} -->
+
+	<script>
+
+		KISSY.use('mobile/no-limit-scroll/1.0/' , function(S , Scroll) {
+
+			var myscroll = new Scroll({
+				threshold: 5,
+				initWrapHeight: function() {
+					window.scrollTo(0 , 1);
+					return window.innerHeight - 40 + 'px';
+				},
+				getMoreInfo: function() {
+					// this 指向当前实例对象
+					var self = this;
+					S.io.get('moreinfo.php' , function(data) {
+						self.addContent(data);
+
+						// 恢复加载更多区域 的初始状态 (必须)
+						self.resetLoad();
+					});
+
+				}
+			});
+		});
+
+	</script>
+</body>
+</html>

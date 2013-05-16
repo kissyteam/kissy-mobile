@@ -24,6 +24,7 @@
 <body>
 <!--kdk{{-->
 <style>
+/*
 #iscroll-wrapper {
 	position:absolute; 
 	z-index:1;
@@ -31,6 +32,7 @@
 	width:100%;
 	bottom:0px;
 }
+*/
 </style>
 <?php
 	if((isset($_GET['client_nav']) && $_GET['client_nav'] == 'true') || !isset($_GET['client_nav'])){
@@ -140,14 +142,26 @@ Host.set_back();
 
 <script>
 
-	// iScroll 实例
-	var myScroll;
-
-
 	KISSY.use('mobile/app/1.2/,mobile/iscroll/',function(S,AppFramwork,iScroll){
+
+		var widthIscroll = false;
+
+
+		var t = new S.Uri(window.location.href).getQuery().get('iscroll');
+		if(!S.isUndefined(t)){
+			widthIscroll = true;
+		}
+
+
+		var initIscroll = function(){
+
+		};
 
 		AppFramwork.includeOnce(function(){
 			var app = this;
+			if(!widthIscroll){
+				return;
+			}
 			if(app.isSinglePage()){
 				return;
 			}
@@ -165,6 +179,23 @@ Host.set_back();
 		});
 
 		AppFramwork.startup(function(){
+			if(!widthIscroll){
+				return;
+			}
+			if(widthIscroll){
+				if(Host.nav_exist()){
+					var top = '44px';
+				}else {
+					var top = '0px';
+				}
+				S.one('#iscroll-wrapper').css({
+					position:'absolute',
+					'z-index':1,
+					top:top,
+					width:'100%',
+					bottom:'0px'
+				});
+			}
 
 			var app = this;
 
@@ -175,23 +206,33 @@ Host.set_back();
 			// {{
 			// 从iscrolldemo中抄过来的代码
 			function loaded() {
-				myScroll = new iScroll('iscroll-wrapper');
+				if(!S.isUndefined(S.myScroll)){
+					S.myScroll.destroy();
+				}
+				S.myScroll = new iScroll('iscroll-wrapper');
 			}
 
-			document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+			// document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+			S.Event.on(document,'touchmove',function(e){
+				e.preventDefault();
+			});
 
 			S.ready(function(){
 				loaded();
 				// 恢复历史高度
-				myScroll.scrollTo(0,Number(app.get('storage').get('scrollY')),0);
+				S.myScroll.scrollTo(0,Number(app.get('storage').get('scrollY')),0);
 			});
 			// }}
 
 		});
 
 		AppFramwork.teardown(function(data){
+			if(!widthIscroll){
+				return;
+			}
+			S.Event.detach(document,'touchmove');
 			// 退出时记录离开时的iscroll高度
-			this.get('storage').set('scrollY',String(myScroll.y));
+			this.get('storage').set('scrollY',String(S.myScroll.y));
 		});
 	});
 

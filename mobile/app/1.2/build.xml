@@ -14,7 +14,23 @@
 
     <import file="../../common.xml"/>
 
-    <target name="build" depends="getversion,getname,common.build">
+    <target name="build" depends="getversion,getname,startup,common.build,teardown">
+    </target>
+
+	<!--将demo移出，避免demo中的js被打包-->
+    <target name="startup">
+		<mkdir dir="../tmp/" />
+		<move todir="../tmp/">
+			 <fileset dir="demo"/>
+		</move>
+    </target>
+
+	<!--将demo移回-->
+    <target name="teardown">
+		<mkdir dir="demo" />
+		<move todir="demo/">
+			<fileset dir="../tmp"/>
+		</move>
     </target>
 
 	<!--项目文件编码-->

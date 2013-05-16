@@ -55,6 +55,7 @@ Host.set_back();
 	<p><a class="btn btn-primary" onclick="Host.set_icon('http://img04.taobaocdn.com/tps/i4/T17Qt6XkXXXXXXXXXX-70-30.png',function(){alert('ok');})" href="javascript:void(0)">set_icon(img,callback)</a></p>
 	<p><a class="btn btn-primary" onclick="Host.open('test.php?client_nav=false')" href="javascript:void(0)">不显示H5导航</a></p>
 	<p><a href="b.php?a=1&b=2">普通链接跳转</a></p>
+<p>除了icon之外，其他地方的callback不考虑</p>
 
 <p>
 App 给H5 传参数，指定环境:
@@ -110,6 +111,7 @@ Host.pushBack('set_icon',{
 	// 全局默认有一个App，这个App可以是H5-sdk提供的，也可以是native提供的
 
 	KISSY.use('mobile/app/1.2/',function(S,AppFramwork){
+		return;
 
 		AppFramwork.startup(function(){
 			/*

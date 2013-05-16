@@ -328,20 +328,6 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 		},
 		callStartup:function(path){
 			var self = this;
-			// added by 栋寒，只在App场景下使用，用hash来标识view，可能会不准确
-			self[location.hash] = {
-				node: self.get('page'),
-				viewHeight: 'fixed',
-				config: function(obj) {
-					obj = {
-						viewHeight: (typeof obj.viewHeight === 'undefined' || obj.viewHeight !== 'auto') ? 'fixed' : 'auto'
-					};
-					for (var i in obj) {
-						this[i] = obj[i];
-						//self[location.hash][i] = obj[i];
-					}
-				}
-			};
 
 			if(S.isUndefined(path)){
 				path = self.get('viewpath');
@@ -366,12 +352,6 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			if(S.isFunction(cb)){
 				// cb.call(self[location.hash],param) ?不可取
 				cb.call(self,param);
-				// added by 栋寒
-				S.later(function() {
-					if(self[location.hash]){
-						self.slide.setViewSize(self[location.hash]['viewHeight']);
-					}
-				} , 0);
 			}
 
 			return this;
@@ -1079,6 +1059,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 					if(self.get('forceReload')){
 						self.slide.remove(self.slide.length - 2);
 					}
+					alert(self.slide.animwrap.height());
 					setTimeout(function(){
 						self.callReady();
 					},0);
@@ -1232,6 +1213,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 							if(S.isFunction(callback)){
 								callback.call(self.slide,self.slide);
 							}
+
 							if(self.get('forceReload')){
 								self.slide.remove(self.slide.length - 2);
 							}

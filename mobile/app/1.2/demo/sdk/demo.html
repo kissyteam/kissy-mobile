@@ -7,15 +7,24 @@
 <!--[if !IE]><!--><html><!--<![endif]-->
 <head>
 	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<title></title>
 </head>
 <body>
 
 
 	<ul>
-		<li><a href="mb.php">框架页动画（带iscroll）</a> for iphone only</li>
-		<li><a href="a.php">单页面，带导航</a>，所有环境</li>
-		<li><a href="a.php?client_nav=false">单页面，无导航</a>，所有环境</li>
+		<li><a href="mb.php">框架页动画（无iscroll）</a>，<a href="mb.php?bachi=true">debug模式</a>， for iphone only</li>
+		<li><a href="mb.php?iscroll=true">框架页动画（带iscroll）</a>， <a href="mb.php?iscroll=true&bachi=true">debug模式</a>，for iphone only</li>
+		<li><a href="a.php">单页面，带导航，无iscroll</a>，<a href="a.php?bachi=true">debug模式</a>，所有环境</li>
+		<li><a href="a.php?iscroll=true">单页面，带导航，带iscroll</a>，<a href="a.php?iscroll=true&bachi=true">debug模式</a>，所有环境</li>
+		<li><a href="a.php?client_nav=false">单页面，无导航，无iscroll</a>，<a href="a.php?client_nav=false&bachi=true">debug模式</a>，所有环境</li>
+		<li><a href="a.php?client_nav=false&iscroll=true">单页面，无导航，带iscroll</a>，<a href="a.php?client_nav=false&iscroll=true&bachi=true">debug模式</a>，所有环境</li>
+		<li><a href="../lottery/demo/app.html">彩票应用（v1.2）</a></li>
+		<li><a href="../../../1.1/demo/lottery/demo/app.html">彩票应用（v1.1）</a></li>
 	</ul>
 
 	内嵌native的页面，调页面时应当传参client_type=ios|android

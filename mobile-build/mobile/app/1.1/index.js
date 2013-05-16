@@ -8,7 +8,7 @@
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/index", function (S,Slide) {
+KISSY.add("mobile/app/1.1/index", function (S,Slide) {
 
 	// Jayli TODO: Android下未完全测试
 
@@ -543,7 +543,6 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 						return true;
 					}
 					e.preventDefault();
-					
 					// 增加超链接上定义slide方向
 					// 如果dir不是back\forward之一，则执行默认进入操作
 					// <a href="url" dir="back"></a>
@@ -1185,7 +1184,7 @@ KISSY.add("mobile/app/1.0/index", function (S,Slide) {
 
 /*jshint browser:true,devel:true */
 
-KISSY.add('mobile/app/1.0/kissy2yui',function(S){
+KISSY.add('mobile/app/1.1/kissy2yui',function(S){
 
 	"use strict";
 
@@ -1291,7 +1290,7 @@ KISSY.add('mobile/app/1.0/kissy2yui',function(S){
 
 /*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
 
-KISSY.add("mobile/app/1.0/slide",function(S){
+KISSY.add("mobile/app/1.1/slide",function(S){
 
 	"use strict";
 
@@ -1945,10 +1944,10 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 			}
 
 			// 绑定窗口resize事件 
-			S.Event.on('resize',function(e){
+			S.Event.on(window,'resize',function(e){
 				self.fixSlideSize(self.currentTab);
 				self.relocateCurrentTab();
-			},window);
+			});
 
 			// 绑定判断switch发生的时机
 			self.on('beforeSwitch',function(o){
@@ -2920,7 +2919,7 @@ KISSY.add("mobile/app/1.0/slide",function(S){
 	requires:['node','event','json','./util','./kissy2yui']	
 });
 
-KISSY.add('mobile/app/1.0/util',function(S){
+KISSY.add('mobile/app/1.1/util',function(S){
 
 	"use strict";
 

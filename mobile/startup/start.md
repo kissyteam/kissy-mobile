@@ -145,6 +145,8 @@
 
 <hr class="smooth large" />
 
+<img src="http://img03.taobaocdn.com/tps/i3/T1KbGFXvlbXXcJX92I-400-400.gif" width=300 height=300 />
+
 ----------------------完成任务分割线------------------------
 
 如果你还想继续折腾，继续往下阅读

@@ -11,7 +11,7 @@
                 <a href="/">首页</a>
               </li>
               <li>
-                <a href="/#">起步</a>
+                <a href="/markdown.php?mobile/startup/guide.md">起步</a>
               </li>
               <li>
                 <a href="markdown.php?mobile/startup/start.md">开发说明</a>

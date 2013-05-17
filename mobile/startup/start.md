@@ -145,6 +145,8 @@
 
 <hr class="smooth large" />
 
+**如果你的组件依赖了第三方的库，请参照[首页的第三方库](http://mobile.kissyui.com)列表，通过KISSY依赖载入**
+
 <img src="http://img03.taobaocdn.com/tps/i3/T1KbGFXvlbXXcJX92I-400-400.gif" width=300 height=300 />
 
 ----------------------完成任务分割线------------------------

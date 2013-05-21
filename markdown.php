@@ -1734,8 +1734,18 @@ software, even if advised of the possibility of such damage.
 //by jayli
 header('Content-Type: text/html');
 
-$arr[] = file_get_contents($_SERVER['QUERY_STRING']);
+$search = $_SERVER['QUERY_STRING'];
+$split_a= explode("&",$search);
+$mdfile = "";
+foreach ($split_a as $k){
+	if(preg_match('/.+\.(md|markdown)$/',$k)){
+		$mdfile = $k;
+	}
+}
+
+$arr[] = file_get_contents($mdfile);
 $text= join("",$arr);
+
 $my_html = Markdown($text);
 //$my_html = SmartyPants(Markdown($my_text));
 echo <<<HTML
@@ -1779,7 +1789,12 @@ echo <<<HTML
 
 HTML;
 
-echo $my_html;
+if($mdfile == ""){
+	echo "<h2>404</h2>";
+} else {
+	echo $my_html;
+}
+
 
 echo "</div><!--/row-->";
 include("tools/skin/sidebar.php");

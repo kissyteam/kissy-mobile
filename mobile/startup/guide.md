@@ -13,8 +13,13 @@
 		});
 	</script>
 
+## 调试
+
+url带参数`url?ks-debug`
+
 ## Nothing More
 
 - [第三方模块列表](http://mobile.kissyui.com)
 - [第一方模块列表](http://mobile.kissyui.com/#mobile/startup/components.html)
+
 

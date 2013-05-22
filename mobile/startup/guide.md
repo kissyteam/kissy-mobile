@@ -4,7 +4,7 @@
 
 	<script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js"></script>
 
-## 调用Zoo提供的模块
+## 调用KS Mobile提供的模块
 
 	<script>
 		// 将Tip模块引入进来，回调中传入KISSY对象和Tip构造器

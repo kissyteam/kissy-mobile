@@ -8,7 +8,7 @@
 - Version 1.2
 - Author 拔赤
 - Update 2013-05-15
-- [Demo with SDK](mobile/app/1.2/demo/sdk/demo.html)
+- [Demo with SDK](mobile/app/1.2/demo/sdk/demo.html)，[Source](https://github.com/kissyteam/kissy-mobile/tree/master/mobile/app/1.2/demo/sdk)
 - [Demo](mobile/app/1.2/demo/simple/mb.html)
 - [1.0版文档](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)
 
@@ -20,7 +20,7 @@
 
 - 单页面，运行于浏览器环境，可以是iphone和android里的浏览器，类似传统的wap页
 - 单页面，运行于App Native的 WebView内，Native带动转场动画
-- 多页面，运行于iPhone中的safari里，由浏览器本身驱动转场动画，运行于ios环境内。**多页面的实现原理参照[文档1.0版](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)**
+- 多页面，运行于iPhone中safari里，由浏览器本身驱动转场动画，运行于ios环境。**多页面的实现原理参照[文档1.0版](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)**
 
 三个概念：框架（AppFramework）/页面（WebView）/SDK（Host）
 
@@ -515,6 +515,16 @@ url中带有一些参数，来告知页面当前的运行环境，和是否带�
 注意：在多页面环境中，导航始终存在，但导航内容的提供，应当包含在页面中，而非框架里
 
 ## SDK 方法集
+
+SDK引用地址：
+
+`sdk-h4`
+
+	http://a.tbcdn.cn/s/kissy/mobile/sdk-h4/1.0/index-min.js
+
+`sdk-h5`
+
+	http://a.tbcdn.cn/s/kissy/mobile/sdk-h5/1.0/index-min.js
 
 SDK提供了对普通链接（a标签）的事件监听，a标签属性的写法有三种。
 

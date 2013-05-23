@@ -7,7 +7,7 @@
 
 
 
-KISSY.use('ajax,node,sizzle,event',function(S){
+KISSY.use('ajax,node,sizzle,event,json',function(S){
 
 	var hash = function(str){
 		return str.replace(/[\/\.]/ig,'');
@@ -51,9 +51,19 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 	};	
 
 	var showGallerys = function(){
+		if(new S.Uri(window.location.href).getQuery().get('debug') !== undefined ){
+			var r = 'repos.debug.json';
+		}else{
+			var r = 'repos.json';
+		}
 		S.IO({
-			url:'/tools/skin/repos.json',	
+			url:'/tools/skin/getrepos.php?'+r,	
 			success:function(d){
+				if(typeof d === 'string'){
+					var data = S.JSON.parse(d);
+				} else {
+					var data = d;
+				}
 				S.one('#doc').html('<h2>Components</h2>').append([
 					'<div>',
 					'	<table class="table" id="gallerys">',
@@ -70,14 +80,23 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 						'<td>',
 							'',
 						'</td>',
+						'<td>',
+							'',
+						'</td>',
 						'</tr>',
 					'</table>',
 					'</div>'
 				 ].join(''));
-				S.each(d,function(v,k){
+				S.each(data,function(v,k){
+					///////////////////////////////////////{{
+					// 预处理部分
 					if(v.name == 'kpm'){
 						return;
 					}
+					if(v.name == 'app'){
+						v.html_url = '/markdown.php?mobile/app/1.2/index.md';
+					}
+					///////////////////////////////////////}}
 					S.one('#gallerys').append([
 						'<tr>',
 						'<td>',
@@ -87,10 +106,13 @@ KISSY.use('ajax,node,sizzle,event',function(S){
 							v.description,
 						'</td>',
 						'<td>',
-							'<a href="'+v.html_url+'">source</a>',
+							'<a href="'+v.html_url+'">source</a> ',
 						'</td>',
 						'<td>',
-							'<a href="/mobile/'+v.name+'/">doc</a>',
+							'<a href="/direct.php?type=demo&name='+v.name+'">demo</a>',
+						'</td>',
+						'<td>',
+							'<a href="/direct.php?type=doc&name='+v.name+'">doc</a>',
 						'</td>',
 						'</tr>'
 					].join(''));

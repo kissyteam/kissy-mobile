@@ -23,13 +23,13 @@
 
 ### 第一部分：创建属于你的组件项目
 
-1，到<https://github.com/kissymobileteam>创建一个项目（若无权限，找拔赤），起好你的组件名称
+1，起好你的组件的名字，到你自己github中创建一个项目（以后的开发维护都基于这个库）
 
-2，fork 这个项目到你自己的库里（以后的开发都基于你自己fork的项目）
+2，fork你的项目到<https://github.com/kissymobileteam>（若无权限，找拔赤，常胤，完颜，鬼道）
 
-3，进入[kpm](https://github.com/kissymobileteam/kpm/issues)项目，创建一个issue，以[app](https://github.com/kissymobileteam/app)项目为例
+3，进入[kpm](https://github.com/kissymobileteam/kpm/issues)项目，创建一个issue（若无权限，找拔赤，常胤，完颜，鬼道），以[app](https://github.com/kissymobileteam/app)项目为例
 
-将你fork后的库的项目路径拷贝下来
+将你的库的项目路径拷贝下来
 
 ![](http://img03.taobaocdn.com/tps/i3/T1na1uXApjXXc07tYt-569-209.jpg)
 
@@ -119,11 +119,11 @@
 
 打包成功后，会在build目录下生成index.js和index-min.js。
 
-2，将打包后的代码提交到你的git库里，并pull request到共用组项目中
+2，将打包后的代码提交到你的git库里，并pull request到共用组项目(<https://github.com/kissygalleryteam>)中
 
 ![](http://img01.taobaocdn.com/tps/i1/T1wJmIXv4bXXacm02t-569-213.png)
 
-3，进入[主项目](https://github.com/kissymobileteam)中（若无权限，通知拔赤/承玉/剑平来合并），merge代码
+<del>3，进入[主项目](https://github.com/kissymobileteam)中（若无权限，通知拔赤/常胤/完颜操作），merge代码</del>，可忽略
 
 4，进入[kpm](http://kpm.f2e.taobao.net)，发布你的项目代码
 
@@ -132,6 +132,8 @@
 <hr class="smooth large" />
 
 ### 第五部分：文档同步到服务器
+
+开发者可忽略
 
 将你的项目添加为[kissymobile主干代码](https://github.com/kissyteam/kissy-mobile)的子项目
 

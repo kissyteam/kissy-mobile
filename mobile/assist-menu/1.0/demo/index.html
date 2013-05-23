@@ -127,11 +127,18 @@
 
 	<script>
 
-		KISSY.use('node , mobile/iscroll/' , function(S , node , Scroll) {
-			window.scrollTo(0 , 1);
+		KISSY.use('mobile/assist-menu/1.0/' , function(S , AssistMenu) {
+			/*window.scrollTo(0 , 1);
 			var winH = window.innerHeight , titH = S.one('h1').height();
 			S.one('#shareList').css('height' , winH - titH + 'px');
-			var scroll = new Scroll('shareList')
+			var scroll = new Scroll('shareList')*/
+
+			var s = new AssistMenu({
+				
+			});
+			s.on('trig' , function (e) {
+				alert(1)	
+			});
 
 		});
 

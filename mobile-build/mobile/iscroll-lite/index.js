@@ -280,6 +280,10 @@ iScroll.prototype = {
 			duration = (e.timeStamp || Date.now()) - that.startTime,
 			newPosX = that.x,
 			newPosY = that.y,
+            //bug: while touchmove event is prevent bubble, that.moved == false, then fires click event
+            //fixed by huya
+            absMovedX = Math.abs(point.pageX - that.pointX),
+            absMovedY = Math.abs(point.pageY - that.pointY),
 			newDuration;
 
 		that._unbind(MOVE_EV);
@@ -288,7 +292,8 @@ iScroll.prototype = {
 
 		if (that.options.onBeforeScrollEnd) that.options.onBeforeScrollEnd.call(that, e);
 
-		if (!that.moved) {
+		// if (!that.moved) {
+        if (!that.moved && absMovedX < 6 && absMovedY < 6) {
 			if (hasTouch) {
 				// Find the last touched element
 				target = point.target;

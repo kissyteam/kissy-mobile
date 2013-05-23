@@ -151,6 +151,8 @@ pps:如果是macOS，可能会报一堆错误，有可能是node版本和yo工�
 
 **如果你的组件依赖了第三方的库，请参照[首页的第三方库](http://mobile.kissyui.com)列表，通过KISSY依赖载入**
 
+**可爱的翰文同学制作了kissy-gallery的入驻视频：<http://v.youku.com/v_show/id_XNTYwMzgxNDI4.html>**，kissy mobile的入驻过程和这个基本完全一样
+
 <img src="http://img03.taobaocdn.com/tps/i3/T1KbGFXvlbXXcJX92I-400-400.gif" width=300 height=300 />
 
 ----------------------完成任务分割线------------------------

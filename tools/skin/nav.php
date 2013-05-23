@@ -35,7 +35,7 @@
     </div>
 
 <style>
-#doc .em {
+#doc em {
 	font-weight:bold;
 	color:crimson;
 }

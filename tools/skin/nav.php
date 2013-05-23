@@ -34,3 +34,9 @@
       </div>
     </div>
 
+<style>
+#doc em {
+	font-weight:bold;
+	color:crimson;
+}
+</style>

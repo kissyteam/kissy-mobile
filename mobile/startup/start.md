@@ -25,9 +25,9 @@
 
 1，起好你的组件的名字，到你自己github中创建一个项目（以后的开发维护都基于这个库）
 
-2，fork你的项目到<https://github.com/kissymobileteam>（若无权限，找拔赤，常胤，完颜，鬼道）
+2，（管理员辅助）fork你的项目到<https://github.com/kissymobileteam>（若无权限，找拔赤，常胤，完颜，鬼道）
 
-3，进入[kpm](https://github.com/kissymobileteam/kpm/issues)项目，创建一个issue（若无权限，找拔赤，常胤，完颜，鬼道），以[app](https://github.com/kissymobileteam/app)项目为例
+3，（管理员辅助）进入[kpm](https://github.com/kissymobileteam/kpm/issues)项目，创建一个issue（若无权限，找拔赤，常胤，完颜，鬼道），以[app](https://github.com/kissymobileteam/app)项目为例
 
 将你的库的项目路径拷贝下来
 
@@ -37,7 +37,7 @@
 
 ![](http://img04.taobaocdn.com/tps/i4/T1gbyIXshdXXb8cewg-495-212.png)
 
-4，将issue关联至kpm系统（kissy publish management）
+4，（管理员辅助）将issue关联至kpm系统（kissy publish management）
 
 进入<http://kpm.f2e.taobao.net>，密码问拔赤要，并保存到你的浏览器中
 
@@ -58,9 +58,11 @@
 	npm install yo grunt-cli -g
 	npm install generator-kissy-gallery -g
 
-若第一步报错，需要安装bower
+ps:若第一步报错，需要安装bower
 
 	npm install -g yo grunt-cli bower
+
+pps:如果是macOS，可能会报一堆错误，有可能是node版本和yo工具的冲突，把用户主目录下的`package.json`文件删掉再安装工具。
 
 2，创建组件目录结构
 

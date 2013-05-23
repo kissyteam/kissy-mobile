@@ -111,7 +111,6 @@ Host.pushBack('set_icon',{
 	// 全局默认有一个App，这个App可以是H5-sdk提供的，也可以是native提供的
 
 	KISSY.use('mobile/app/1.2/',function(S,AppFramwork){
-		return;
 
 		AppFramwork.startup(function(){
 			/*
@@ -123,11 +122,13 @@ Host.pushBack('set_icon',{
 
 			var app = this;
 
+			/*
 			S.log(app.get);
 
 			S.log(app.get('storage').get('aaa'));
 		
 			app.get('storage').set('aaa',1);
+			 */
 			
 		});
 
@@ -142,6 +143,7 @@ Host.pushBack('set_icon',{
 		});
 
 		AppFramwork.teardown(function(data){
+			console.log('test teardown');
 		});
 		
 	});

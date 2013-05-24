@@ -113,6 +113,7 @@ Host.pushBack('set_icon',{
 	KISSY.use('mobile/app/1.2/',function(S,AppFramwork){
 
 		AppFramwork.startup(function(){
+			console.info('page startup');	
 			/*
 			S.one('#id').css({
 				height:S.DOM.viewportHeight() + 'px',
@@ -133,7 +134,6 @@ Host.pushBack('set_icon',{
 		});
 
 		AppFramwork.ready(function(){
-			S.log('page ready');	
 			/*
 			S.one('#id').css({
 				height:'auto'

@@ -99,20 +99,33 @@
 </div>
 <script>
 KISSY.use('mobile/app/1.2/',function(S,AppFramework){
+	var Nav;
 	AppFramework.startup(function(){
+		Nav = this.get('page').one('.J-top-nav');
 		if(this.slide && this.slide.transitions){
-			this.get('page').one('.J-top-nav').appendTo(S.one('body'));
+			Nav = this.get('page').one('.J-top-nav');
+			Nav.appendTo(S.one('body'));
 		}
 	});
 	AppFramework.ready(function(){
+		// alert(Nav);
 		if(this.slide && this.slide.transitions){
-			this.get('page').one('.J-top-nav').appendTo(this.get('page').get('.J-mok'));
-			this.get('page').one('.J-top-nav').css({
+			Nav.appendTo(this.get('page').get('.J-mok'));
+			Nav.css({
 				width:this.slide.animcon.width() + 'px'
 			});
-			this.get('page').one('.J-top-nav .u-nav').css({
+			Nav.one('.u-nav').css({
 				width:'100%'
 			});
+		}
+	});
+	AppFramework.teardown(function(){
+		if(this.slide && this.slide.transitions){
+			var con = S.one('.J-top-nav');
+			setTimeout(function(){
+				Nav.remove();
+			},600);
+			// this.get('page').one('.J-top-nav').appendTo(this.get('page'));
 		}
 	});
 });

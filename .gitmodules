@@ -1,3 +1,6 @@
-[submodule "slide"]
-	path = mobile/slide
-	url = git://github.com/jayli/slide.git
+[submodule "photoswipe"]
+	path = mobile/photoswipe
+	url = https://github.com/jayli/photoswipe.git
+[submodule "sidebar"]
+	path = mobile/sidebar
+	url = https://github.com/enson/sidebar.git

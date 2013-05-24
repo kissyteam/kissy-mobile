@@ -247,6 +247,10 @@ teardown -> destroy
 		AppFramework.startup(function(data){
 			var app = this;
 
+			app.forward();
+			app.back();
+			app...
+
 			// 上下文2
 		});
 
@@ -389,7 +393,14 @@ Ajax取各自页面时的根路径，如果不传，和框架所在的目录路�
 
 ### 实例方法
 
-这里列出了AppFramework实例的方法
+这里列出了AppFramework实例的方法，如果引入了SDK，可以直接调用`App.dosth()`，如果没有引入SDK，可以这样调用：
+
+	AppFramework.startup(function(){
+		var App = this;
+		App.dosth();
+	});
+
+方法列表：
 
 *error()* （未实现）
 
@@ -525,6 +536,8 @@ SDK引用地址：
 `sdk-h5`
 
 	http://a.tbcdn.cn/s/kissy/mobile/sdk-h5/1.0/index-min.js
+
+> SDK里包含了对AppFramework的初始化，引入了SDK之后，即引入了两个重要全局对象：`App`和`Host`。含义和用法参照下文api。
 
 SDK提供了对普通链接（a标签）的事件监听，a标签属性的写法有三种。
 

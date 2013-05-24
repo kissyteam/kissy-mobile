@@ -34,6 +34,12 @@
 		.shareList li { list-style: none; line-height: 48px; height: 48px; border-bottom: 1px dashed #e2e2e2; }
 		.shareList li span { float: left; margin-left: 15px; }
 		.shareList li button { width: 19px; height: 19px; background: url('images/icon.png') no-repeat; background-size: 19px 19px; border: 0 none; float: right; margin: 15px 10px 0 0; }
+
+		#assist-menu { position: absolute; width: 100%; left: 0; top: 0; }
+		#assist-menu .assist-menu-mask { position: absolute; width: 100%; height: 100%; background: #000; opacity: 0.4; left: 0; top: 0; }
+		#assist-menu-content { position: absolute; width: 100%; left: 0; bottom: 0; height: 183px; background: #e6e6e8; }
+		#assist-menu-content h4 { line-height: 44px; height: 44px; border-bottom: 1px solid #d3d4d6; }
+		#assist-menu-content li { line-height: 44px; height: 44px; border-bottom: 1px solid #d3d4d6; border-top: 1px solid #fff; }
 	</style>
 
 	<h1>辅助菜单</h1>
@@ -125,6 +131,20 @@
 
 	</section>
 
+	<!-- 辅助菜单{{ -->
+	<section id="assist-menu">
+		<div class="assist-menu-mask"></div>
+		<div id="assist-menu-content">
+			<h4>分享到</h4>
+			<ul>
+				<li>微信</li>
+				<li>新浪微博</li>
+				<li>优酷</li>
+			</ul>
+		</div>
+	</section>
+	<!-- 辅助菜单}} -->
+
 	<script>
 
 		KISSY.use('mobile/assist-menu/1.0/' , function(S , AssistMenu) {
@@ -137,7 +157,7 @@
 				
 			});
 			s.on('trig' , function (e) {
-				alert(1)	
+				var trigEle = e.trigElement;
 			});
 
 		});

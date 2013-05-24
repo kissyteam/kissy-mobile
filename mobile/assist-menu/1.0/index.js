@@ -19,6 +19,9 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 		trigSelector : {
 			value : 'button'	
 		},
+		menuWrap : {
+			value : '#assist-menu'		   
+		},
 		trigCallback : {
 			value : function () {}	
 		}
@@ -28,6 +31,16 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 	S.extend(AssistMenu , S.Base , {
 		init: function() {
 			this.bindEvent().bindCustomEvent();
+			this.setMenuRegion();
+		},
+		
+		setMenuRegion: function () {
+			var menu = S.one(this.get('menuWrap')) ,
+				winH = window.innerHeight;
+
+			menu.css({
+				height: winH + 'px'
+			});
 		},
 
 		bindEvent : function () {
@@ -51,11 +64,14 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				trigCallback = self.get('trigCallback');
 
 			self.on('trig' , function (e) {
-			//	trigCallback(e.trigElement);
 				alert(2)
 			});	
 
 			return self;
+		},
+
+		showMenu: function () {
+					  
 		}
 		
 

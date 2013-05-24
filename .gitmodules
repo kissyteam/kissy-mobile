@@ -4,3 +4,6 @@
 [submodule "sidebar"]
 	path = mobile/sidebar
 	url = https://github.com/enson/sidebar.git
+[submodule "smartmenu"]
+	path = mobile/smartmenu
+	url = https://github.com/satans17/smartmenu.git

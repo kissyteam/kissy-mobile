@@ -194,7 +194,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 					this.TEARDOWN[k] = cb;
 				}
 				*/
-				this.TEARDOWN[k].push(cb);
+				this.TEARDOWN[encodeURIComponent(k)].push(cb);
 			}
 		},
 		// 清空当前view的startup,ready,teardown
@@ -202,7 +202,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			var k = this.APP.get('viewpath');
 			this.STARTUP[k] = [];
 			this.READY[k] = [];
-			this.TEARDOWN[k] = [];
+			this.TEARDOWN[encodeURIComponent(k)] = [];
 		},
 		/**
 		 * 查询当前视图节点所对应URL中hash参数值或search参数值
@@ -240,6 +240,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 				}
 
 				self.slide = new Slide('MS',{
+					easing:'easeBoth',
 					autoSlide:false,
 					effect:self.get('anim')?'hSlide':'none',
 					touchmove:false,
@@ -365,14 +366,14 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			if(path === ''){
 				return;	
 			}
-			var cb = self.MS.TEARDOWN[path];
+			var cb = self.MS.TEARDOWN[encodeURIComponent(path)];
 			self.rememberPosition(path);
 
 			if(S.isArray(cb)){
 				S.each(cb,function(v,k){
-					setTimeout(function(){
+					// setTimeout(function(){
 						v.call(self,self);
-					},0);
+					// },0);
 				});
 			}
 
@@ -979,11 +980,16 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			}));
 
 			/*
+			// Android下暂时不考虑，若考虑，开启此句
 			if(S.UA.android && S.UA.android < 4.3){
 				self._androidHistoryMan();
 			}
 			*/
 			path = encodeURIComponent(path);
+			/**
+			 * TODO:执行下一帧的动作必须要在hashchange之前，但next中cleanup和callstartup又依赖hashchange
+			 * 暂时用next中的延时来实现，待改进
+			 */
 			self.next.apply(self,[path,param,callback]);
 
 			var state = self.recordSignet(1,path);
@@ -1060,14 +1066,14 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 						self.slide.remove(self.slide.length - 2);
 					}
 					alert(self.slide.animwrap.height());
-					setTimeout(function(){
+					// setTimeout(function(){
 						self.callReady();
-					},0);
+					// },0);
 				});
 				self.set('page',self.slide.getCurrentPannel());
-				setTimeout(function(){
+				// setTimeout(function(){
 					self.callStartup();
-				},0);
+				// },0);
 			}else{
 				self._go(path,'next',callback);
 			}
@@ -1107,14 +1113,14 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 					if(S.isFunction(callback)){
 						callback.call(self.slide,self.slide);
 					}
-					setTimeout(function(){
+					//setTimeout(function(){
 						self.callReady();
-					},0);
+					//},0);
 				});
 				self.set('page',self.slide.getCurrentPannel());
-				setTimeout(function(){
+				//setTimeout(function(){
 					self.callStartup();
-				},0);
+				//},0);
 			}else{
 				self._go(path,'prev',callback);
 
@@ -1163,15 +1169,15 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 				case 'prev':
 					self.slide.add(el,self.slide.currentTab);
 					self.slide.relocateCurrentTab(self.slide.currentTab + 1);
-					self.MS.cleanup();
-					S.execScript(html);
-					// TODO: 重新考虑，是否在prev动画执行完成之后调用initPageStorage和callStartup
-					// TODO：切换之前作执行，有何风险
 					setTimeout(function(){
-						self.initPageStorage();
-						self.callStartup();
-					},0);
-					setTimeout(function(){
+						self.MS.cleanup();
+						S.execScript(html);
+						// TODO: 重新考虑，是否在prev动画执行完成之后调用initPageStorage和callStartup
+						// TODO：切换之前作执行，有何风险
+						// setTimeout(function(){
+							self.initPageStorage();
+							self.callStartup();
+						// },0);
 						self.slide.removeHeightTimmer();
 						self.slide.previous(function(){
 							var that = this;
@@ -1194,15 +1200,25 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 					break;
 				case 'next':
 					// TODO: 只有异步加载新页面时，才会修正进入view的marginTop
+					console.info('next');
 					self._fixScrollTopBefore(el,prel);
 					self.slide.add(el);
-					self.MS.cleanup();
-					S.execScript(html);
+					/**
+					 * 增加settimeout的原因：
+					 * 		手动forward和back的时候，hashchange是在此处之后才运行
+					 * 		而cleanup()和callstartup()都依赖于hashchange后的值
+					 * 		因此
+					 * 			1，通过hashchange驱动的跳转永远正确
+					 * 			2，通过forward和back调用必须等待hashchange后执行cleanup和callstartup
+					 * 		等待时间粗设为150ms
+					 */
 					setTimeout(function(){
-						self.initPageStorage();
-						self.callStartup();
-					},0);
-					setTimeout(function(){
+						self.MS.cleanup();
+						S.execScript(html);
+						//setTimeout(function(){
+							self.initPageStorage();
+							self.callStartup();
+						//},0);
 						self.slide.removeHeightTimmer();
 						if(self.get('animWrapperAutoHeightSetting')){
 							window.scrollTo(0,0);
@@ -1237,19 +1253,19 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 					self.callDestroy();
 					self.MS.cleanup();
 					S.execScript(html);
-					setTimeout(function(){
+					// setTimeout(function(){
 						self.initPageStorage();
-					},0);
+					// },0);
 					callback.call(self.slide,self.slide);
 					self.slide.removeLast();
 					// self.slide.next(callback);
 					self.slide.animwrap.css({
 						'-webkit-transform':'none'
 					});
-					setTimeout(function(){
+					//setTimeout(function(){
 						self.callStartup();
 						self.callReady();
-					},0);
+					//},0);
 					break;
 				}
 

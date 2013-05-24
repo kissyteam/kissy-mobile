@@ -48,7 +48,11 @@ KISSY.config({
 				document.getElementsByTagName('title')[0].innerHTML = title;
 			}catch(e){}
 			if(that.nav_exist()){
-				App.get('page').one('.J-top-nav').one('.u-title span').html(title);
+				if(App.get('page').one('.J-top-nav')){
+					App.get('page').one('.J-top-nav').one('.u-title span').html(title);
+				} else {
+					S.one('.J-top-nav').one('.u-title span').html(title);
+				}
 			}
 		},
 		set_title : function(){

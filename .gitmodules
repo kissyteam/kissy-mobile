@@ -7,3 +7,6 @@
 [submodule "smartmenu"]
 	path = mobile/smartmenu
 	url = https://github.com/satans17/smartmenu.git
+[submodule "mobile/slide"]
+	path = mobile/slide
+	url = https://github.com/jayli/slide.git

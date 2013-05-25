@@ -183,6 +183,6 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-KISSY.add('mobile/backbone-localstorage/',function(){
+KISSY.add('mobile/backbone-localstorage/index',function(){
 	return Backbone.LocalStorage;
 });

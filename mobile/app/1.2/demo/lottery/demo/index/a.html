@@ -165,23 +165,32 @@
 			});
 		};
 
-        MS.startup(function(data) {
-			var foo = function(){
-				app.slide.animcon.css({
-					overflow:''	,
-					height:(S.DOM.viewportHeight()) + 'px'
-				});
-				app.slide.animcon.one('div').css({
-					overflow:''	,
-					height:(S.DOM.viewportHeight()) + 'px'
-				});
-			};
-			foo();
-			S.Event.on(window,'resize',function(){
-				foo();
+		MS.startup(function(data) {
+			this.config({
+				viewHeight: 'auto'
 			});
-
+			// 用于区分宿主模式：web\云os
+			var mode = MS.queryKey('mode');
+			switch (mode) {
+				case 'yunos':
+					yunosMode();		
+					break;	
+				case 'web':
+				default:
+					webMode();	
+					break;
+			}
+			alert(22);
+			S.one('#MS').css({
+				'overflow':'scroll'
+			});
 		});
+		MS.teardown(function(){
+			S.one('#MS').css({
+				'overflow':''
+			});
+		});
+
 
 	});
 	

@@ -27,6 +27,7 @@
 		html , body { height: 100%; font-size: 14px; }
 		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
 
+		/*----------固定样式-----------*/
 		#km-scroll { width: 300px; padding: 0 10px; margin: 0 auto;  position: relative; }
 		#km-scroll-loading { height: 40px; margin-top: 10px; position: relative; border-top: 1px solid #eee; }
 		#km-scroll-loading span , #km-scroll-loading em { position: absolute; width: 60px; left: 50%; top: 13px; margin-left: -30px; font-style: normal;}
@@ -99,10 +100,11 @@
 					window.scrollTo(0 , 1);
 					return window.innerHeight - 40 + 'px';
 				},
-				getMoreInfo: function() {
+				getMoreInfo: function(index) {
 					// this 指向当前实例对象
+					// this === myscroll  true
 					var self = this;
-					S.io.get('moreinfo.php' , function(data) {
+					S.io.get('moreinfo.php?p='+index , function(data) {
 						self.addContent(data);
 
 						// 恢复加载更多区域 的初始状态 (必须)

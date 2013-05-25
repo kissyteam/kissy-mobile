@@ -1,0 +1,13 @@
+{
+    "name": "tip",
+    "version": "1.0",
+    "desc": "mini提示层",
+    "cover": "",
+    "author": {
+        "name": "xijian.py",
+        "email": "xijian.py@taobao.com",
+        "page": "请修改作者个人首页"
+    },
+    "type": "kissy-pie",
+    "type-url": "http://abc.alibaba-inc.com/r/kissy-pie"
+}

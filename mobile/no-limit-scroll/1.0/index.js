@@ -30,12 +30,12 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 		},
 		initWrapHeight: {
 			value: function () {
-				S.log('iscroll包裹器还没有初始化高度');	   
+				throw new Error('iscroll包裹器还没有初始化高度,初始化时给值initWrapHeight');
 			}				
 		},
 		getMoreInfo: {
 			value: function(){
-				S.log('你还没有设置获取更多信息的方法')	   
+				throw new Error('初始化需要传入getMoreInfo句柄');
 			}			 
 		},
 		// 当scroll内部视图（最小显示单元）超过threshold时，则会触发优化操作
@@ -54,6 +54,10 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 		},
 		y: {
 			value: 0		
+		},
+		// 第几次请求数据
+		index:{
+			value: 0
 		}
 	};
 
@@ -114,7 +118,10 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 			var self = this;
 			// 是否在滚动至最底部以后才停止滚动的
 			if (self.get('trigMore').hasClass('hidden')) {
-				self.get('getMoreInfo').call(self);	
+				var index = self.get('index');
+				index ++;
+				self.set('index',index);
+				self.get('getMoreInfo').call(self,index);	
 				return;
 			}			 
 
@@ -127,7 +134,10 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 			self.get('trigMore').on('click' , function() {
 				S.one(this).addClass('hidden');
 				self.get('loadStatus').removeClass('hidden');
-				self.get('getMoreInfo').call(self);
+				var index = self.get('index');
+				index ++;
+				self.set('index',index);
+				self.get('getMoreInfo').call(self,index);
 			});		
 
 			self.on('afterYChange' , function(e) {
@@ -279,7 +289,7 @@ KISSY.add('mobile/no-limit-scroll/1.0/index' , function(S , iScroll) {
 
 } , {
 	requires: [
-		'mobile/iscroll/',
+		'mobile/iscroll-lite/',
 		'base',
 		'node',
 		'ajax'

@@ -598,6 +598,6 @@ else window.iScroll = iScroll;
 
 })();
 
-KISSY.add('mobile/iscroll-lite/',function(S){
+KISSY.add('mobile/iscroll-lite/index',function(S){
 	return iScroll;
 });

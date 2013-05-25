@@ -7,4 +7,4 @@
       </div>
     </footer>
 
-	<p><a href="https://github.com/kissyteam/kissy-mobile"><img style="z-index: 99999999; width: 149px; height:149px; position: absolute; top: -6px; left: -6px; border: 0;" src="tools/skin/forkme_left_green_007200.png" alt="Fork me on GitHub" data-original="tools/skin/forkme_left_green_007200.png"></a></p>
+<p><a href="https://github.com/kissyteam/kissy-mobile" target="_blank" class="github-ribbon"><img style="z-index:9999999;position: absolute; top: 0; right: 0; border: 0;" src="tools/skin/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a></p>

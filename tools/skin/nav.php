@@ -39,4 +39,13 @@
 	font-weight:bold;
 	color:crimson;
 }
+/* iPhone 及以下 */
+@media only screen and (max-width: 767px) {
+	#overview {
+		display:none;
+	}	
+	.speakerdeck-iframe {
+		display:none;
+	}
+}
 </style>

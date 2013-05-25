@@ -39,7 +39,7 @@
 
 4，（管理员辅助）将issue关联至kpm系统（kissy publish management）
 
-进入<http://kpm.f2e.taobao.net>，密码问拔赤要，并保存到你的浏览器中
+进入<http://kpm.f2e.taobao.net>，密码问拔赤/完颜/常胤，并保存到你的浏览器中
 
 进入mobile选项卡，添加issue id和组件名称（比如app）
 
@@ -58,7 +58,7 @@
 	npm install yo grunt-cli -g
 	npm install generator-kissy-gallery -g
 
-ps:若第一步报错，需要安装bower
+ps: 若第一步报错，需要安装bower
 
 	npm install -g yo grunt-cli bower
 
@@ -69,6 +69,9 @@ pps:如果是macOS，可能会报一堆错误，有可能是node版本和yo工�
 将第一部分创建的git仓库（空）clone到本地，进入到组件跟目录中，执行
 
 	yo kissy-gallery 1.0
+	npm install grunt-text-replace --save-dev
+
+拷贝[mobile.kissyui.com/tools/Gruntfile.js](http://mobile.kissyui.com/tools/Gruntfile.js)，覆盖组件根目录下的`Gruntfile.js`。（**重要**）
 
 过程中输入维护者姓名和邮箱，其中`yo kissy-gallery`为固定写法，`1.0`是你要开发组件的版本，生成好后的目录结构为：
 

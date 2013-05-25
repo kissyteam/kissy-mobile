@@ -575,6 +575,8 @@ window.Flipsnap = Flipsnap;
 
 })(window, window.document);
 
-KISSY.add('mobile/flipsnap/',function(S){
+KISSY.add('mobile/flipsnap/index',function(S){
 	return window.Flipsnap;
+},{
+	requires:['mobile/jquery/']
 });

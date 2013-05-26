@@ -17,13 +17,27 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 	// 给AssistMenu类增加默认属性
 	AssistMenu.ATTRS = {
 		trigSelector : {
-			value : 'button'	
+			value : '.trigMenu'	
 		},
 		menuWrap : {
 			value : '#assist-menu'		   
 		},
-		trigCallback : {
-			value : function () {}	
+		menuContent: {
+			value : '#assist-menu-content'	
+		},
+		mask: {
+			value: '.assist-menu-mask'	
+		},
+		slideTime : {
+			value : 200	,
+			setter : function (val) {
+				if (typeof val !== 'number') {
+					return 200;	
+				} else if (val < 100 || val > 1000) {
+					return 200;	
+				}
+				return val;
+			}
 		}
 	};
 
@@ -31,21 +45,41 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 	S.extend(AssistMenu , S.Base , {
 		init: function() {
 			this.bindEvent().bindCustomEvent();
-			this.setMenuRegion();
+			this.setWrapRegion().setMenuInitStatus();
 		},
 		
-		setMenuRegion: function () {
+		setWrapRegion: function () {
 			var menu = S.one(this.get('menuWrap')) ,
 				winH = window.innerHeight;
 
 			menu.css({
 				height: winH + 'px'
 			});
+
+			return this;
+		},
+
+		setMenuInitStatus : function () {
+			var menuCon = S.one(this.get('menuContent')) , 
+				w = menuCon.width() ,
+				h = menuCon.height(),
+				duration = this.get('slideTime') / 1000 + 's';
+
+			menuCon.css({
+				'left' : '50%',
+				'margin-left' : -w/2 + 'px',
+				'bottom' : '0',
+				'-webkit-transition' : '-webkit-transform ' + duration + ' ease-in-out',
+				'-webkit-transform' : 'translate3d(0 , ' + h + 'px, 0)'
+			});
+
+			return this;
 		},
 
 		bindEvent : function () {
 			var self = this ,
-				trig = S.all(this.get('trigSelector'));
+				trig = S.all(this.get('trigSelector')) , 
+				menu = S.one(this.get('menuWrap'));
 
 			trig.on('click' , function (e) {
 				var obj = S.one(e.currentTarget).prev(); 
@@ -54,6 +88,8 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 					trigElement : obj	
 				})	
 			});
+
+			menu.delegate(  'click' , self.get('mask') , self.hideMenu , self);
 
 			return self;
 			
@@ -64,14 +100,51 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				trigCallback = self.get('trigCallback');
 
 			self.on('trig' , function (e) {
-				alert(2)
+				self.showMenu();
 			});	
 
 			return self;
 		},
 
 		showMenu: function () {
-					  
+			var self = this ,
+				menu = S.one(this.get('menuWrap')) , 
+				page = S.one('body'),
+				winH = window.innerHeight;
+			
+			menu.removeClass('hidden');
+			page.css({
+				'height' : winH + 'px',
+				'overflow' : 'hidden'
+			});
+			this.buildAnim('show');
+			
+		},
+
+		buildAnim : function (act) {
+			var menuCon = S.one(this.get('menuContent')) , 
+				h = menuCon.height() ,
+				y = act === 'show' ? '0' : h + 'px';
+
+			menuCon.css({
+				'-webkit-transform' : 'translate3d(0 , ' + y  + ' , 0)'	
+			});
+		},
+
+		hideMenu : function () {
+			var page = S.one('body') , 
+				time = this.get('slideTime') , 
+				menuWrap = S.one(this.get('menuWrap')); 
+
+			// 不传任何参数则代表构建消失动画
+			this.buildAnim();
+			S.later(function () {
+				menuWrap.addClass('hidden');	
+				page.css({
+					'height' : 'auto',
+					'overflow' : 'auto'
+				});
+			} , time);
 		}
 		
 

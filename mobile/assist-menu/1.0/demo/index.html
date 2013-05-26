@@ -25,7 +25,7 @@
 	<style type="text/css">
 		* { margin: 0; padding: 0; }
 		html , body { height: 100%; font-size: 14px; }
-		.hidden { display: none; }
+		.hidden { visibility: hidden; }
 
 		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
 
@@ -37,9 +37,9 @@
 
 		#assist-menu { position: absolute; width: 100%; left: 0; top: 0; }
 		#assist-menu .assist-menu-mask { position: absolute; width: 100%; height: 100%; background: #000; opacity: 0.4; left: 0; top: 0; }
-		#assist-menu-content { position: absolute; width: 100%; left: 0; bottom: 0; height: 183px; background: #e6e6e8; }
-		#assist-menu-content h4 { line-height: 44px; height: 44px; border-bottom: 1px solid #d3d4d6; }
-		#assist-menu-content li { line-height: 44px; height: 44px; border-bottom: 1px solid #d3d4d6; border-top: 1px solid #fff; }
+		#assist-menu-content { position: absolute; width: 320px; height: 185px; background: #e6e6e8; font-size: 16px; line-height: 44px; }
+		#assist-menu-content h4 { height: 44px; border-bottom: 1px solid #d3d4d6; padding-left: 40px; border-top: 2px solid #f00; }
+		#assist-menu-content li { height: 44px; border-bottom: 1px solid #d3d4d6; border-top: 1px solid #fff; list-style: none; padding-left: 40px; font-size: 16px; color: #f00; }
 	</style>
 
 	<h1>辅助菜单</h1>
@@ -48,83 +48,83 @@
 		<ul class="pal">
 			<li>
 				<span>item1</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item2</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item3</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item4</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item5</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item6</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item7</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item8</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item9</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item10</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item11</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item12</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item13</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item14</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item15</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item16</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item17</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item18</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item19</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 			<li>
 				<span>item20</span>
-				<button></button>
+				<button class="trigMenu"></button>
 			</li>
 		</ul>
 			
@@ -132,7 +132,7 @@
 	</section>
 
 	<!-- 辅助菜单{{ -->
-	<section id="assist-menu">
+	<section id="assist-menu" class="hidden">
 		<div class="assist-menu-mask"></div>
 		<div id="assist-menu-content">
 			<h4>分享到</h4>
@@ -154,10 +154,12 @@
 			var scroll = new Scroll('shareList')*/
 
 			var s = new AssistMenu({
-				
+				slideTime : 500			
 			});
+
 			s.on('trig' , function (e) {
 				var trigEle = e.trigElement;
+				alert('当前触发器html：' + trigEle.html())
 			});
 
 		});

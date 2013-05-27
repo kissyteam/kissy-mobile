@@ -28,6 +28,9 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 		id:{
 			value: 'J-Simple-Mask'
 		},
+		className:{
+			value: ''
+		},
 		zIndex:{
 			value: 999
 		},
@@ -82,9 +85,17 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 				node.css('display','block');
 				that.fire('maskReady');
 			}
+			that._disableTouchMove();
+			/*
 			node.on('touchmove',function(e){
 				e.halt();	
 			});
+			*/
+			/*
+			S.Event.on(window,'scroll',function(e){
+				e.halt();
+			});
+			*/
 			return this;
 		},
 		removeMask:function(){
@@ -104,6 +115,7 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 				S.one('#'+that.id).remove();
 				that.fire('maskRemoved');
 			}
+			that._enableTouchMove();
 			return this;
 		},
 		masked:function(){
@@ -114,6 +126,24 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 				return false;
 			}
 		},
+		getMask: function(){
+			var that = this;
+			if(that.masked()){
+				return S.one('#'+that.id);
+			} else {
+				return null;
+			}
+		},
+        _disableTouchMove: function() {
+            S.one(document).on('touchmove', this._preventTouchMove);
+        },
+        
+        _enableTouchMove: function() {
+            S.one(document).detach('touchmove', this._preventTouchMove);
+        },
+        _preventTouchMove: function(e) {
+            e.preventDefault();
+        },  
 		destory: function(){
 
 		}

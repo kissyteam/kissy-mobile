@@ -12,12 +12,14 @@
 				<a href="/direct.php?type=doc&name=slide">Slide 组件</a>
 				<a href="/direct.php?type=doc&name=no-limit-scroll">无限滚动组件</a>
 				<a href="/direct.php?type=doc&name=simple-mask">简单蒙层组件</a>
+				<a href="/direct.php?type=doc&name=bottom-box">底部弹出层组件</a>
 			</div>
 			<h4>Demos</h4>
 			<div class="textwidget">
 				<a href="/mobile/app/1.2/demo/sdk/demo.html"><strong>SDK Demo</strong></a>
 				<a href="/direct.php?type=demo&name=no-limit-scroll">无限滚动demo</a>
 				<a href="/direct.php?type=demo&name=simple-mask">简单蒙层</a>
+				<a href="/direct.php?type=demo&name=bottom-box">底部弹出层</a>
 				<a href="/mobile/app/1.2/demo/lottery/demo/app.html">彩票H5</a>
 				<a href="/direct.php?type=demo&name=slide">Slide Demo</a>
 			</div>

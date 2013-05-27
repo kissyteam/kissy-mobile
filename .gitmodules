@@ -10,3 +10,6 @@
 [submodule "mobile/slide"]
 	path = mobile/slide
 	url = https://github.com/jayli/slide.git
+[submodule "mobile/linkfocus"]
+	path = mobile/linkfocus
+	url = https://github.com/kissymobileteam/linkfocus.git

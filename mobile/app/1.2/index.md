@@ -16,17 +16,9 @@
 
 ## 使用场景
 
-三种典型的场景：
+多页应用实现原理，[参照1.0版文档](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)。
 
-- 单页面，运行于浏览器环境，可以是iphone和android里的浏览器，类似传统的wap页
-- 单页面，运行于App Native的 WebView内，Native带动转场动画
-- 多页面，运行于iPhone中safari里，由浏览器本身驱动转场动画，运行于ios环境。**多页面的实现原理参照[文档1.0版](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)**
-
-三个概念：框架（AppFramework）/页面（WebView）/SDK（Host）
-
-- 框架（AppFramework）：单框架下辖多页面，用来管理多页面的前进和后退
-- 页面（WebView）：一个页面单元，承载页面的内容
-- SDK（Host）：SDK提供一些标准方法，供JS调用，根据不同的场景和硬件环境，将这次调用转发至具体的实现
+页面之间的切换是通过监听hashchange来实现的，如果冠以sdk，则监听通过sdk完成，Mobile App Toolkit不监听。最终触发跳转行为都是通过函数调用来完成。
 
 单个页面是一个独立的html片段，包含普通页面应当包含的所有特征，页面中的富应用交由页面开发者负责，包括模板、样式、初始化等。
 
@@ -34,32 +26,10 @@ View的行为：
 
 ![](http://img02.taobaocdn.com/tps/i2/T1P7wFXXBeXXba_uLI-504-409.png)
 
-对于多页面的场景，页面之间的切换是通过监听hashchange来实现的，如果冠以sdk，则监听通过sdk完成，Mobile App Toolkit不监听。最终触发跳转行为都是通过函数调用来完成。
-
-比如：跳转链接写成：
-
-	<a href="b.html">进入到B页面</a>
-
-进入B页面时，会自动带上`?client_type=xx&client_nav=xx`。
-
-自然会退始终是`history.back()`。在SDK中实现为`Host.back();`。
-
-<hr class="smooth" />
-
-### SDK 和 AppFramework 的关系
-
-AppFramework（框架部分）可以独立运行在多页面场景中，SDK 是为了实现另外两种场景的兼容，因此SDK中包含了对AppFramework的初始化。统一对外提供两个全局对象：
-
-- App：AppFramework（MS）的实例
-- Host：SDK 中提供的工具集
-
-如果引入了SDK，开发者默认知晓这两个已经存在的全局对象
-
-![](http://img01.taobaocdn.com/tps/i1/T1SqGGXq8eXXbO8wws-533-386.png)
 
 ### 框架初始化
 
-如果没有引入SDK，则需要自己初始化框架，初始化方如下，页面样式需要自行引入，不管有没有SDK，页面正文都需要添加HTML代码：
+页面样式需要自行引入，页面正文都需要添加HTML代码：
 
 	<section id="MS"><!--控件所在的容器-->
 		<div class="MS-con"><!--页面内容所在的包裹器-->
@@ -469,11 +439,11 @@ back如果涉及到新页面的加载，则以get方式载入
 
 使用方法同上，加载新页面以get方式
 
-*isSinglePage*
+*isSinglePage()*
 
 返回当前场景是否是单页面场景
 
-*isMultiplePage*
+*isMultiplePage()*
 
 返回当前场景是否是多页面场景
 
@@ -498,7 +468,49 @@ back如果涉及到新页面的加载，则以get方式载入
 
 只要a标签里定义了`target`属性，都不会使这个链接被监听到。
 
-## SDK 中约定的导航条的行为
+<hr class="smooth large" />
+
+## SDK
+
+- What：SDK 是对AppFramework的封装，提供一些典型的方法调用，实现了更加通用的view。这种view被设计运行于三种典型场景
+- How：[sdk-h5.js](http://a.tbcdn.cn/s/kissy/mobile/sdk-h5/1.0/index.js)，[sdk-h4.js](http://a.tbcdn.cn/s/kissy/mobile/sdk-h4/1.0/index.js)
+- Why：让H5页面在不修改和少修改情况下，就可以运行于浏览器和Native环境中。
+
+三种典型的场景：
+
+- 单页面，运行于浏览器环境，可以是iphone和android里的浏览器，类似传统的wap页
+- 单页面，运行于App Native的 WebView内，Native带动转场动画
+- 多页面，运行于iPhone中safari里，由浏览器本身驱动转场动画，运行于ios环境。**多页面的实现原理参照[文档1.0版](http://mobile.kissyui.com/markdown.php?mobile/app/1.0/index.md)**
+
+三个概念：框架（AppFramework）/页面（WebView）/SDK（Host）
+
+- 框架（AppFramework）：单框架下辖多页面，用来管理多页面的前进和后退
+- 页面（WebView）：一个页面单元，承载页面的内容
+- SDK（Host）：SDK提供一些标准方法，供JS调用，根据不同的场景和硬件环境，将这次调用转发至具体的实现
+
+
+带有SDK的页面跳转，例如：跳转链接写成：
+
+	<a href="b.html">进入到B页面</a>
+
+进入B页面时，会自动带上`?client_type=xx&client_nav=xx`。
+
+自然会退始终是`history.back()`。在SDK中实现为`Host.back();`。
+
+<hr class="smooth" />
+
+### SDK 和 AppFramework 的关系
+
+AppFramework（框架部分）可以独立运行在多页面场景中，SDK 是为了实现另外两种场景的兼容，因此SDK中包含了对AppFramework的初始化。统一对外提供两个全局对象：
+
+- *App*：AppFramework（MS）的实例
+- *Host*：SDK 中提供的工具集
+
+如果引入了SDK，开发者默认知晓这两个已经存在的全局对象
+
+![](http://img01.taobaocdn.com/tps/i1/T1SqGGXq8eXXbO8wws-533-386.png)
+
+### SDK 中约定的导航条的行为
 
 - 回退，显示与不显示
 - title，标题，文本
@@ -525,7 +537,9 @@ url中带有一些参数，来告知页面当前的运行环境，和是否带�
 
 注意：在多页面环境中，导航始终存在，但导航内容的提供，应当包含在页面中，而非框架里
 
-## SDK 方法集
+### SDK 方法集
+
+> SDK里包含了对AppFramework的初始化，引入了SDK之后，即引入了两个重要全局对象：`App`和`Host`。含义和用法参照下文api。
 
 SDK引用地址：
 
@@ -537,9 +551,11 @@ SDK引用地址：
 
 	http://a.tbcdn.cn/s/kissy/mobile/sdk-h5/1.0/index-min.js
 
-> SDK里包含了对AppFramework的初始化，引入了SDK之后，即引入了两个重要全局对象：`App`和`Host`。含义和用法参照下文api。
+用法：在单页面中需要引入`sdk-h4.js`，[参照代码](https://github.com/kissyteam/kissy-mobile/blob/master/mobile/app/1.2/demo/sdk/a.php)。在框架页首页中需要引入`sdk-h5.js`。[参照代码](https://github.com/kissyteam/kissy-mobile/blob/master/mobile/app/1.2/demo/sdk/mb.php)。
 
-SDK提供了对普通链接（a标签）的事件监听，a标签属性的写法有三种。
+### SDK对A标签的监听
+
+SDK提供了对普通链接（a标签）的事件监听，发生跳转时会带上当前状态`client_type=pc&client_nav=true`，a标签属性的写法有三种。
 
 *第一种*，普通的链接跳转，其中`data-param`给出了回写到hash里的参数
 
@@ -573,19 +589,19 @@ SDK提供全局对象App和Host，App即AppFramework的实例，Host是SDK包含
 
 回退
 
-*set_browser_title(title)*
+*set`_`browser`_`title(title)*
 
 设置导航条或浏览器的title
 
-*set_back(flag)*
+*set`_`back(flag)*
 
 设置是否显示导航条的回退按钮，flag为true或false
 
-*set_icon(img,callback)*
+*set`_`icon(img,callback)*
 
 设置导航条右上角的图标，以及点击图标的回调
 
-*nav_exist()*
+*nav`_`exist()*
 
 判断导航是否存在，也可以根据url中的参数判断
 

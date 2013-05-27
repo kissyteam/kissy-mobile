@@ -1,3 +1,10 @@
+/**
+ * @file index.js
+ * @brief http://mobile.kissyui.com/markdown.php?mobile/app/1.2/index.md
+ * @author jayli, bachi@taobao.com
+ * @version 
+ * @date 2013-05-27
+ */
 
 window['S'] = KISSY;
 

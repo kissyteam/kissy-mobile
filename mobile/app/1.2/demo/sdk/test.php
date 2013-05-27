@@ -29,7 +29,7 @@
 ?>
 <script>
 Host.set_browser_title('TEST');
-Host.set_back();
+Host.set_back("true");
 </script>
 <div class="navbar navbar-inverse">
 	<p>Demo</p>

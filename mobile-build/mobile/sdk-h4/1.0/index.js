@@ -81,35 +81,37 @@ KISSY.config({
 				return;
 			}
 
-            for(var i in data) {
-                if(data.hasOwnProperty(i)) {
-                    if(typeof(data[i]) === 'function') {
-                        callbackName = 'M_Client_Callbacks_' + host + '_' + new Date().getTime() + '_' + parseInt(Math.random() * 1000000);
+			S.ready(function(){
+				for(var i in data) {
+					if(data.hasOwnProperty(i)) {
+						if(typeof(data[i]) === 'function') {
+							callbackName = 'M_Client_Callbacks_' + host + '_' + new Date().getTime() + '_' + parseInt(Math.random() * 1000000);
 
-                        window[callbackName] = (function(cb, callbackName) {
-                            return function() {
-                                cb.apply(this, arguments);
-                                delete window[callbackName];
-                            };
-                        })(data[i], callbackName);
+							window[callbackName] = (function(cb, callbackName) {
+								return function() {
+									cb.apply(this, arguments);
+									delete window[callbackName];
+								};
+							})(data[i], callbackName);
 
-                        data[i] = callbackName;
-                    }
-                }
-            }
+							data[i] = callbackName;
+						}
+					}
+				}
 
-            if(that.platform === 'android') {
-                //alert('回调客户端命令：' + host);
-                that.bridge && that.bridge[host] && that.bridge[host](JSON.stringify(data));
-                //console.info('回调客户端命令：%s', host);
-                //console.info('回传数据：%s', JSON.stringify(data));
-                return;
-            }
+				if(that.platform === 'android') {
+					//alert('回调客户端命令：' + host);
+					that.bridge && that.bridge[host] && that.bridge[host](JSON.stringify(data));
+					//console.info('回调客户端命令：%s', host);
+					//console.info('回传数据：%s', JSON.stringify(data));
+					return;
+				}
 
-            uri += encodeURIComponent(JSON.stringify(data));
-            that.mClientProxy.attr('src', uri);
-            //console.info('回调客户端命令：%s', host);
-            //console.info('回传数据：%s', JSON.stringify(data));
+				uri += encodeURIComponent(JSON.stringify(data));
+				that.mClientProxy.attr('src', uri);
+				//console.info('回调客户端命令：%s', host);
+				//console.info('回传数据：%s', JSON.stringify(data));
+			});
         },
 
         getRequestParam: function(uri, param) {
@@ -197,7 +199,7 @@ KISSY.config({
 				});
 			} else {
 				that.pushBack('set_back',{
-					flag: flag	
+					flag: flag?'true':'false'
 				});
 			}
 		},

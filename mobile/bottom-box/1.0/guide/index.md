@@ -45,11 +45,13 @@ box内容容器（container）可以作为临时参数传入show函数中
 
 *zIndex*:指定弹出层的z-index，默认为1000
 
-*duration*:划出的过渡时间，默认0.5
+*duration*:划出的过渡时间，默认0.2
 
 *className*:内容包装器的className，可留空
 
 *modalOpacity*:蒙层的透明度
+
+*modalFade*:蒙层是否有过渡显示，默认为true
 
 ### 方法
 

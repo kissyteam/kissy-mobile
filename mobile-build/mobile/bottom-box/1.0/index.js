@@ -25,7 +25,7 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 			value: 1000
 		},
 		duration:{
-			value: 0.5
+			value: 0.2
 		},
 		container:{
 			setter:function(s){
@@ -38,6 +38,9 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 		},
 		modalOpacity: {
 			value: 0.6
+		},
+		modalFade:{
+			value: true
 		}
 	};
 
@@ -52,6 +55,7 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 			that.className = that.get('className');
 			that.container = that.get('container');
 			that.modalOpacity = that.get('modalOpacity');
+			that.modalFade = that.get('modalFade');
 			that.con = S.Node('<div id="'+that.id+'" class="'+that.className+'"></div>');
 			that.con.css({
 				display:'none'	
@@ -61,7 +65,8 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 		initMask: function(){
 			var that = this;
 			that.mask = new Mask({
-				opacity:that.modalOpacity	
+				opacity:that.modalOpacity,
+				fade:that.modalFade
 			});
 		},
 		destroy:function(){
@@ -84,7 +89,7 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 			});
 			S.Anim(con,{
 				top:(S.DOM.viewportHeight() - height) + 'px'
-			},that.duration,'easeBoth',function(){
+			},that.duration,'easeIn',function(){
 				that.fire('boxShow',{
 					container:container
 				});
@@ -95,7 +100,7 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 			var con = that.con;
 			S.Anim(con,{
 				top:S.DOM.viewportHeight() + 'px'
-			},that.duration,'easeBoth',function(){
+			},that.duration,'none',function(){
 				that.fire('boxHide',{
 					container:that.container	
 				});

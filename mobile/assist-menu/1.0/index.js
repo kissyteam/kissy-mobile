@@ -35,6 +35,10 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				}
 				return val;
 			}
+		},
+		// 用于数据交换
+		data: {
+			value : null	
 		}
 	};
 
@@ -83,27 +87,40 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 
 				self.fire('trig' , {
 					trigElement : obj	
-				})	
+				});
 			});
 
-			menu.delegate(  'click' , '.assist-menu-mask' , self.hideMenu , self);
+			menu.delegate(  'click' , '.assist-menu-mask' , self.hide , self);
+
+			menu.delegate('click' , 'li' , self.selectMenuOption , self);
 
 			return self;
 			
 		},
 
 		bindCustomEvent : function () {
-			var self = this ,
-				trigCallback = self.get('trigCallback');
+			var self = this; 
 
 			self.on('trig' , function (e) {
-				self.showMenu();
+				self.show();
 			});	
 
 			return self;
 		},
+			
+		selectMenuOption : function (e) {
+			var self = this ,
+				obj = S.one(e.currentTarget);
 
-		showMenu: function () {
+			if (obj.attr('ref') == 'select') {
+				self.fire('select' , {
+					selectElement :  obj		
+				});
+			}	
+
+		},
+
+		show: function () {
 			var self = this ,
 				menu = S.one(this.get('menuWrap')) , 
 				page = S.one('body'),
@@ -115,7 +132,23 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				'overflow' : 'hidden'
 			});
 			this.buildAnim('show');
-			
+			this.addVisitSignet();
+		},
+		
+		// 增加访问标记，用于兼容浏览器后退（android物理返回键）
+		addVisitSignet : function () {
+			var self = this;
+
+			history.pushState({
+				'location' : 'assist-menu'
+			} , '' , '');	
+
+			window.onpopstate = function (e) {
+				if (e.state.location == 'assist-menu') {
+					self.hide();		
+					window.onpopstate = null;
+				}
+			};
 		},
 
 		buildAnim : function (act) {
@@ -132,7 +165,7 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 		 * 隐藏菜单
 		 * @
 		 */ 
-		hideMenu : function () {
+		hide : function () {
 			var page = S.one('body') , 
 				time = this.get('slideTime') , 
 				menuWrap = S.one(this.get('menuWrap')); 

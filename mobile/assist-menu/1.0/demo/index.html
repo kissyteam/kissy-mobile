@@ -137,9 +137,9 @@
 		<div class="assist-menu-content">
 			<h4>分享到</h4>
 			<ul>
-				<li>微信</li>
-				<li>新浪微博</li>
-				<li>优酷</li>
+				<li ref="select">微信</li>
+				<li ref="select">新浪微博</li>
+				<li ref="select">优酷</li>
 			</ul>
 		</div>
 	</section>
@@ -177,11 +177,15 @@
 				// 比如信息分享
 				var trigEle = e.trigElement;
 
-				//alert('当前触发器html：' + trigEle.html())
+				this.data = trigEle.html();
 			});
 
 			menu.on('select' , function (e) {
-				
+				var selectElement = e.selectElement;
+
+				this.hide();
+				alert(this.data + ' : 将分享到' + selectElement.html() );
+				//todo sth
 			});
 
 		});

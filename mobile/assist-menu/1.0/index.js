@@ -16,18 +16,15 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 	
 	// 给AssistMenu类增加默认属性
 	AssistMenu.ATTRS = {
+		// 显示menu触发器的选择器
 		trigSelector : {
 			value : '.trigMenu'	
 		},
+		// menu的外层包裹器
 		menuWrap : {
 			value : '#assist-menu'		   
 		},
-		menuContent: {
-			value : '#assist-menu-content'	
-		},
-		mask: {
-			value: '.assist-menu-mask'	
-		},
+		// menu显示的滑动时间
 		slideTime : {
 			value : 200	,
 			setter : function (val) {
@@ -60,7 +57,7 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 		},
 
 		setMenuInitStatus : function () {
-			var menuCon = S.one(this.get('menuContent')) , 
+			var menuCon = S.one(this.get('menuWrap') + ' .assist-menu-content') , 
 				w = menuCon.width() ,
 				h = menuCon.height(),
 				duration = this.get('slideTime') / 1000 + 's';
@@ -89,7 +86,7 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				})	
 			});
 
-			menu.delegate(  'click' , self.get('mask') , self.hideMenu , self);
+			menu.delegate(  'click' , '.assist-menu-mask' , self.hideMenu , self);
 
 			return self;
 			
@@ -122,7 +119,7 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 		},
 
 		buildAnim : function (act) {
-			var menuCon = S.one(this.get('menuContent')) , 
+			var menuCon = S.one(this.get('menuWrap') + ' .assist-menu-content') , 
 				h = menuCon.height() ,
 				y = act === 'show' ? '0' : h + 'px';
 
@@ -130,7 +127,11 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				'-webkit-transform' : 'translate3d(0 , ' + y  + ' , 0)'	
 			});
 		},
-
+		
+		/**
+		 * 隐藏菜单
+		 * @
+		 */ 
 		hideMenu : function () {
 			var page = S.one('body') , 
 				time = this.get('slideTime') , 

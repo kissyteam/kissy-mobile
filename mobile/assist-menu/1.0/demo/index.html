@@ -33,13 +33,13 @@
 		.shareList ul { padding: 10px 0;}
 		.shareList li { list-style: none; line-height: 48px; height: 48px; border-bottom: 1px dashed #e2e2e2; }
 		.shareList li span { float: left; margin-left: 15px; }
-		.shareList li button { width: 19px; height: 19px; background: url('images/icon.png') no-repeat; background-size: 19px 19px; border: 0 none; float: right; margin: 15px 10px 0 0; }
+		.shareList li button { width: 19px; height: 19px; background: url('images/icon.png') no-repeat; background-size: 19px 19px; border: 0 none; float: right; margin: 15px 10px 0 0; -webkit-tap-highlight-color: rgba(255 , 0 , 0 , 0); }
 
 		#assist-menu { position: absolute; width: 100%; left: 0; top: 0; }
 		#assist-menu .assist-menu-mask { position: absolute; width: 100%; height: 100%; background: #000; opacity: 0.4; left: 0; top: 0; }
-		#assist-menu-content { position: absolute; width: 320px; height: 185px; background: #e6e6e8; font-size: 16px; line-height: 44px; }
-		#assist-menu-content h4 { height: 44px; border-bottom: 1px solid #d3d4d6; padding-left: 40px; border-top: 2px solid #f00; }
-		#assist-menu-content li { height: 44px; border-bottom: 1px solid #d3d4d6; border-top: 1px solid #fff; list-style: none; padding-left: 40px; font-size: 16px; color: #f00; }
+		.assist-menu-content { position: absolute; width: 320px; height: 185px; background: #e6e6e8; font-size: 16px; line-height: 44px; }
+		.assist-menu-content h4 { height: 44px; border-bottom: 1px solid #d3d4d6; padding-left: 40px; border-top: 2px solid #f00; }
+		.assist-menu-content li { height: 44px; border-bottom: 1px solid #d3d4d6; border-top: 1px solid #fff; list-style: none; padding-left: 40px; font-size: 16px; color: #f00; }
 	</style>
 
 	<h1>辅助菜单</h1>
@@ -134,7 +134,7 @@
 	<!-- 辅助菜单{{ -->
 	<section id="assist-menu" class="hidden">
 		<div class="assist-menu-mask"></div>
-		<div id="assist-menu-content">
+		<div class="assist-menu-content">
 			<h4>分享到</h4>
 			<ul>
 				<li>微信</li>
@@ -147,19 +147,41 @@
 
 	<script>
 
-		KISSY.use('mobile/assist-menu/1.0/' , function(S , AssistMenu) {
-			/*window.scrollTo(0 , 1);
-			var winH = window.innerHeight , titH = S.one('h1').height();
-			S.one('#shareList').css('height' , winH - titH + 'px');
-			var scroll = new Scroll('shareList')*/
+		KISSY.use('mobile/assist-menu/1.0/ , mobile/iscroll/' , function(S , AssistMenu , Scroll) {
 
-			var s = new AssistMenu({
-				slideTime : 500			
+			var hideURIBar = function () {
+				window.scrollTo(0 , 1);
+				var winH = window.innerHeight , titH = S.one('h1').height();
+				S.one('#shareList').css('height' , winH - titH + 'px');
+				var scroll = new Scroll('shareList');
+			};
+			hideURIBar();
+			
+
+			var menu = new AssistMenu({
+				// 显示menu触发器的选择器
+				// 默认值 '.trigMenu'
+				trigSelector: '.trigMenu',
+
+				// menu的外层包裹器
+				// 默认值 '#assist-menu'
+				menuWrap: '#assist-menu',
+
+				// menu显示的滑动时间
+				// 默认值 200
+				slideTime : 300 , 
 			});
 
-			s.on('trig' , function (e) {
+			menu.on('trig' , function (e) {
+				// e.trigElement指当前触发元素，可能会携带相关信息用于menu操作
+				// 比如信息分享
 				var trigEle = e.trigElement;
-				alert('当前触发器html：' + trigEle.html())
+
+				//alert('当前触发器html：' + trigEle.html())
+			});
+
+			menu.on('select' , function (e) {
+				
 			});
 
 		});

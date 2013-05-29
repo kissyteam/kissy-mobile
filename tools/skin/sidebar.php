@@ -22,6 +22,7 @@
 				<a href="/direct.php?type=demo&name=bottom-box">底部弹出层</a>
 				<a href="/mobile/app/1.2/demo/lottery/demo/app.html">彩票H5</a>
 				<a href="/direct.php?type=demo&name=slide">Slide Demo</a>
+				<a href="/direct.php?type=demo&name=photoswipe">PhotoSwipe Demo</a>
 			</div>
 			<h4 class="widgettitle">Links</h4>			
 			<div class="textwidget">

@@ -1751,6 +1751,7 @@ $my_html = Markdown($text);
 echo <<<HTML
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="tools/skin/bootstrap.css" rel="stylesheet">
     <link href="tools/skin/bootstrap-responsive.css" rel="stylesheet">
     <link href="tools/skin/docs.css" rel="stylesheet">

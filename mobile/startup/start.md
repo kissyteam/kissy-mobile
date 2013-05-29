@@ -62,7 +62,9 @@ ps: 若第一步报错，需要安装bower
 
 	npm install -g yo grunt-cli bower
 
-pps:如果是macOS，可能会报一堆错误，有可能是node版本和yo工具的冲突，把用户主目录下的`package.json`文件删掉再安装工具。
+pps:第一步报错也有可能是之前安装了旧版的grunt-cli，需要卸载后重新安装
+
+ppps:如果是macOS，可能会报一堆错误，有可能是node版本和yo工具的冲突，把用户主目录下的`package.json`文件删掉再安装工具。
 
 2，创建组件目录结构
 

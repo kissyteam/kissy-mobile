@@ -16,18 +16,15 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 	
 	// 给AssistMenu类增加默认属性
 	AssistMenu.ATTRS = {
+		// 显示menu触发器的选择器
 		trigSelector : {
 			value : '.trigMenu'	
 		},
+		// menu的外层包裹器
 		menuWrap : {
 			value : '#assist-menu'		   
 		},
-		menuContent: {
-			value : '#assist-menu-content'	
-		},
-		mask: {
-			value: '.assist-menu-mask'	
-		},
+		// menu显示的滑动时间
 		slideTime : {
 			value : 200	,
 			setter : function (val) {
@@ -38,6 +35,10 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				}
 				return val;
 			}
+		},
+		// 用于数据交换
+		data: {
+			value : null	
 		}
 	};
 
@@ -60,7 +61,7 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 		},
 
 		setMenuInitStatus : function () {
-			var menuCon = S.one(this.get('menuContent')) , 
+			var menuCon = S.one(this.get('menuWrap') + ' .assist-menu-content') , 
 				w = menuCon.width() ,
 				h = menuCon.height(),
 				duration = this.get('slideTime') / 1000 + 's';
@@ -86,27 +87,40 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 
 				self.fire('trig' , {
 					trigElement : obj	
-				})	
+				});
 			});
 
-			menu.delegate(  'click' , self.get('mask') , self.hideMenu , self);
+			menu.delegate(  'click' , '.assist-menu-mask' , self.hide , self);
+
+			menu.delegate('click' , 'li' , self.selectMenuOption , self);
 
 			return self;
 			
 		},
 
 		bindCustomEvent : function () {
-			var self = this ,
-				trigCallback = self.get('trigCallback');
+			var self = this; 
 
 			self.on('trig' , function (e) {
-				self.showMenu();
+				self.show();
 			});	
 
 			return self;
 		},
+			
+		selectMenuOption : function (e) {
+			var self = this ,
+				obj = S.one(e.currentTarget);
 
-		showMenu: function () {
+			if (obj.attr('ref') == 'select') {
+				self.fire('select' , {
+					selectElement :  obj		
+				});
+			}	
+
+		},
+
+		show: function () {
 			var self = this ,
 				menu = S.one(this.get('menuWrap')) , 
 				page = S.one('body'),
@@ -118,11 +132,27 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				'overflow' : 'hidden'
 			});
 			this.buildAnim('show');
-			
+			this.addVisitSignet();
+		},
+		
+		// 增加访问标记，用于兼容浏览器后退（android物理返回键）
+		addVisitSignet : function () {
+			var self = this;
+
+			history.pushState({
+				'location' : 'assist-menu'
+			} , '' , '');	
+
+			window.onpopstate = function (e) {
+				if (e.state.location == 'assist-menu') {
+					self.hide();		
+					window.onpopstate = null;
+				}
+			};
 		},
 
 		buildAnim : function (act) {
-			var menuCon = S.one(this.get('menuContent')) , 
+			var menuCon = S.one(this.get('menuWrap') + ' .assist-menu-content') , 
 				h = menuCon.height() ,
 				y = act === 'show' ? '0' : h + 'px';
 
@@ -130,8 +160,12 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				'-webkit-transform' : 'translate3d(0 , ' + y  + ' , 0)'	
 			});
 		},
-
-		hideMenu : function () {
+		
+		/**
+		 * 隐藏菜单
+		 * @
+		 */ 
+		hide : function () {
 			var page = S.one('body') , 
 				time = this.get('slideTime') , 
 				menuWrap = S.one(this.get('menuWrap')); 

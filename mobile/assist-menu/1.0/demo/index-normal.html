@@ -1,5 +1,5 @@
 <!doctype html>
-<html manifest="appcache.manifest">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
@@ -137,9 +137,9 @@
 		<div class="assist-menu-content">
 			<h4>分享到</h4>
 			<ul>
-				<li ref="select">微信</li>
-				<li ref="select">新浪微博</li>
-				<li ref="select">优酷</li>
+				<li class="assist-menu-select">微信</li>
+				<li class="assist-menu-select">新浪微博</li>
+				<li class="assist-menu-select">优酷</li>
 			</ul>
 		</div>
 	</section>
@@ -148,15 +148,6 @@
 	<script>
 
 		KISSY.use('mobile/assist-menu/1.0/ , mobile/iscroll/' , function(S , AssistMenu , Scroll) {
-
-			/*var hideURIBar = function () {
-				window.scrollTo(0 , 1);
-				var winH = window.innerHeight , titH = S.one('h1').height();
-				S.one('#shareList').css('height' , winH - titH + 'px');
-				var scroll = new Scroll('shareList');
-			};
-			hideURIBar();*/
-			
 
 			var menu = new AssistMenu({
 				// 显示menu触发器的选择器
@@ -175,7 +166,7 @@
 			menu.on('trig' , function (e) {
 				// e.trigElement指当前触发元素，可能会携带相关信息用于menu操作
 				// 比如信息分享
-				var trigEle = e.trigElement;
+				var trigEle = e.trigElement.prev();
 
 				this.data = trigEle.html();
 			});
@@ -183,7 +174,7 @@
 			menu.on('select' , function (e) {
 				var selectElement = e.selectElement;
 
-				this.hide();
+				//this.hide();
 				alert(this.data + ' : 将分享到' + selectElement.html() );
 				//todo sth
 			});

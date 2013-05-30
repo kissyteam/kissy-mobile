@@ -24,7 +24,7 @@
 <body>
 	<style type="text/css">
 		* { margin: 0; padding: 0; }
-		html , body { height: 100%; font-size: 14px; }
+		html , body { height: 100%; font-size: 14px; overflow: hidden; }
 		.hidden { visibility: hidden; }
 
 		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
@@ -138,7 +138,7 @@
 	<script>
 
 		KISSY.use('mobile/assist-menu/1.0/ , mobile/iscroll/' , function(S , AssistMenu , Scroll) {
-
+			// *******************业务逻辑******************* begin
 			var hideURIBar = function () {
 				window.scrollTo(0 , 1);
 				var winH = window.innerHeight , 
@@ -175,20 +175,37 @@
 				}
 				bet.fire('propertyChange');
 			});
+			
+			var getVal = function (obj) {
+				var reg = /\D/gi;
+
+				if (reg.test(obj.value)) {
+					obj.value = obj.value.replace(reg , '');
+				} else if (obj.value[0] === '0') {
+					obj.value = '1';	
+				}
+
+				return Number(obj.value);
+			};
 
 			multiple.on('input' , function (e) {
-				var reg = /\D/gi;
-				if (reg.test(this.value)) {
-					this.value = this.value.replace(reg , '');
-				}
+				var val = getVal(this);
+				bet.bt = val;
+			});
+
+			purse.on('input' , function (e) {
+				var val = getVal(this);
+				bet.zh = val;
 			});
 
 			bet.on('propertyChange' , function () {
 				betno.html(this.count);
+				charges.html(this.count * this.bt * this.zh * 2);
 			});
+			// *******************业务逻辑******************* end
 
 
-			
+
 			var menu = new AssistMenu({
 				// 显示menu触发器的选择器
 				// 默认值 '.trigMenu'
@@ -207,13 +224,12 @@
 				// e.trigElement指当前触发元素，可能会携带相关信息用于menu操作
 				// 比如信息分享
 				var trigEle = e.trigElement;
-
 				this.data = trigEle.html();
 			});
 
 			menu.on('select' , function (e) {
 				var selectElement = e.selectElement;
-
+				bet.fire('propertyChange');
 				//todo sth
 			});
 

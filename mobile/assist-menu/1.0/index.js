@@ -83,16 +83,15 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				menu = S.one(this.get('menuWrap'));
 
 			trig.on('click' , function (e) {
-				var obj = S.one(e.currentTarget).prev(); 
+				var obj = S.one(e.currentTarget); 
 
 				self.fire('trig' , {
 					trigElement : obj	
 				});
 			});
 
-			menu.delegate(  'click' , '.assist-menu-mask' , self.hide , self);
-
-			menu.delegate('click' , 'li' , self.selectMenuOption , self);
+			menu.delegate('click' , '.assist-menu-mask' , self.hide , self);
+			menu.delegate('click' , '.assist-menu-select' , self.selectMenuOption , self);
 
 			return self;
 			
@@ -102,8 +101,11 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 			var self = this; 
 
 			self.on('trig' , function (e) {
-				self.show();
-			});	
+					self.show();
+			});
+			self.on('select' , function (e) {
+				self.hide();
+			});
 
 			return self;
 		},
@@ -112,12 +114,9 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 			var self = this ,
 				obj = S.one(e.currentTarget);
 
-			if (obj.attr('ref') == 'select') {
-				self.fire('select' , {
-					selectElement :  obj		
-				});
-			}	
-
+			self.fire('select' , {
+				selectElement :  obj		
+			});
 		},
 
 		show: function () {
@@ -127,6 +126,7 @@ KISSY.add('mobile/assist-menu/1.0/index' , function(S) {
 				winH = window.innerHeight;
 			
 			menu.removeClass('hidden');
+			menu.css('top' , document.body.scrollTop + 'px');
 			page.css({
 				'height' : winH + 'px',
 				'overflow' : 'hidden'

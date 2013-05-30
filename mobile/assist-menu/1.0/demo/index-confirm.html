@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>辅助菜单</title>
+<script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+<script>
+	KISSY.config({
+		packages:[
+			{
+				name:"mobile",
+				tag:"20130521",
+				path:"../../../../",  // 开发时目录, 发布到cdn上需要适当修改
+			}
+		]
+	});
+</script>
+<link rel="apple-touch-icon" sizes="57x57" href="" />
+</head>
+
+<body>
+	<style type="text/css">
+		* { margin: 0; padding: 0; }
+		html , body { height: 100%; font-size: 14px; }
+		.hidden { visibility: hidden; }
+
+		h1 { line-height: 40px; background: #eee; text-align: center; font-size: 18px; color: #000; }
+
+		.shareList { width: 320px; margin: 0 auto; position: relative; }
+		.shareList ul { padding: 10px 0;}
+		.shareList li { list-style: none; line-height: 48px; height: 48px; border-bottom: 1px dashed #e2e2e2; }
+		.shareList li.selected { background: #666; color: #fff; }
+
+		#toolbar { height: 46px; background: #000; opacity: 0.7; }
+		#toolbar .pal { width: 320px; margin: 0 auto; color: #fff; }
+		#toolbar .pal li { float: left; list-style: none; line-height: 35px; height: 35px; }
+		#toolbar .pal li.trigMenu { width: 85px; float: left; margin-top: 6px; text-align: center; background: -webkit-gradient(linear , 0 0, 0 bottom, from(#FCFFF4), to(#E9E9CF));	color: #474733; }
+		#toolbar .pal li#submitOrder { width: 220px; float: right; margin-top: 6px; text-align: center; background: -webkit-gradient(linear , 0 0, 0 bottom, from(#FFDD7A), to(#FEBF06)); color: black; }
+
+		#assist-menu { position: absolute; width: 100%; left: 0; top: 0; }
+		#assist-menu .assist-menu-mask { position: absolute; width: 100%; height: 100%; background: #000; opacity: 0.4; left: 0; top: 0; }
+		.assist-menu-content { position: absolute; width: 320px; height: 92px; background: #e6e6e8; font-size: 16px; }
+		.assist-menu-content li { height: 46px; list-style: none; padding-left: 40px; font-size: 16px; color: #f00; }
+		.assist-menu-content li input { width: 110px; height: 26px; border: 1px solid #999; margin-top: 10px; }
+		.assist-menu-content li input:last-child { margin-left: 16px; }
+		.assist-menu-content li button { width: 239px; height: 28px; margin-top: 10px; }
+	</style>
+
+	<h1>双色球-点击选号</h1>
+
+	<section id="shareList" class="shareList">
+		<ul class="pal">
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+			<li>
+				1 2 3 4 5 6 7
+			</li>
+		</ul>
+			
+
+	</section>
+
+	<section id="toolbar">
+	<ul class="pal">
+		<li class="trigMenu">追号/背投</li>
+		<li id="submitOrder">
+			<span class="l">已选 <em id="betno">0</em> 注</span>
+			<span class="c">需 <em id="charges">0</em> 元</span>
+			<span class="r">立即投注</span>
+		</li>
+	</ul>
+	</section>
+
+	<!-- 辅助菜单{{ -->
+	<section id="assist-menu" class="hidden">
+		<div class="assist-menu-mask"></div>
+		<div class="assist-menu-content">
+			<ul>
+				<li><input type="tel" id="purse" placeholder="追 1 期" /><input type="tel" id="multiple" placeholder="投 1 倍" /></li>
+				<li><button class="assist-menu-select">确定</button></li>
+			</ul>
+		</div>
+	</section>
+	<!-- 辅助菜单}} -->
+
+	<script>
+
+		KISSY.use('mobile/assist-menu/1.0/ , mobile/iscroll/' , function(S , AssistMenu , Scroll) {
+
+			var hideURIBar = function () {
+				window.scrollTo(0 , 1);
+				var winH = window.innerHeight , 
+					titH = S.one('h1').height() ,
+					barH = S.one('#toolbar').height();
+
+				S.one('#shareList').css('height' , winH - titH -barH + 'px');
+				var scroll = new Scroll('shareList');
+			};
+			hideURIBar();
+			
+			var balls = S.all('#shareList li') ,
+				purse = S.one('#purse') , 
+				multiple = S.one('#multiple') , 
+				charges = S.one('#charges'),
+				betno = S.one('#betno') ,
+				Bet = function () {
+					this.count = 0;
+					this.bt = 1;
+					this.zh = 1;
+				};
+
+			S.augment(Bet , S.EventTarget);
+			
+			var bet = new Bet();
+			balls.on('click' , function (e) {
+				var obj = S.one(this);
+				if (obj.hasClass('selected')) {
+					obj.removeClass('selected');
+					bet.count --;
+				} else {
+					obj.addClass('selected');
+					bet.count ++;
+				}
+				bet.fire('propertyChange');
+			});
+
+			multiple.on('input' , function (e) {
+				var reg = /\D/gi;
+				if (reg.test(this.value)) {
+					this.value = this.value.replace(reg , '');
+				}
+			});
+
+			bet.on('propertyChange' , function () {
+				betno.html(this.count);
+			});
+
+
+			
+			var menu = new AssistMenu({
+				// 显示menu触发器的选择器
+				// 默认值 '.trigMenu'
+				trigSelector: '.trigMenu',
+
+				// menu的外层包裹器
+				// 默认值 '#assist-menu'
+				menuWrap: '#assist-menu',
+
+				// menu显示的滑动时间
+				// 默认值 200
+				slideTime : 300 , 
+			});
+
+			menu.on('trig' , function (e) {
+				// e.trigElement指当前触发元素，可能会携带相关信息用于menu操作
+				// 比如信息分享
+				var trigEle = e.trigElement;
+
+				this.data = trigEle.html();
+			});
+
+			menu.on('select' , function (e) {
+				var selectElement = e.selectElement;
+
+				//todo sth
+			});
+
+		});
+
+	</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 (function() {
     
+    var PROXY_ID = 0;
     var M_Client = function() {
         this.init.apply(this, arguments);
     };
@@ -10,27 +11,39 @@
             that.platform = that.getRequestParam(window.location.search, 'client_type') || 'ios';
             that.bridgeName = bridgeName || 'trip_android_bridge';
             that.bridge = window[that.bridgeName];
-
-            if(that.platform === 'ios') {
-                that.buildProxy();
+            
+            //modified by huya.nzb
+        },
+        
+        //modified by huya.nzb
+        send: function(uri, newProxy) {
+            var proxy = this.mClientProxy;
+            
+            if (newProxy) {
+                //fix同时发多次请求的bug
+                this.buildProxy(uri);
+            } else {
+                //fix domready之前buildProxy的bug
+                //fix 初始化时发空请求的bug
+                if (proxy || (proxy = document.querySelector('#J_MClientProxy'))) {
+                    proxy.attr('src', uri);
+                } else {
+                    proxy = this.buildProxy(uri);
+                }
+                this.mClientProxy = proxy;
             }
+            
+            return this;
+        },
+        
+        //modified by huya.nzb
+        buildProxy: function(uri) {
+            var proxy = $('<iframe id="J_MClientProxy_' + (PROXY_ID++) + '" class="hidden mclient-proxy" style="width:0;height:0;opacity:0;display:none;" src="' + uri + '"></iframe>');
+            $('body').append(proxy);
+            return proxy;
         },
 
-        buildProxy: function() {
-            var that = this;
-            var mClientProxy = document.querySelector("#J_MClientProxy");
-            var IFRAME ='<iframe id="J_MClientProxy" class="hidden" style="width:0;height:0;opacity:0;display:none;" src="native://"></iframe>';
-
-            if(mClientProxy) {
-                return;
-            }
-
-            mClientProxy = $(IFRAME);
-            $('body').append(mClientProxy);
-            that.mClientProxy = mClientProxy;
-        },
-
-        pushBack: function(host, data) {
+        pushBack: function(host, data, newProxy) {
             var that = this;
             var uri = 'native://' + host + '?data=';
             var callbackName;
@@ -61,7 +74,9 @@
             }
 
             uri += encodeURIComponent(JSON.stringify(data));
-            that.mClientProxy.attr('src', uri);
+            
+            //modified by huya.nzb
+            that.send(uri, newProxy);
             //console.info('回调客户端命令：%s', host);
             //console.info('回传数据：%s', JSON.stringify(data));
         },

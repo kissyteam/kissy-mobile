@@ -47,5 +47,17 @@
 	.speakerdeck-iframe {
 		display:none;
 	}
+	.github-ribbon {
+		display:none;
+	}
+	.nav-collapse.collapse {
+		height:auto !important;
+	}
+	.btn-primary {
+		margin-top:5px;
+	}
+	#thrd-libs{
+		display:none;
+	}
 }
 </style>

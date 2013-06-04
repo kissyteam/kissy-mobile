@@ -2,7 +2,25 @@
 
 引入 kissy 种子
 
-	<script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js"></script>
+	<script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed-min.js" data-config='{combine:true}'></script>
+
+Web无线项目，只需依赖`node`和`ajax`：
+
+	<script>
+		KISSY.use('node',function(S){
+			S.one('.selector').html('ok');	
+		});
+	</script>
+
+## js文件体积
+
+项目开发的最基本功能的最小依赖（gzip）
+
+- seed（14k）（包含loader和lang）
+- node（22k）（包含base和event）
+- ajax（4k）
+
+总大小：40k
 
 ## 调用KS Mobile提供的模块
 

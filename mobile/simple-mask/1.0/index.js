@@ -69,9 +69,9 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 				left:0,
 				position:'fixed',
 				top:0,
-				width:S.DOM.viewportWidth() + 'px',
+				width:window.innerWidth + 'px',
 				opacity:that.fade ? 0 : that.opacity,
-				height:S.DOM.viewportHeight() + 'px'
+				height:window.innerHeight + 'px'
 			});
 			S.one('body').append(node);
 			if(that.fade){

@@ -78,17 +78,17 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 			var con = that.con;
 			con.css({
 				display:'block',
-				width:S.DOM.viewportWidth() + 'px',
+				width:window.innerWidth + 'px',
 				height:height + 'px',
 				position:'fixed',
 				'z-index':that.zIndex,
-				top:S.DOM.viewportHeight() + 'px'
+				top:window.innerHeight + 'px'
 			});
 			container.css({
 				display:'block'	
 			});
 			S.Anim(con,{
-				top:(S.DOM.viewportHeight() - height) + 'px'
+				top:(window.innerHeight - height) + 'px'
 			},that.duration,'easeIn',function(){
 				that.fire('boxShow',{
 					container:container
@@ -99,7 +99,7 @@ KISSY.add("mobile/bottom-box/1.0/index", function (S,Mask) {
 			var that = this;
 			var con = that.con;
 			S.Anim(con,{
-				top:S.DOM.viewportHeight() + 'px'
+				top:window.innerHeight + 'px'
 			},that.duration,'none',function(){
 				that.fire('boxHide',{
 					container:that.container	

@@ -13,6 +13,7 @@
 				<a href="/direct.php?type=doc&name=no-limit-scroll">无限滚动组件</a>
 				<a href="/direct.php?type=doc&name=simple-mask">简单蒙层组件</a>
 				<a href="/direct.php?type=doc&name=bottom-box">底部弹出层组件</a>
+				<a href="/direct.php?type=doc&name=photoswipe">多图集相册</a>
 			</div>
 			<h4>Demos</h4>
 			<div class="textwidget">

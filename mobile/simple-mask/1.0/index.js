@@ -86,6 +86,8 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 				that.fire('maskReady');
 			}
 			that._disableTouchMove();
+			that._addWindowResize();
+
 			/*
 			node.on('touchmove',function(e){
 				e.halt();	
@@ -97,6 +99,24 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 			});
 			*/
 			return this;
+		},
+		_addWindowResize:function(){
+			var that = this;
+			S.one(window).on('resize',that._doWindowResize);
+		},
+		_removeWindowResize:function(){
+			var that = this;
+            S.one(window).detach('touchmove', that._doWindowResize);
+		},
+		_doWindowResize:function(e){
+			var that = this;
+			that.getMask.css({
+				left:0,
+				position:'fixed',
+				top:0,
+				width:window.innerWidth + 'px',
+				height:window.innerHeight + 'px'
+			});
 		},
 		removeMask:function(){
 			var that = this;
@@ -116,6 +136,7 @@ KISSY.add('mobile/simple-mask/1.0/index',function (S) {
 				that.fire('maskRemoved');
 			}
 			that._enableTouchMove();
+			that._removeWindowResize();
 			return this;
 		},
 		masked:function(){

@@ -13,3 +13,6 @@
 [submodule "mobile/linkfocus"]
 	path = mobile/linkfocus
 	url = https://github.com/kissymobileteam/linkfocus.git
+[submodule "mobile/box"]
+	path = mobile/box
+	url = https://github.com/jayli/box.git

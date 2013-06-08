@@ -144,7 +144,11 @@ ppps:如果是macOS，可能会报一堆错误，有可能是node版本和yo工�
 
 将你的项目添加为[kissymobile主干代码](https://github.com/kissyteam/kissy-mobile)的子项目
 
-	git submodule add 目标项目路径
+	git submodule add 目标项目路径 相对路径
+
+比如：
+
+	git submodule add https://github.com/jayli/box.git ./mobile/box
 
 文档自动同步，每天一次
 

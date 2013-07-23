@@ -564,6 +564,12 @@ KISSY.add("mobile/app/1.2/slide",function(S){
 					display:'block'
 				});
 
+                // 外层wrap也需要重置宽度 fix:#8
+                self.animwrap.setStyles({
+                    width:width * self.length +'px',
+                    overflow:'hidden'
+                });
+
 				self.animcon.setStyles({
 					width:width * self.colspan +'px',
 					overflow:'hidden'

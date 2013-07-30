@@ -66,7 +66,7 @@ if (!window['jQuery']) {
         
         $.fn._height = $.fn.height;
         $.fn.height = function () {
-            if (this[0].nodeName == '#document') {
+            if (this[0] && this[0].nodeName == '#document') {
                 var body = document.body,
                     html = document.documentElement;
                 return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);

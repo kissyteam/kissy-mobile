@@ -65,6 +65,10 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 		animWrapperAutoHeightSetting: {
 			value:true
 		},
+		errorAlert:{
+			// Ajax 出错时是否提示
+			value:true
+		},
 		containerHeighTimmer: {
 			value:true
 		},
@@ -469,6 +473,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 		loading:function(){
 			var self = this;
 			var loading = S.one('#MS-loading');
+			var loadingMask = S.one('#MS-loading-mask');
 
 			var loadingHtml = [
 					'<div id="MS-loading" style="display:none">',
@@ -476,8 +481,13 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 					'</div>'
 				].join('');
 
+			var loadingMaskHtml = '<div id="MS-loading-mask"></div>';
+
 			loading = loading ? loading:
 				S.Node(loadingHtml).appendTo('body');
+
+			loadingMask = loadingMask ? loadingMask:
+				S.Node(loadingMaskHtml).appendTo('body');
 
 			loading.one('img').css({
 				'margin-top':'5px'
@@ -494,16 +504,41 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 				'border-radius':'6px',
 				'text-align':'center',
 				'background-color':'white',
-				opacity:0.7
+				opacity:0.7,
+				'z-index':101
+			});
+			loadingMask.css({
+				'display':'none',
+				position:'fixed',
+				background:'white',
+				opacity:0,
+				height:S.DOM.viewportHeight() + 'px',
+				width:S.DOM.viewportWidth() + 'px',
+				'z-index':100,
+				top:'0px'
 			});
 
 			// 如果加载太快，少于350毫秒，则不显示loading
 			// 加载的慢才显示loading
 			self.loadingTimer = setTimeout(function(){
+				if(!self.loadingTimer){
+					return;
+				}
+				if(self.closeLoadingTimer){
+					clearTimeout(self.closeLoadingTimer);
+					self.closeLoadingTimer = null;
+				}
 				loading.css({
 					display:'block'	
 				});
-				self.loadingTimer = null;
+				loadingMask.css({
+					display:'block'	
+				});
+				// 超时隐藏菊花
+				self.closeLoadingTimer = setTimeout(function(){
+					self.closeLoading();
+					self.closeLoadingTimer = null;
+				},5000);
 			},350);
 
 			return self;
@@ -515,12 +550,17 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 
 			if(self.loadingTimer){
 				clearTimeout(self.loadingTimer);
+				self.loadingTimer = null;
 			}
 			
 			var loading = S.one('#MS-loading');
+			var loadingMask = S.one('#MS-loading-mask');
 
 			if(loading){
 				loading.css({
+					display:'none'	
+				});
+				loadingMask.css({
 					display:'none'	
 				});
 			}
@@ -551,7 +591,6 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			}));
 
 			return self.getUrlPrefix() + url.replace(/^.+#/i,'#');
-
 		},
 
 		// 点击a标签时，意欲发生跳转时，只应当调用这个方法
@@ -1160,7 +1199,6 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			var renderPage = function(html){
 
 				self.closeLoading();
-
 				var prel = self.get('page');
 				var el = S.Node('<div class="MS-pal">'+html+'</div>');
 				//向前
@@ -1281,6 +1319,7 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			var fullpath = self.getAjaxPath(decodeURIComponent(path));
 
 			self.loading();
+			console.log('1');
 
 			if(self.__post){
 				S.io.post(fullpath,self.__post,handleHTML);
@@ -1288,7 +1327,17 @@ KISSY.add("mobile/app/1.2/index", function (S,Slide) {
 			}else if(self.get('pageCache') && !S.isUndefined(self.MS.PAGECACHE[path])){
 				renderPage(self.MS.PAGECACHE[path]);
 			}else {
-				S.io.get(fullpath,handleHTML);
+				//S.io.get(fullpath,handleHTML);
+				S.io({
+					url:fullpath,
+					success:handleHTML,
+					error:function(){
+						if(self.get('errorAlert')){
+							alert('页面请求出错！');
+						}
+						self.closeLoading();
+					}
+				});
 			}
 
 		},

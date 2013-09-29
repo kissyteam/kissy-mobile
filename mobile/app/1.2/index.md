@@ -1,5 +1,9 @@
 ![](http://img04.taobaocdn.com/tps/i4/T1IuoMXgNaXXaZVCTS-300-100.png)
 
+<script>
+window.location.href = 'http://gallery.kissyui.com/app/1.3/guide/index.html';
+</script>
+
 > Kissy Mobile App Toolkit 是一款实现web页面应用化的框架，可以快速完成"应用化"的web页面搭建
 > 除了专场动画的AppFramework之外，1.2版还提供一套SDK规范，用以将你的页面运行于Native环境
 

@@ -1,71 +1,3326 @@
-KISSY.add("mobile/app/1.2/index",function(d,h){function a(b){if(this instanceof a)a.superclass.constructor.call(this,b),this.init();else return new a(b)}var c=window.history;a.ATTRS={hideURIbar:{value:!1},viewpath:{value:"index.html",setter:function(b){return decodeURIComponent(b)}},forceReload:{value:!0},page:{value:null},direction:{value:"none"},anim:{value:!0},dataload:{value:"true"},param:{value:null},pageCache:{value:!1},tapTrigger:{value:"a"},animWrapperAutoHeightSetting:{value:!0},containerHeighTimmer:{value:!0},
-basepath:{value:window.location.protocol+"//"+window.location.hostname+window.location.pathname.replace(/\/[^\/]+$/i,"").replace(/\/$/,"")+"/",setter:function(b){return/\/$/.test(b)?b:b+"/"}},initPostData:{value:null},signet:{value:{level:0,viewpath:"",hisurl:"",lastviewpath:"",forward:0,scrollTop:0}},fullRangeWidth:{value:function(){return document.body.offsetWidth}},webkitOptimize:{value:!0},positionMemory:{value:!0}};d.mix(a,{READY:{},STARTUP:{},TEARDOWN:{},INCLUDEONCE:{},DESTROY:{},PAGECACHE:{},
-PAGESCROLL:{},STORAGE:{},APP:null,AndroidHis:{},includeOnce:function(b){if(a.APP.slide){var f=this.APP.get("viewpath");d.isFunction(this.INCLUDEONCE[f])||(this.INCLUDEONCE[f]=b,b.call(this.APP,this.APP))}else b.call(this.APP)},destroy:function(b){var a=this.APP.get("viewpath");if(this.APP.isSinglePage())d.Event.on(window,"unload",b);d.isFunction(this.DESTROY[a])||(this.DESTROY[a]=b)},startup:function(b){if(a.APP.slide){var d=this.APP.get("viewpath");"true"==this.APP.get("page").attr("data-startup")&&
-b.call(this.APP);this.STARTUP[d].push(b)}else b.call(a.APP)},ready:function(b){if(a.APP.slide){var d=this.APP.get("viewpath");"true"==this.APP.get("page").attr("data-ready")&&b.call(this.APP);this.READY[d].push(b)}else b.call(this.APP)},teardown:function(b){if(a.APP.slide){var f=this.APP.get("viewpath");this.TEARDOWN[encodeURIComponent(f)].push(b)}else d.Event.on(window,"beforeunload",b)},cleanup:function(){var b=this.APP.get("viewpath");this.STARTUP[b]=[];this.READY[b]=[];this.TEARDOWN[encodeURIComponent(b)]=
-[]},queryKey:function(b,a){var d=location["undefined"===typeof a||"hash"!==a?"search":"hash"].substr(1).match(RegExp("(^|&)"+b+"=([^&]*)(&|$)","i"));return null!=d?unescape(d[2]):null}});d.extend(a,d.Base,{init:function(){a.APP=this;this.MS=this.constructor;d.one("#MS")?(d.UA.opera&&0<d.UA.opera&&this.set("animWrapperAutoHeightSetting",!0),this.slide=new h("MS",{easing:"easeBoth",autoSlide:!1,effect:this.get("anim")?"hSlide":"none",touchmove:!1,adaptive_fixed_width:!0,contentClass:"MS-con",speed:450,
-pannelClass:"MS-pal",animWrapperAutoHeightSetting:this.get("animWrapperAutoHeightSetting"),webkitOptimize:this.get("webkitOptimize"),adaptive_width:this.get("fullRangeWidth")}),this.positionTimmer=null,this.get("containerHeighTimmer")&&this.slide.addHeightTimmer(),this.bindEvent(),this.initLoad()):this.set("page",d.one("body"));this.initPageStorage();this.set("storage",this.MS.STORAGE[this.get("viewpath")]||{});return this},isSinglePage:function(){return this.slide?!1:!0},isMultiplePage:function(){return!this.isSinglePage()},
-callDestroy:function(){var b=this.MS.DESTROY[this.get("signet").lastviewpath];d.isFunction(b)&&b.call(this,this);return this},initPageStorage:function(){var b=this.get("viewpath");if(!d.isObject(this.MS.STORAGE[b])){var a=function(){};d.augment(a,d.Base.Attribute,d.EventTarget);this.MS.STORAGE[b]=new a}},callReady:function(b){var a=this;d.isUndefined(b)&&(b=a.get("viewpath"));var e=a.MS.READY[b],c=a.get("param");a.get("page").attr("data-ready","true");d.isArray(e)&&d.each(e,function(b){setTimeout(function(){b.call(a,
-c)},200)});d.isFunction(e)&&setTimeout(function(){e.call(a)},200);return this},callStartup:function(b){var a=this;d.isUndefined(b)&&(b=a.get("viewpath"));var e=a.MS.STARTUP[b];a.get("page").attr("data-startup","true");var c=a.get("param");a.set("param",null);a.set("storage",a.MS.STORAGE[b]||{});d.isArray(e)&&d.each(e,function(b){b.call(a,c)});d.isFunction(e)&&e.call(a,c);return this},callTeardown:function(b){var a=this;d.isUndefined(b)&&(b=a.get("viewpath"));if(""!==b){var c=a.MS.TEARDOWN[encodeURIComponent(b)];
-a.rememberPosition(b);d.isArray(c)&&d.each(c,function(b){b.call(a,a)});return d.isFunction(c)?c.call(a,a):!0}},rememberPosition:function(b){this.MS.PAGESCROLL[b]=d.DOM.scrollTop()},recallPosition:function(){if(this.get("positionMemory")){var b=this.MS.PAGESCROLL[this.get("viewpath")];b&&0===d.DOM.scrollTop()&&setTimeout(function(){d.Anim(window,{scrollTop:b},0.5,"easeBoth",function(){}).run()},200)}},initLoad:function(){d.isUndefined(d.getHash().viewpath)||this.set("viewpath",decodeURIComponent(d.getHash().viewpath));
-d.isNull(this.get("initPostData"))||(this.__post=this.get("initPostData"));this._go(this.get("viewpath"),"none");var b=this.formatUrlTail(this.get("viewpath"),d.getHash()),a={level:0,viewpath:this.get("viewpath"),hisurl:b,forward:0,lastviewpath:"",scrollTop:d.DOM.scrollTop()};this.set("signet",a);c.replaceState(a,"",b);this.set("viewpath",decodeURIComponent(d.getHash().viewpath))},rollback:function(){var b=this.formatUrlTail(this.get("viewpath"),d.getHash()),a={level:0,viewpath:this.get("viewpath"),
-hisurl:b,forward:0,lastviewpath:"",scrollTop:d.DOM.scrollTop()};this.set("signet",a);c.replaceState(a,"",b);this.set("viewpath",decodeURIComponent(d.getHash().viewpath))},loading:function(){var b=this,a=d.one("#MS-loading"),a=a?a:d.Node('<div id="MS-loading" style="display:none"><img src="http://img04.taobaocdn.com/tps/i4/T1aIsKXmReXXa679Pe-40-40.gif" /></div>').appendTo("body");a.one("img").css({"margin-top":"5px"});a.css({display:"none",position:"fixed",height:"50px",width:"50px",top:"50%",left:"50%",
-"margin-top":"-25px","margin-left":"-25px","border-radius":"6px","text-align":"center","background-color":"white",opacity:0.7});b.loadingTimer=setTimeout(function(){a.css({display:"block"});b.loadingTimer=null},350);return b},closeLoading:function(){this.loadingTimer&&clearTimeout(this.loadingTimer);var a=d.one("#MS-loading");a&&a.css({display:"none"});return this},getUrlPrefix:function(){var a=window.location;return a.pathname.replace(/\/.+\//i,"").replace("/","")+a.search},formatUrlTail:function(a,
-c){d.isUndefined(c)&&(c="");d.isString(c)&&(c=d.unparam(c));var e=d.setHash(d.merge(c,{viewpath:encodeURIComponent(a)}));return this.getUrlPrefix()+e.replace(/^.+#/i,"#")},setRouteHash:function(a,f){a=decodeURIComponent(a);this.set("viewpath",a);d.isUndefined(f)&&(f="");d.isString(f)&&(f=d.unparam(f));var e=this.formatUrlTail(a,d.getHash()),e={level:this.get("signet").level+1,viewpath:a,hisurl:d.setHash(e,f),forward:1,lastviewpath:a,scrollTop:d.DOM.scrollTop()},g=window.location,g=g.protocol+"//"+
-g.hostname+g.pathname+g.search,g=d.setHash(g,d.merge({viewpath:encodeURIComponent(a)},f));d.UA.android&&4.3>d.UA.android?window.location.href=g:(this.doHashChange(a,f),c.replaceState(e,"",g))},doHashChange:function(a,c){var e=d.setHash(d.merge({stamp:d.now(),viewpath:encodeURIComponent(a)},c)).match(/#.*$/i)[0];window.location.hash=e},bindEvent:function(){var a=this;if(d.UA.android&&4.3>d.UA.android){var f=d.getHash().viewpath?d.getHash().viewpath:a.get("viewpath");a.MS.AndroidHis[f]=1}a.slide.con.delegate("click",
-a.get("tapTrigger"),function(c){var f=d.one(c.currentTarget);if(!d.isUndefined(f.attr("target"))&&""!==f.attr("target")||/^javascript:/i.test(f.attr("href")))return"top"==f.attr("target")&&(window.location.href=f.attr("href"),c.preventDefault()),!0;a.__clickEvent=!0;var h=f.attr("href"),i=f.attr("data-param"),f=f.attr("dir");if(""===h)return!0;c.preventDefault();"back"===f?a.back(h,i):"forward"===f?a.forward(h,i):a.setRouteHash(h,i)});d.Event.on(window,"hashchange",function(){var e=a.get("signet"),
-f=decodeURIComponent(d.getHash().viewpath);a.set("viewpath",f);var h=!1,h=a.__clickEvent&&!0===a.__clickEvent?!0:!1;delete a.__clickEvent;d.isUndefined(f)||(a.formatUrlTail(f,d.getHash()),d.UA.android&&4.3>d.UA.android?a._androidHistoryMan(h):d.isUndefined(c.state)||d.isUndefined(c.state.level)?(a._go(f,"none"),a.recordSignet(0,f)):0===a.get("signet").forward&&0<c.state.forward?(a.next(f),a.recordSignet(1,f)):c.state.level>e.level?0<a.get("signet").forward&&0>c.state.forward?(a.prev(f),a.recordSignet(1,
-f,-1)):(a.next(f),a.recordSignet(1,f)):(0<a.get("signet").forward&&0>c.state.forward?a.prev():0>a.get("signet").forward&&0<c.state.forward?a.next(f,function(){a.callDestroy();a.slide.remove(a.slide.length-2)}):a.prev(function(){a.recallPosition()}),a.recordSignet(-1,f,c.state.forward)))})},recordSignet:function(a,c,e){d.isUndefined(a)&&(a=0,c=d.getHash().viewpath,e=1);d.isUndefined(c)&&(c=d.getHash().viewpath,e=1);d.isUndefined(e)&&(e=1);var c=decodeURIComponent(c),g=this.get("signet").level,h=this.formatUrlTail(c,
-d.getHash()),a={level:g+a,viewpath:c,hisurl:h,forward:e,lastviewpath:this.get("signet").viewpath,scrollTop:d.DOM.scrollTop()};this.set("signet",a);return a},destroy:function(){},_go:function(a,c,e){if(this.isMultiplePage()&&!1===this.callTeardown(this.get("signet").viewpath))return this.rollback(),this;d.isUndefined(c)&&(c="next",e=function(){});d.isFunction(c)&&(e=c,c="next");d.isUndefined(e)&&(e=function(){});this.loadData(a,c,e)},postback:function(a){this.__post=a.data;d.isString(a.path)?this.back(a.path,
-a.data,a.callback):this.back(a.data,a.callback)},postforward:function(a){this.__post=a.data;d.isString(a.path)?this.forward(a.path,a.data,a.callback):this.forward(a.data,a.callback)},back:function(a,f,e){d.isUndefined(a)&&(a=void 0,f={},e=function(){});d.isUndefined(f)&&(f={},e=function(){});d.isFunction(f)&&(e=f,f={});d.isObject(a)&&(f=a,e=function(){},a=void 0);d.isObject(f)&&d.isUndefined(e)&&(e=function(){});d.isString(f)&&(f=d.unparam(f));d.isString(a)&&(a=encodeURIComponent(a));this.set("param",
-d.merge(f,{from:this.get("signet").viewpath}));d.isString(a)?(this.prev.apply(this,[a,f,e]),a=this.recordSignet(1,a,-1),c.pushState(a,"",d.setHash(a.hisurl,f))):c.back();this.set("viewpath",decodeURIComponent(d.getHash().viewpath));return this},forward:function(a,f,e){d.isUndefined(f)&&(f={},e=function(){});d.isFunction(f)&&(e=f,f={});d.isObject(f)&&d.isUndefined(e)&&(e=function(){});d.isString(f)&&(f=d.unparam(f));this.set("param",d.merge(f,{from:this.get("signet").viewpath}));a=encodeURIComponent(a);
-this.next.apply(this,[a,f,e]);a=this.recordSignet(1,a);c.pushState(a,"",d.setHash(a.hisurl,f));this.set("viewpath",decodeURIComponent(d.getHash().viewpath));return this},_androidHistoryMan:function(a,c){var e=this;d.isUndefined(c)&&(c=e.get("viewpath"));if(a||!(c in e.MS.AndroidHis))e.next(c),e.recordSignet(1,c);else{e.prev(c,function(){e.recallPosition()});e.recordSignet(1,c,-1);for(var g in e.MS.AndroidHis)1==e.MS.AndroidHis[g]&&delete e.MS.AndroidHis[g]}for(var h in e.MS.AndroidHis)e.MS.AndroidHis[h]=
-null;e.MS.AndroidHis[c]=1},next:function(a,c){var e=this;d.isFunction(a)&&(c=a,a=void 0);d.isUndefined(c)&&(c=function(){});if(d.isUndefined(a)){if(e.isMultiplePage()&&!1===e.callTeardown(e.get("signet").viewpath))return e.rollback(),this;e.slide.removeHeightTimmer();e.get("animWrapperAutoHeightSetting")&&window.scrollTo(0,0);e.slide.next(function(){e.get("containerHeighTimmer")&&e.slide.addHeightTimmer();d.isFunction(c)&&c.call(e.slide,e.slide);e.get("forceReload")&&e.slide.remove(e.slide.length-
-2);alert(e.slide.animwrap.height());e.callReady()});e.set("page",e.slide.getCurrentPannel());e.callStartup()}else e._go(a,"next",c)},prev:function(a,c){var e=this;d.isFunction(a)&&(c=a,a=void 0);d.isUndefined(c)&&(c=function(){});!d.isString(a)&&e.get("forceReload")&&(a=e.get("viewpath"));if(d.isUndefined(a)){if(e.isMultiplePage()&&!1===e.callTeardown(e.get("signet").viewpath))return e.rollback(),this;e.slide.removeHeightTimmer();e.slide.previous(function(){e.get("containerHeighTimmer")&&e.slide.addHeightTimmer();
-e.callDestroy();this.removeLast();d.isFunction(c)&&c.call(e.slide,e.slide);e.callReady()});e.set("page",e.slide.getCurrentPannel());e.callStartup()}else e._go(a,"prev",c)},getAjaxPath:function(a){return this.get("basepath")+a},loadData:function(a,c,e){var g=this;d.isUndefined(c)&&(c="next",e=function(){});d.isFunction(c)&&(e=c,c="next");d.isUndefined(e)&&(e=function(){});var h=function(a){g.closeLoading();var b=g.get("page"),h=d.Node('<div class="MS-pal">'+a+"</div>");g.set("page",h);switch(c){case "prev":g.slide.add(h,
-g.slide.currentTab);g.slide.relocateCurrentTab(g.slide.currentTab+1);setTimeout(function(){g.MS.cleanup();d.execScript(a);g.initPageStorage();g.callStartup();g.slide.removeHeightTimmer();g.slide.previous(function(){g.get("containerHeighTimmer")&&g.slide.addHeightTimmer();g.callDestroy();d.isFunction(e)&&e.call(g.slide,g.slide);this.removeLast();g.slide.animwrap.css({"-webkit-transform":"none"});setTimeout(function(){g.callReady()},0)})},150);break;case "next":console.info("next");g._fixScrollTopBefore(h,
-b);g.slide.add(h);setTimeout(function(){g.MS.cleanup();d.execScript(a);g.initPageStorage();g.callStartup();g.slide.removeHeightTimmer();g.get("animWrapperAutoHeightSetting")&&window.scrollTo(0,0);g.slide.next(function(){g.callDestroy();d.isFunction(e)&&e.call(g.slide,g.slide);g.get("forceReload")&&g.slide.remove(g.slide.length-2);g.get("containerHeighTimmer")&&g.slide.addHeightTimmer();g._fixScrollTopAfter(h,b,function(){setTimeout(function(){g.callReady()},0)});g.slide.animwrap.css({"-webkit-transform":"none"})})},
-150);break;case "none":g.slide.add(h,g.slide.currentTab);g.callDestroy();g.MS.cleanup();d.execScript(a);g.initPageStorage();e.call(g.slide,g.slide);g.slide.removeLast();g.slide.animwrap.css({"-webkit-transform":"none"});g.callStartup();g.callReady()}},i=function(c){c=c.replace(/\r/mig,"$123").replace(/\n/g,"$456").replace(/.*<\!--kdk{{--\>/i,"").replace(/<\!--kdk}}--\>.*$/i,"");c=c.replace(/\$123/g,"\r").replace(/\$456/g,"\n");g.MS.PAGECACHE[a]=c;h(c)},j=g.getAjaxPath(decodeURIComponent(a));g.loading();
-g.__post?(d.io.post(j,g.__post,i),delete g.__post):g.get("pageCache")&&!d.isUndefined(g.MS.PAGECACHE[a])?h(g.MS.PAGECACHE[a]):d.io.get(j,i)},_fixScrollTopBefore:function(a){if(!this.get("animWrapperAutoHeightSetting")){var c=d.DOM.scrollTop();a.css({"margin-top":c+"px"})}},_fixScrollTopAfter:function(a,c,e){var g=this;if(g.get("animWrapperAutoHeightSetting"))e();else{a.parent();var h=function(){a.css({position:"absolute",top:0}).css({"margin-top":0,position:"relative","-webkit-backface-visibility":!1,
-left:0});g.get("containerHeighTimmer")&&g.slide.addHeightTimmer();g.get("hideURIbar")&&g.slide.hideURIbar();e()};g.slide.animwrap.css({"-webkit-transform":"none"});a.css({"margin-top":0,position:"fixed",top:0,"-webkit-backface-visibility":!1,left:g.slide.con.offset().left+"px"});d.UA.opera&&0<d.UA.opera?(window.scrollTo(0,0),h()):d.Anim(window,{scrollTop:0},0.1,"easeNone",function(){h()}).run()}},initPlaceholder:function(){}});return a},{requires:["./slide","base","ajax"]});
-KISSY.add("mobile/app/1.2/kissy2yui",function(d){d.augment(d.Node,{_delegate:function(){d.isFunction(arguments[1])?this.delegate(arguments[0],arguments[2],arguments[1]):this.delegate.apply(this,arguments);return this},indexOf:function(h){if(d.isUndefined(h))return null;h[0]&&(h=h[0]);var a=0;this.each(function(c,b){c[0]===h&&(a=b)});return a},size:function(){return this.length},set:function(d,a){"innerHTML"===d?this.html(a):this.attr(d,a);return this},get:function(d){var a=this,c={innerHTML:function(){return a.html()},
-region:function(){return{height:a.height(),width:a.width()}}};if(d in c)return c[d]()},appendChild:function(){this.append.apply(this,arguments);return this},setStyle:function(d,a){this.css.apply(this,arguments);return this},setStyles:function(d){this.css.apply(this,arguments);return this},cloneNode:function(){return this.clone.apply(this,arguments)}});d.Node.create=function(h){return d.Node(h)}},{requires:["node","event"]});
-KISSY.add("mobile/app/1.2/slide",function(d){var h=function(){if(!(this instanceof h))throw Error('please use "new Slide()"');this.init.apply(this,arguments)};h.plug=function(){};d.augment(h,d.Event.Target,{init:function(a,c){if(d.isObject(a))this.con=a;else if(/^#/i.test(a))this.con=d.one(a);else if(d.one("#"+a))this.con=d.one("#"+a);else if(d.one(a))this.con=d.one(a);else throw Error("Slide Container Hooker not found");this.buildParam(c);this.buildHTML();this.bindEvent();this.fire("ready",{index:0,
-navnode:this.tabs.item(0),pannelnode:this.pannels.item(0)});if(this.reverse){var b;b=this.previous;this.previous=this.next;this.next=b}if(this.carousel)for(b=0;b<this.colspan;b++)this.fix_for_transition_when_carousel(2*b);this.fixSlideSize();this.layerSlide&&this.initLayer();return this},setWrapperSize:function(a){var c=this;d.isUndefined(a)&&(a=0);c.pannels=c.con.all("."+c.contentClass+" div."+c.pannelClass);c.length=c.pannels.length;({none:function(){},vSlide:function(){var b=c.animcon.get("region");
-c.animwrap.setStyles({height:(c.length+a)*b.height/c.colspan+"px"})},hSlide:function(){var b=c.animcon.get("region");c.animwrap.setStyles({width:(c.length+a)*b.width/c.colspan+"px"})},fade:function(){}})[c.effect]();d.isUndefined(a)||c.relocateCurrentTab();return this},add:function(a,c){var b=this;if(d.isUndefined(c)||c>b.length)c=b.length;d.isString(a)&&(a=d.one(a));b.transitions&&a.css({visibility:"hidden"});c==b.length?(setTimeout(function(){b.setWrapperSize(1)},0),a.insertAfter(b.pannels[c-1])):
-a.insertBefore(b.pannels[c]);b.setWrapperSize();b.fixSlideSize(b.currentTab);b.transitions&&a.css({visibility:""});return this},remove:function(a){if(1!==this.length)return a<=this.currentTab&&(this.currentTab--,this.length--),this.transitions&&this.con.css({visibility:"hidden"}),d.one(this.pannels[a]).remove(),this.setWrapperSize(),this.transitions&&this.con.css({display:"block",visibility:""}),this.fixSlideSize(this.currentTab),this},removeLast:function(){this.remove(this.length-1);return this},
-renderLazyData:function(a){a.setStyle("display","none");if("1"!=a.attr("lazy-data")){a.attr("lazy-data","1");d.stamp(b);var c=a.get("innerHTML").replace(/&lt;/ig,"<").replace(/&gt;/ig,">"),b=d.Node.create("<div>"+c+"</div>");d.DOM.insertBefore(b,a);d.execScript(c)}},buildWrap:function(){this.animwrap=d.Node.create('<div style="position:absolute;"></div>');this.animwrap.set("innerHTML",this.animcon.get("innerHTML"));this.animcon.set("innerHTML","");this.animcon.appendChild(this.animwrap);this.pannels=
-this.con.all("."+this.contentClass+" div."+this.pannelClass);return this},doEffectInit:function(){var a=this;({none:function(){a.pannels=a.con.all("."+a.contentClass+" div."+a.pannelClass);a.pannels.setStyles({display:"none"});a.pannels.item(a.defaultTab).setStyles({display:"block"})},vSlide:function(){a.buildWrap();var c=a.animcon.get("region");a.pannels.setStyles({"float":"none",overflow:"hidden"});a.animwrap.setStyles({height:a.length*c.height/a.colspan+"px",overflow:"hidden",top:-1*a.defaultTab*
-c.height+"px"})},hSlide:function(){a.buildWrap();var c=a.animcon.get("region");a.pannels.setStyles({"float":"left",overflow:"hidden"});a.animwrap.setStyles({width:a.length*c.width/a.colspan+"px",overflow:"hidden",left:-1*a.defaultTab*c.width+"px"})},fade:function(){a.pannels=a.con.all("."+a.contentClass+" div."+a.pannelClass);a.pannels.setStyles({position:"absolute",zIndex:0});a.pannels.each(function(c,b){b==a.defaultTab?c.setStyles({opacity:1,display:"block"}):c.setStyles({opacity:0,diaplay:"none"})})}})[a.effect]();
-return this},buildHTML:function(){var a=this.con;this.tabs=a.all("."+this.navClass+" "+this.triggerSelector);this.length=a.all("."+this.contentClass+" ."+this.pannelClass).size();a.one("."+this.navClass)||d.Node('<ul class="'+this.navClass+'" style="display:none"></ul>').appendTo(this.con);if(0===this.tabs.size()){for(var c=a.all("."+this.navClass),b="",f=0;f<this.length;f++){var e="";0===f&&(e=this.selectedClass);b+='<li class="'+e+'"><a href="javascript:void(0);">'+(f+1)+"</a></li>"}c.set("innerHTML",
-b)}this.tabs=a.all("."+this.navClass+" "+this.triggerSelector);this.animcon=a.one("."+this.contentClass);this.animwrap=null;this.doEffectInit();this.fixSlideSize(this.currentTab);this.hightlightNav(this.getWrappedIndex(this.currentTab));!0===this.autoSlide&&this.play();return this},getCurrentPannel:function(){return d.one(this.pannels[this.currentTab])},renderWidth:function(){var a=this.animcon.get("region").width;"hSlide"==this.effect&&(a/=this.colspan);this.pannels.setStyles({width:a+"px"});return this},
-renderHeight:function(){var a=this.animcon.get("region").height;"vSlide"==this.effect&&(a/=this.colspan);this.pannels.setStyles({height:a+"px"});return this},relocateCurrentTab:function(a){d.isUndefined(a)&&(a=this.currentTab);if("hSlide"==this.effect)return this.transitions?this.animwrap.setStyles({"-webkit-transition-duration":"0s","-webkit-transform":"translate3d("+-1*a*this.animcon.get("region").width+"px,0,0)","-webkit-backface-visibility":"hidden"}):this.animwrap.setStyles({left:-1*a*this.animcon.get("region").width}),
-this.currentTab=a,this},fixSlideSize:function(a){this.adaptive_fixed_width&&this.renderWidth();this.adaptive_fixed_height&&this.renderHeight();this.adaptive_fixed_size&&this.renderHeight().renderWidth();this.resetSlideSize(a);return this},hideURIbar:function(){this.animcon.height("2500px");window.scrollTo(0,1);this.animcon.height(window.innerHeight+"px")},setViewSize:function(a){var c=d.one("body"),b=d.one("html"),a="auto"===a?"auto":"100%";c.setStyle("height",a);b.setStyle("height",a);this.animcon.setStyle("height",
-a);this.animcon.parent().height(a)},removeHeightTimmer:function(){d.isNull(this.heightTimmer)||(clearInterval(this.heightTimmer),this.heightTimmer=null)},addHeightTimmer:function(){var a=this;d.isNull(a.heightTimmer)||(clearInterval(a.heightTimmer),a.heightTimmer=null);var c=function(){a.effect=="hSlide"&&a.animcon.setStyles({height:a.pannels.item(a.currentTab).get("region").height+"px"})};a.heightTimmer=setInterval(c,100);c()},resetSlideSize:function(a){var c,b;if("undefined"==typeof a||null===a)a=
-this.currentTab;if(!("hSlide"!=this.effect&&"vSlide"!=this.effect))return"hSlide"==this.effect&&(c=this.adaptive_width?this.adaptive_width():this.animcon.get("region").width,b=this.pannels.item(a).get("region").height,c/=this.colspan,this.pannels.setStyles({width:c+"px",display:"block"}),this.animcon.setStyles({width:c*this.colspan+"px",overflow:"hidden"}),this.animWrapperAutoHeightSetting&&this.animcon.setStyles({height:b+"px"})),"vSlide"==this.effect&&(c=this.pannels.item(a).get("region").width,
-b=this.adaptive_height?this.adaptive_height():this.animcon.get("region").height,b/=this.colspan,this.pannels.setStyles({height:b*this.colspan+"px",display:"block"}),this.animcon.setStyles({height:b*this.colspan+"px",overflow:"hidden"}),this.animWrapperAutoHeightSetting&&this.animcon.setStyles({width:c+"px"})),this},getWrappedIndex:function(a){var c=0;return c=this.carousel?a<this.colspan?this.length-3*this.colspan+a:a>=this.length-this.colspan?a-(this.length-this.colspan):a-this.colspan:a},bindEvent:function(){var a=
-this;d.inArray(a.eventType,["click","mouseover","mouseenter"])&&a.con._delegate(a.eventType,function(c){c.halt();c=Number(a.tabs.indexOf(c.currentTarget));a.carousel&&(c=(c+1)%a.length);a.go(c);a.autoSlide&&a.stop().play()},"."+a.navClass+" "+a.triggerSelector);a.hoverStop&&(a.con._delegate("mouseover",function(){a.autoSlide&&a.stop()},"."+a.contentClass+" div."+a.pannelClass),a.con._delegate("mouseout",function(){a.autoSlide&&a.play()},"."+a.contentClass+" div."+a.pannelClass));d.Event.on(window,
-"resize",function(){a.fixSlideSize(a.currentTab);a.relocateCurrentTab()});a.on("beforeSwitch",function(){if(this.layerSlide&&this.isAming())return false});if("ontouchstart"in document.documentElement){if(!a.touchmove)return this;a.con._delegate("touchstart",function(c){a.stop();a.touching=true;a.is_last()&&a.carousel&&a.fix_next_carousel();a.is_first()&&a.carousel&&a.fix_pre_carousel();a.startX=c.changedTouches[0].clientX;a.startY=c.changedTouches[0].clientY;a.animwrap.setStyles({"-webkit-transition-duration":"0s"});
-a.startT=Number(new Date)},"."+a.contentClass);a.con._delegate("touchend",function(c){a.touching=false;var b=c.changedTouches[0].clientX,c=Number(a.animcon.get("region").width);a.deltaX=Math.abs(b-a.startX);var d=Math.abs(b)<Math.abs(a.startX),b=!d,b=a.carousel?false:a.is_last()&&d||a.is_first()&&b,e=function(){a.animwrap.setStyles({"-webkit-transition-duration":Number(a.speed)/2+"s","-webkit-transform":"translate3d("+-1*a.currentTab*a.animcon.get("region").width/a.colspan+"px,0,0)"})},g=function(){var b=
-a.animcon.get("region").width/a.colspan,b=parseInt((a.deltaX-b/2)/b,10);if(d){if(b>=1&&a.length>2){a.currentTab=a.currentTab+b;if(a.currentTab>=a.length-1)a.currentTab=a.length-2}a.next()}else{if(b>=1&&a.length>2)a.currentTab=a.currentTab-b<=0?1:a.currentTab+-1*b;a.previous()}};if(a.touchmove&&a.deltaX<30)e();else{!b&&(a.touchmove&&a.deltaX>c/3||!a.touchmove&&a.carousel||!a.carousel&&a.touchmove&&a.effect=="hSlide"||!a.touchmove&&!a.carousel||Number(new Date)-a.startT<550)?g():e();a.autoSlide&&a.play()}},
-"."+a.contentClass);a.touchmove&&(a.con._delegate("touchmove",function(c){if(!(c.touches.length>1)){a.deltaX=c.touches[0].clientX-a.startX;var b=a.is_last()&&a.deltaX<0||a.is_first()&&a.deltaX>0;if(!a.carousel&&a.effect=="hSlide"&&b)a.deltaX=a.deltaX/3;a.isScrolling=Math.abs(a.deltaX)<Math.abs(c.touches[0].clientY-a.startY)?true:false;if(!a.isScrolling){c.halt();a.stop();c=Number(a.animcon.get("region").width/a.colspan);a.animwrap.setStyles({"-webkit-transition-duration":"0s","-webkit-transform":"translate3d("+
-(a.deltaX-a.currentTab*c)+"px,0,0)"})}}},"."+a.contentClass),a.animwrap.on("webkitTransitionEnd",function(){}))}return this},initLayer:function(){var a=this;if(!("ontouchstart"in document.documentElement||0<d.UA.ie&&9>d.UA.ie)){var c="durationin,easingin,durationout,easingout,delayin,delayout,slideindirection,slideoutdirection,offsetin,offsetout,alpha,easeInStrong,easeOutStrong,easeBothStrong,easeNone,easeIn,easeOut,easeBoth,elasticIn,elasticOut,elasticBoth,backIn,backOut,backBoth,bounceIn,bounceOut,bounceBoth,left,top,right,bottom".split(","),
-b={durationin:1E3,easingin:"easeIn",durationout:1E3,easingout:"easeOut",delayin:300,delayout:300,slideindirection:"right",slideoutdirection:"left",alpha:!0,offsetin:50,offsetout:50},f=function(a){var f=this,h=a.attr("rel").replace(/"'/ig,"").replace(RegExp("("+c.join("|")+")","ig"),'"$1"'),i=d.JSON.parse("{"+h+"}");d.each(b,function(a,b){var c=i[b];f[b]=void 0===c||null===c?a:c});this.el=a;this.left=Number(a.css("left").replace("px",""));this.top=Number(a.css("top").replace("px",""));this.animIn=
-function(){var a=this,b=a.offsetin,c=a.slideindirection;({left:function(){a.el.css({left:a.left-b})},top:function(){a.el.css({top:a.top-b})},right:function(){a.el.css({left:a.left+b})},bottom:function(){a.el.css({top:a.top+b})}})[c]();setTimeout(function(){var b={};d.mix(b,{left:{left:a.left},top:{top:a.top},bottom:{top:a.top},right:{left:a.left}}[c]);a.alpha&&d.mix(b,{opacity:1});d.Anim(a.el,b,a.durationin/1E3,a.easingin,function(){}).run()},a.delayin);a.alpha&&a.el.css({opacity:0})};this.animOut=
-function(){}};a.sublayers=[];a.pannels.each(function(b,c){("vSlide"==a.effect||"hSlide"==a.effect)&&b.css({position:"relative"});0===b.all('[alt="sublayer"]').length?a.sublayers[c]=[]:(void 0===a.sublayers[c]&&(a.sublayers[c]=[]),b.all('[alt="sublayer"]').each(function(b){a.sublayers[c].push(new f(b))}))});a.on("beforeSwitch",function(b){if(b.index===a.currentTab)return!1;a.subLayerRunin(b.index)});a.on("beforeTailSwitch",function(b){a.subLayerRunout(b.index)})}},subLayerRunin:function(a){d.each(this.sublayers[a],
-function(a){a.animIn()})},subLayerRunout:function(a){d.each(this.sublayers[a],function(a){a.animOut()})},buildParam:function(a){var c=this;if(void 0===a||null===a)a={};d.each({autoSlide:!1,speed:500,timeout:3E3,effect:"none",eventType:"click",easing:"easeBoth",hoverStop:!0,selectedClass:"selected",conClass:"t-slide",navClass:"tab-nav",triggerSelector:"li",contentClass:"tab-content",pannelClass:"tab-pannel",carousel:!1,reverse:!1,touchmove:!1,adaptive_fixed_width:!1,adaptive_fixed_height:!1,adaptive_fixed_size:!1,
-adaptive_width:!1,adaptive_height:!1,defaultTab:0,layerSlide:!1,layerClass:"tab-animlayer",colspan:1,animWrapperAutoHeightSetting:!0,webkitOptimize:!0},function(b,d){var e=a[d];c[d]=void 0===e||null===e?b:e});d.mix(c,{tabs:[],animcon:null,pannels:[],timmer:null,touching:!1});c.speed/=1E3;0!==c.defaultTab&&(c.defaultTab=Number(c.defaultTab)-1);c.carousel&&(c.defaultTab=c.colspan,c.effect="hSlide");c.currentTab=c.defaultTab;c.transitions="webkitTransition"in document.body.style&&c.webkitOptimize;return c},
-fix_for_transition_when_carousel:function(a){"undefined"==typeof a&&(a=0);var c=this.con;this.animcon=this.con.one("."+this.contentClass);this.animwrap=this.animcon.one("div");this.pannels=c.all("."+this.contentClass+" div."+this.pannelClass);if("hSlide"==this.effect){var b=Number(this.animcon.get("region").width/this.colspan);this.animcon.get("region");this.animwrap.setStyle("width",this.pannels.size()*b+2*b);var d=this.pannels.item(a).cloneNode(!0),e=this.pannels.item(this.pannels.size()-1-a).cloneNode(!0);
-this.animwrap.append(d);this.animwrap.prepend(e);this.transitions?this.animwrap.setStyles({"-webkit-transition-duration":"0s","-webkit-transform":"translate3d("+-1*b*(a/2+1)+"px,0,0)","-webkit-backface-visibility":"hidden",left:"0"}):this.animwrap.setStyle("left",-1*b*(a/2+1))}this.pannels=c.all("."+this.contentClass+" div."+this.pannelClass);this.length=this.pannels.size();return this},isAming:function(){return this.anim?this.anim.isRunning():!1},previous:function(a){try{if(this.isAming()&&this.carousel)return this}catch(c){}var b=
-this.currentTab+this.length-1-(this.colspan-1);b>=this.length-this.colspan+1&&(b%=this.length-this.colspan+1);if(this.carousel&&this.is_first())return this.fix_pre_carousel(),this.previous.call(this),this;this.go(b,a);return this},is_last:function(){return this.currentTab==this.length-(this.colspan-1)-1?!0:!1},is_first:function(){return 0===this.currentTab?!0:!1},next:function(a){try{if(this.isAming()&&this.carousel)return this}catch(c){}var b=this.currentTab+1;b>=this.length-this.colspan+1&&(b%=
-this.length-this.colspan+1);if(this.carousel&&this.is_last())return this.fix_next_carousel(),this.next.call(this),this;this.go(b,a);return this},fix_next_carousel:function(){this.currentTab=this.colspan;var a=this.con;"none"!=this.effect&&(this.pannels=a.all("."+this.contentClass+" div."+this.pannelClass));a="-"+Number(this.animcon.get("region").width).toString()+"px";"hSlide"==this.effect&&(this.transitions?this.animwrap.setStyles({"-webkit-transition-duration":"0s","-webkit-transform":"translate3d("+
-a+",0,0)"}):this.animwrap.setStyle("left",a))},fix_pre_carousel:function(){this.currentTab=this.length-1-2*this.colspan+1;var a=this.con;"none"!=this.effect&&(this.pannels=a.all("."+this.contentClass+" div."+this.pannelClass));a="-"+(Number(this.animcon.get("region").width/this.colspan)*this.currentTab).toString()+"px";"hSlide"==this.effect&&(this.transitions?this.animwrap.setStyles({"-webkit-transition-duration":"0s","-webkit-transform":"translate3d("+a+",0,0)"}):this.animwrap.setStyle("left",a))},
-hightlightNav:function(a){if(this.carousel&&1<this.colspan)return this;this.tabs.item(a)&&(this.tabs.removeClass(this.selectedClass),this.tabs.item(a).addClass(this.selectedClass));return this},switch_to:function(a,c){var b=this,f=function(){d.isFunction(c)&&c.call(b,b);b.fire("afterSwitch",{index:b.currentTab,navnode:b.tabs.item(b.getWrappedIndex(b.currentTab)),pannelnode:b.pannels.item(b.currentTab)})};b.fire("beforeTailSwitch",{index:b.currentTab,navnode:b.tabs.item(b.getWrappedIndex(b.currentTab)),
-pannelnode:b.pannels.item(b.currentTab)});b.hightlightNav(b.getWrappedIndex(a));b.fixSlideSize(a);b.autoSlide&&b.stop().play();a>=b.length&&(a%=b.length);if(a==b.currentTab)return this;if(b.anim)try{b.anim.stop(),b.anim=null}catch(e){}({none:function(a){b.pannels.setStyles({display:"none"});b.pannels.item(a).setStyles({display:"block"});f()},vSlide:function(a){b.transitions?(b.animwrap.setStyles({"-webkit-transition-duration":b.speed+"s","-webkit-transform":"translate3d(0,"+-1*a*b.animcon.get("region").height/
-b.colspan+"px,0)","-webkit-backface-visibility":"hidden"}),b.anim=d.Anim(b.animwrap,{opacity:1},b.speed,b.easing,function(){f()})):b.anim=d.Anim(b.animwrap,{top:-1*a*b.animcon.get("region").height/b.colspan},b.speed,b.easing,function(){f()});b.anim.run()},hSlide:function(a){b.transitions?(b.animwrap.setStyles({"-webkit-transition-duration":b.speed+"s","-webkit-transform":"translate3d("+-1*a*b.animcon.get("region").width/b.colspan+"px,0,0)","-webkit-backface-visibility":"hidden"}),b.anim=d.Anim(b.animwrap,
-{opacity:1},b.speed,b.easing,function(){f()})):b.anim=d.Anim(b.animwrap,{left:-1*a*b.animcon.get("region").width/b.colspan},b.speed,b.easing,function(){f()});b.anim.run()},fade:function(a){var c=b.currentTab;b.anim=d.Anim(b.pannels.item(a),{opacity:1},b.speed,b.easing,function(){b.pannels.item(c).setStyle("zIndex",0);b.pannels.item(a).setStyle("zIndex",1);b.pannels.item(c).setStyle("opacity",0);b.pannels.item(c).setStyles({display:"none"});f()});b.pannels.item(a).setStyles({display:"block"});b.pannels.item(a).setStyle("opacity",
-0);b.pannels.item(c).setStyle("zIndex",1);b.pannels.item(a).setStyle("zIndex",2);b.anim.run()}})[b.effect](a);b.currentTab=a;b.fire("switch",{index:a,navnode:b.tabs.item(b.getWrappedIndex(a)),pannelnode:b.pannels.item(a)});var g=b.pannels.item(a).all(".data-lazyload");g&&g.each(function(a){b.renderLazyData(a)})},go:function(a,c){!1!==this.fire("beforeSwitch",{index:a,navnode:this.tabs.item(a),pannelnode:this.pannels.item(a)})&&(a+this.colspan>this.pannels.size()&&(a=this.pannels.size()-this.colspan),
-this.switch_to(a,c));return this},play:function(){var a=this;null!==a.timer&&clearTimeout(a.timer);a.timer=setTimeout(function(){a.next().play()},Number(a.timeout));return this},stop:function(){clearTimeout(this.timer);this.timer=null;return this}});return h},{requires:["node","event","json","./util","./kissy2yui"]});
-KISSY.add("mobile/app/1.2/util",function(d){d.mix(d,{setHash:function(d,a){var c,b;"object"==typeof d?(c=window.location.href,a=d):c=d;0>c.indexOf("#")&&(c+="#");var f=this.getHash(c);for(b in f)!(b in a)&&"viewpath"!==b&&delete f[b];for(b in a)f[b]=a[b];c=c.split("#")[0]+"#";for(b in f)c+=b+"="+f[b]+"&";return c=c.substr(0,c.length-1)},getHash:function(h){h=h||window.location.href;if(0>h.indexOf("#"))return{};h=h.split("#")[1];if(""===h)return{};try{"&"==h[h.length-1]&&(h=h.substr(0,h.length-1));
-var h=h.replace(/"/ig,"'"),h=h.replace(/=/ig,'":"'),h=h.replace(/&/ig,'","'),h=h+'"',h='{"'+h+"}",a=d.JSON.parse(h)}catch(c){a=d.unparam(h)}return a},_globalEval:function(d){if(d&&/\S/.test(d)){var a=document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0],c=document.createElement("script");c.text=d;a.insertBefore(c,a.firstChild);setTimeout(function(){a.removeChild(c)},1)}},execScript:function(h){var a=RegExp(/<script([^>]*)>([^<]*(?:(?!<\/script>)<[^<]*)*)<\/script>/ig),
-c=d.one("head").getDOMNode(),b,f,e,g,k,i=/\stype="(javascript)|(text)\/template"/i,j=/\ssrc=(['"])(.*?)\1/i,l=/\scharset=(['"])(.*?)\1/i;for(a.lastIndex=0;b=a.exec(h);)if(e=(f=b[1])?f.match(j):!1,!f.match(i))if(e&&e[2]){b=document.createElement("script");b.src=e[2];if((g=f.match(l))&&g[2])b.charset=g[2];b.async=!0;c.appendChild(b)}else(k=b[2])&&0<k.length&&this._globalEval(k)},isDaily:function(){return/daily\.taobao\.net/.test(window.location.hostname)?!0:!1}})},{requires:["node","sizzle","json",
-"uri"]});
+/**
+ * @file index.js
+ * @brief 
+ * @author jayli, bachi@taobao.com
+ * @version 
+ * @date 2012-12-18
+ */
+
+/*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
+
+KISSY.add("mobile/app/1.2/index", function (S,Slide) {
+
+	// Jayli TODO: Android下未完全测试
+
+	"use strict";
+
+	var his = window.history;
+
+	function MS(cfg) {
+		if (this instanceof MS) {
+
+			MS.superclass.constructor.call(this, cfg);
+			this.init();
+
+		} else {
+			return new MS(cfg);
+		}
+	}
+
+	// MS.ATTR
+	MS.ATTRS = {
+		hideURIbar:{
+			value:false
+		},
+		viewpath: {
+			value: 'index.html',
+			setter: function(v){
+				return decodeURIComponent(v);
+			}
+		},
+		forceReload:{ // 切换时（不论前进后退），都进行重新加载
+			value: true 
+		},
+		page:{
+			value: null
+		},
+		direction:{
+			value: 'none'  // none,next,prev
+		},
+		anim:{
+			value: true
+		},
+		dataload:{
+			value: 'true'
+		},
+		param:{ // 临时参数对象，页面之间相互传参用
+			value: null 
+		},
+		pageCache:{
+			value:false // 加载过的page是否保存到本地，默认不保存
+		},
+		tapTrigger:{
+			value:'a'
+		},
+		animWrapperAutoHeightSetting: {
+			value:true
+		},
+		errorAlert:{
+			// Ajax 出错时是否提示
+			value:true
+		},
+		containerHeighTimmer: {
+			value:true
+		},
+		basepath:{
+			value:window.location.protocol + '//' + window.location.hostname +
+					window.location.pathname.replace(/\/[^\/]+$/i,'').replace(/\/$/,'') + '/',
+			setter:function(v){
+				if(/\/$/.test(v)){
+					return v;
+				} else {
+					return v + '/';
+				}
+			}
+		},
+		initPostData:{
+			value:null
+		},
+		// 当前访问记录
+		signet:{
+			value:{
+				level:0,
+				viewpath:'',
+				hisurl:'',
+				lastviewpath:'', // 上一个view地址
+				forward:0, // 前进距离，1，前进，-1，后退，0，无状态
+				scrollTop:0 // 用来记录当前页面离开时的滚动条位置
+			}
+		},
+		fullRangeWidth:{
+			value:function(){
+				return document.body.offsetWidth;
+			}
+		},
+		webkitOptimize:{
+			value:true
+		},
+		positionMemory:{
+			value:true
+		}
+		
+	};
+
+	// 全局静态方法
+	S.mix(MS,{
+		READY:{},// 专场动画完成后，页面的执行函数，一个页面一个，类似Domready
+		STARTUP:{},// 来到页面时的启动函数，一个页面多个
+		TEARDOWN:{},// 离开页面时的清理函数，一个页面多个
+		INCLUDEONCE:{},// 该页面首次加载时执行一次，一个页面多个
+		DESTROY:{},// 该页面被销毁时执行一次
+		PAGECACHE:{},//每个页面的镜像字符串，保存在这里
+		PAGESCROLL:{},//每个页面离开时的scrollTop高度
+		STORAGE:{},//每个页面对应的本地存储
+		APP:null,//全局的APP引用，默认指向最新创建的
+		// Android 4.3以下不支持 History，临时变量存储Android下的历史记录，只能作简单的前进后退动画
+		// 这里的实现不完全，比如a->b->c<-a后，节点为a->b->a，这时需要手动清空MS.AndroidHis = {};
+		// Android 4.3以下的后退时scrollTop复原的操作，需要开发者自行添加（框架不知道是否是后退还是人为）
+		// TODO: 完全模拟History?
+		AndroidHis:{
+			/*
+			 'mb/a.html':null,
+			 'mb/b.html':null,
+			 'mb/c.html':1 // 1 表明是最新的一个
+			 ...
+			 **/
+		},
+		includeOnce:function(cb){
+			if(!MS.APP.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				if(!S.isFunction(this.INCLUDEONCE[k])){
+					this.INCLUDEONCE[k] = cb;
+					cb.call(this.APP,this.APP);
+				}
+			}
+		},
+		destroy:function(cb){
+			var k = this.APP.get('viewpath');
+			if(this.APP.isSinglePage()){
+				S.Event.on(window,'unload',cb);
+			}
+			if(!S.isFunction(this.DESTROY[k])){
+				this.DESTROY[k] = cb;
+			}
+		},
+		startup:function(cb){
+			// 单页面
+			if(!MS.APP.slide){
+				cb.call(MS.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				/*
+				if(!S.isFunction(this.STARTUP[k])){
+					this.STARTUP[k] = cb;
+				}
+				*/
+				if(this.APP.get('page').attr('data-startup') == 'true'){
+					cb.call(this.APP);
+				}
+				this.STARTUP[k].push(cb);
+			}
+		},
+		ready:function(cb){
+			if(!MS.APP.slide){
+				cb.call(this.APP);
+			}else {
+				var k = this.APP.get('viewpath');
+				/*
+				if(!S.isFunction(this.READY[k])){
+					this.READY[k] = cb;
+				}
+				*/
+				if(this.APP.get('page').attr('data-ready') == 'true'){
+					cb.call(this.APP);
+				}
+				this.READY[k].push(cb);
+			}
+		},
+		teardown:function(cb){
+			if(!MS.APP.slide){
+				// cb.call(this.APP);
+				S.Event.on(window,'beforeunload',cb);
+			}else{
+				var k = this.APP.get('viewpath');
+				/*
+				if(!S.isFunction(this.TEARDOWN[k])){
+					this.TEARDOWN[k] = cb;
+				}
+				*/
+				this.TEARDOWN[encodeURIComponent(k)].push(cb);
+			}
+		},
+		// 清空当前view的startup,ready,teardown
+		cleanup:function(){
+			var k = this.APP.get('viewpath');
+			this.STARTUP[k] = [];
+			this.READY[k] = [];
+			this.TEARDOWN[encodeURIComponent(k)] = [];
+		},
+		/**
+		 * 查询当前视图节点所对应URL中hash参数值或search参数值
+		 * 应用场景：
+		 * --------不同视图中大部分业务逻辑相同又存在差异性，通常会传入不同的hash key加以区分
+		 * @name queryKey
+		 * @param name {string} 查询的key值 
+		 * @param scope {string} 查询key的范围，可选值有search、hash，分别代表location的search和hash，默认值为search
+		 * @returns 返回对应的value
+		 * @type string | null
+		 * @author 栋寒(zhenn)
+		 * @time 2013-04-11
+		 */
+		queryKey: function(name , scope) {
+			scope = ((typeof scope === 'undefined') || (scope !== 'hash')) ? 'search' : 'hash';
+			var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)','i'),
+				r = location[scope].substr(1).match(reg);
+			if (r != null) {
+				return unescape(r[2]);
+			}
+			return null;
+		}
+	});
+
+	S.extend(MS, S.Base, {
+
+		init: function() {
+			var self = this;
+			MS.APP = self;
+			self.MS = self.constructor;
+
+			if(S.one("#MS")){
+				if(S.UA.opera && S.UA.opera > 0){
+					self.set('animWrapperAutoHeightSetting',true);
+				}
+
+				self.slide = new Slide('MS',{
+					easing:'easeBoth',
+					autoSlide:false,
+					effect:self.get('anim')?'hSlide':'none',
+					touchmove:false,
+					adaptive_fixed_width:true,
+					contentClass:'MS-con',
+					speed:450,
+					pannelClass:'MS-pal',
+					animWrapperAutoHeightSetting:self.get('animWrapperAutoHeightSetting'),//不需要自动修正wrapper的高度
+					webkitOptimize:self.get('webkitOptimize'),
+					adaptive_width:self.get('fullRangeWidth')
+				});
+
+
+				self.positionTimmer = null;
+
+				if(self.get('containerHeighTimmer')){
+					self.slide.addHeightTimmer();
+				}
+
+				self.bindEvent();
+				self.initLoad();
+			} else {
+				self.set('page',S.one('body'));
+			}
+			self.initPageStorage();
+			self.set('storage',self.MS.STORAGE[self.get('viewpath')]||{});
+
+			return this;
+		},
+		// 作为单页面引用
+		isSinglePage:function(){
+			if(this.slide){
+				return false;
+			} else {
+				return true;
+			}
+		},
+		// 作为多页面框架引用
+		isMultiplePage:function(){
+			return !this.isSinglePage();
+		},
+		callDestroy:function(){
+			var self = this;
+			var lastviewpath = self.get('signet').lastviewpath;
+			var cb = self.MS.DESTROY[lastviewpath];
+			if(S.isFunction(cb)){
+				cb.call(self,self);
+			}
+			return this;
+		},
+		initPageStorage:function(){
+			var self = this;
+			var k = self.get('viewpath');
+			if(!S.isObject(this.MS.STORAGE[k])){
+				var myClass = function(){};
+				S.augment(myClass,S.Base.Attribute,S.EventTarget);
+				this.MS.STORAGE[k] = new myClass();
+			}
+
+		},
+		callReady:function(path){
+			var self = this;
+			if(S.isUndefined(path)){
+				path = self.get('viewpath');
+			}
+			var cb = self.MS.READY[path];
+			var param = self.get('param');
+
+			// 执行过后就在dom节点上打标记
+			self.get('page').attr('data-ready','true');
+
+			if(S.isArray(cb)){
+				S.each(cb,function(v,k){
+					setTimeout(function(){
+						v.call(self,param);
+					},200);
+				});
+			}
+
+			if(S.isFunction(cb)){
+				setTimeout(function(){
+					cb.call(self);
+				},200);
+			}
+			return this;
+		},
+		callStartup:function(path){
+			var self = this;
+
+			if(S.isUndefined(path)){
+				path = self.get('viewpath');
+			}
+			var cb = self.MS.STARTUP[path];
+
+			// 执行过后就在dom节点上打标记
+			self.get('page').attr('data-startup','true');
+
+			var param = self.get('param');
+			// 取到参数后立即清空，防止其他页面也会拿到这个参数
+			self.set('param',null); 
+
+			self.set('storage',self.MS.STORAGE[path] || {});
+
+			if(S.isArray(cb)){
+				S.each(cb,function(v,k){
+					v.call(self,param);
+				});
+			}
+
+			if(S.isFunction(cb)){
+				// cb.call(self[location.hash],param) ?不可取
+				cb.call(self,param);
+			}
+
+			return this;
+		},
+		// teardown的时候应当恢复调用之前的hash
+		callTeardown:function(path){
+			var self = this;
+			if(S.isUndefined(path)){
+				path = self.get('viewpath');
+			}
+			if(path === ''){
+				return;	
+			}
+			var cb = self.MS.TEARDOWN[encodeURIComponent(path)];
+			self.rememberPosition(path);
+
+			if(S.isArray(cb)){
+				S.each(cb,function(v,k){
+					// setTimeout(function(){
+						v.call(self,self);
+					// },0);
+				});
+			}
+
+			if(S.isFunction(cb)){
+				// TODO 这里的设计有点问题，理论上teardown事件不应当被阻止,类似onload和domready等
+				return cb.call(self,self); 
+			}
+			return true;
+		},
+		// 记住当前viewport的scrollTop高度(以便恢复)
+		rememberPosition:function(path){
+			// TODO: 在Firefox中，当点击浏览器前进按钮时，首先触发hashchange，页面复位至顶部
+			// 再执行teardown，再执行到这里，得到的scrollTop始终是0，如何解决
+			var self = this;
+			self.MS.PAGESCROLL[path] = S.DOM.scrollTop();
+		},
+		// 恢复之前的高度
+		// TODO: Opera Mini 中recall操作失效，scrollTo()方法跳入到的位置不准确，待解决
+		recallPosition:function(){
+			var self = this;
+			if(!self.get('positionMemory')){
+				return;
+			}
+			var vp = self.get('viewpath');
+			var scrollTop = self.MS.PAGESCROLL[vp];
+			if(scrollTop){
+				// window.scrollTo(0,scrollTop);
+				
+				if(S.DOM.scrollTop() === 0){
+					setTimeout(function(){
+						S.Anim(window,{
+							scrollTop:scrollTop
+						},0.5,'easeBoth',function(){
+
+						}).run();
+					},200);
+				}
+			}
+		},
+		initLoad:function(){
+			var self = this;
+
+			if(!S.isUndefined(S.getHash()['viewpath'])){
+				self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
+			}
+
+			if(!S.isNull(self.get('initPostData'))){
+				self.__post = self.get('initPostData');
+			}
+
+			// 进去时，viewpath是未uriencode的
+			self._go(self.get('viewpath'),'none');
+
+			var hisurl = self.formatUrlTail(self.get('viewpath'),S.getHash());
+
+			var state = {
+				level:0,
+				viewpath:self.get('viewpath'),
+				hisurl:hisurl,
+				forward:0,
+				lastviewpath:'',
+				scrollTop:S.DOM.scrollTop()
+			};
+
+			self.set('signet',state);
+			his.replaceState(state,"",hisurl);
+
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
+
+		},
+		// 此方法暂时废弃
+		rollback:function(){
+			var self = this;
+
+			var hisurl = self.formatUrlTail(self.get('viewpath'),S.getHash());
+
+			var state = {
+				level:0,
+				viewpath:self.get('viewpath'),
+				hisurl:hisurl,
+				forward:0,
+				lastviewpath:'',
+				scrollTop:S.DOM.scrollTop()
+			};
+
+			self.set('signet',state);
+			his.replaceState(state,"",hisurl);
+
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
+
+		},
+		// 调用Loading
+		loading:function(){
+			var self = this;
+			var loading = S.one('#MS-loading');
+			var loadingMask = S.one('#MS-loading-mask');
+
+			var loadingHtml = [
+					'<div id="MS-loading" style="display:none">',
+					'<img src="http://img04.taobaocdn.com/tps/i4/T1aIsKXmReXXa679Pe-40-40.gif" />',
+					'</div>'
+				].join('');
+
+			var loadingMaskHtml = '<div id="MS-loading-mask"></div>';
+
+			loading = loading ? loading:
+				S.Node(loadingHtml).appendTo('body');
+
+			loadingMask = loadingMask ? loadingMask:
+				S.Node(loadingMaskHtml).appendTo('body');
+
+			loading.one('img').css({
+				'margin-top':'5px'
+			});
+			loading.css({
+				display:'none',
+				position:'fixed',
+				height:'50px',
+				width:'50px',
+				top:'50%',
+				left:'50%',
+				'margin-top':'-25px',
+				'margin-left':'-25px',
+				'border-radius':'6px',
+				'text-align':'center',
+				'background-color':'white',
+				opacity:0.7,
+				'z-index':101
+			});
+			loadingMask.css({
+				'display':'none',
+				position:'fixed',
+				background:'white',
+				opacity:0,
+				height:S.DOM.viewportHeight() + 'px',
+				width:S.DOM.viewportWidth() + 'px',
+				'z-index':100,
+				top:'0px'
+			});
+
+			// 如果加载太快，少于350毫秒，则不显示loading
+			// 加载的慢才显示loading
+			self.loadingTimer = setTimeout(function(){
+				if(!self.loadingTimer){
+					return;
+				}
+				if(self.closeLoadingTimer){
+					clearTimeout(self.closeLoadingTimer);
+					self.closeLoadingTimer = null;
+				}
+				loading.css({
+					display:'block'	
+				});
+				loadingMask.css({
+					display:'block'	
+				});
+				// 超时隐藏菊花
+				self.closeLoadingTimer = setTimeout(function(){
+					self.closeLoading();
+					self.closeLoadingTimer = null;
+				},5000);
+			},350);
+
+			return self;
+
+		},
+		// 关闭 loading 层
+		closeLoading:function(){
+			var self = this;
+
+			if(self.loadingTimer){
+				clearTimeout(self.loadingTimer);
+				self.loadingTimer = null;
+			}
+			
+			var loading = S.one('#MS-loading');
+			var loadingMask = S.one('#MS-loading-mask');
+
+			if(loading){
+				loading.css({
+					display:'none'	
+				});
+				loadingMask.css({
+					display:'none'	
+				});
+			}
+			
+			return self;
+		},
+		// http://a.b.cn/path/to/file.do?search#hash => file.do?search
+		getUrlPrefix:function(){
+			var self = this;
+			var loc = window.location;
+			var t = loc.pathname.replace(/\/.+\//i,'').replace('/','') + loc.search;
+			return t;
+		},
+		// path:a.html  param:  a=1&b=2&c=3,param可以是对象
+		// return:  urlprefix?abc#viewpath=a.html&a=1&b=2&c=3 
+		formatUrlTail:function(path,param){
+			var self = this;
+
+			if(S.isUndefined(param)){
+				param = '';
+			}
+			if(S.isString(param)){
+				param = S.unparam(param);
+			}
+
+			var url = S.setHash(S.merge(param,{
+				viewpath:encodeURIComponent(path)
+			}));
+
+			return self.getUrlPrefix() + url.replace(/^.+#/i,'#');
+		},
+
+		// 点击a标签时，意欲发生跳转时，只应当调用这个方法
+		// path一定是未encode的值
+		setRouteHash:function(path,param){
+			var self = this;
+
+			var path = decodeURIComponent(path);
+
+			self.set('viewpath',(path));
+
+			if(S.isUndefined(param)){
+				param = '';
+			}
+
+			if(S.isString(param)){
+				param = S.unparam(param);
+			}
+
+			// hisurl中的viewpath 是encode后的
+			var hisurl = self.formatUrlTail(path,S.getHash());
+
+			// TODO !!! setHash有问题，如果设置的是
+			// url#viewpath=aadsf?a=3&b=5
+			// 就搞不清楚&b=5是谁的了
+			var state = {
+				level:self.get('signet').level + 1,
+				viewpath:path,
+				hisurl:S.setHash(hisurl,param),
+				forward:1,
+				lastviewpath:path,
+				scrollTop:S.DOM.scrollTop()  // 暂时无用
+			};
+
+			var lo = window.location;
+
+			var newpath = lo.protocol + '//' + lo.hostname + lo.pathname + lo.search;
+			
+			newpath = S.setHash(newpath,S.merge({
+				viewpath:encodeURIComponent(path)
+			},param));
+
+			if(S.UA.android && S.UA.android < 4.3){
+				window.location.href = newpath;
+			} else {
+				self.doHashChange(path,param);
+				his.replaceState(state,"",newpath);
+			}
+			// his.replaceState(state,"",S.setHash(hisurl,param));
+
+		},
+
+		// pushState方法不会触发hashchange
+		// 因此需要手动触发一下Hashchange
+		doHashChange:function(viewpath,param){
+			var self = this;
+			var ou = S.setHash(S.merge({
+				stamp:S.now(),
+				viewpath:encodeURIComponent(viewpath)
+			},param));
+			var hash = ou.match(/#.*$/i)[0];
+			window.location.hash = hash;
+		},
+
+		bindEvent:function(){
+			var self = this;
+
+			// TODO 在pad里，tap有时会发生页面跳转
+			var triggerType = S.UA.mobile? 'click':'click';
+
+			if(S.UA.android && S.UA.android < 4.3){
+				var vp = S.getHash()['viewpath'] ?  S.getHash()['viewpath'] : self.get('viewpath');
+				self.MS.AndroidHis[vp] = 1;
+			}
+
+
+			// 写状态
+			// 只有两种途径可以写状态，1，点击链接更改hash，2，history操作更改hash
+			self.slide.con.delegate(triggerType,self.get('tapTrigger'),function(e){
+				var el = S.one(e.currentTarget);
+				if((
+						!S.isUndefined(el.attr('target')) && el.attr('target') !== '' ) || 
+							/^javascript:/i.test(el.attr('href'))){
+
+					if(el.attr('target') == 'top'){
+						window.location.href=el.attr('href');
+						e.preventDefault();
+					}
+
+					return true;
+
+					// 如果链接有target，则为默认行为
+				} else {
+					self.__clickEvent = true;
+					var path = el.attr('href');
+					var param = el.attr('data-param');
+					// 获取slide方向
+					var	dir = el.attr('dir');
+					if(path === ''){
+						return true;
+					}
+					e.preventDefault();
+					// added by 栋寒
+					// 增加超链接上定义slide方向
+					// 如果dir不是back\forward之一，则执行默认进入操作
+					// <a href="url" dir="back"></a>
+					// <a href="url" dir="forward"></a>
+					// eidt by 栋寒(zhenn) - 2013-4-13
+					if (dir === 'back') {
+						self.back(path , param);
+					} else if (dir === 'forward') {
+						self.forward(path , param);	
+					} else {
+						self.setRouteHash(path , param);
+					}
+					// self.next(path);
+				}
+				
+			});
+
+			S.Event.on(window,'hashchange',function(e){
+
+				// 当前时刻（hash变化后，触发行为之前），不管何种状态，只有signet（印记）是旧的
+				var state = self.get('signet');
+				var level = 0;
+				var viewpath = decodeURIComponent(S.getHash()['viewpath']);
+
+				self.set('viewpath',viewpath);
+
+				// 判断是否从普通点a标签击事件触发hashchange
+				var clicked = false;
+				if(self.__clickEvent && self.__clickEvent === true){
+					clicked = true;
+				}else{
+					clicked = false;
+				}
+				delete self.__clickEvent;
+
+				if(S.isUndefined(viewpath)){
+					return;
+				}
+
+				var hisurl = self.formatUrlTail(viewpath,S.getHash());
+
+				/*
+				S.log('===========forward===============');
+				S.log(self.get('signet').forward);
+				S.log(his.state.forward);
+				S.log(self.get('signet').level);
+				S.log(his.state.level);
+				S.log('==========================');
+				*/
+
+				// http://code.google.com/p/android/issues/detail?id=23979
+				// android 4.3 及以下不支持History
+
+				if(S.UA.android && S.UA.android < 4.3){
+					self._androidHistoryMan(clicked);
+				}else if(S.isUndefined(his.state) || S.isUndefined(his.state.level)){
+					// 从零加载第一帧
+					self._go(viewpath,'none');
+					self.recordSignet(0,viewpath);
+
+				}else if(self.get('signet').forward === 0 && his.state.forward > 0 ){
+					// 后退到开始帧，前进到下一帧时
+					self.next(viewpath);
+					self.recordSignet(1,viewpath);
+				}else if(his.state.level > state.level){
+					// 普通的帧进入
+					// 由hashchange带动的进入行为不需写history
+					if(self.get('signet').forward > 0 && his.state.forward < 0){
+						self.prev(viewpath);
+						self.recordSignet(1,viewpath,-1);
+					} else {
+						self.next(viewpath);
+						self.recordSignet(1,viewpath);
+					}
+
+				}else if(self.get('signet').forward > 0 && his.state.forward < 0){
+					// 如果back，上一帧态为“进入” 时
+					self.prev();
+					self.recordSignet(-1,viewpath,his.state.forward);
+
+				}else if(self.get('signet').forward < 0 && his.state.forward > 0){
+					// 如果上一帧在本帧右侧，回退时采用“进入”动作，但进入后要删除倒数第二帧
+					self.next(viewpath,function(){
+						self.callDestroy();
+						self.slide.remove(self.slide.length - 2);
+					});
+					self.recordSignet(-1,viewpath,his.state.forward);
+					
+				}else{
+					// 自然退出行为（无装载）
+
+					self.prev(function(){
+						self.recallPosition();
+					});
+					self.recordSignet(-1,viewpath,his.state.forward);
+				}
+
+				// self._go(route.viewpath,route.direction);
+
+				/*
+				if(route.dataload !== 'true'){
+
+				}
+				*/
+			});
+
+		},
+		// 处理当前view访问记录是否增加还是减少
+		// 此函数不会操作历史记录
+		// forward:当前面板的动作方向，1 进入，-1 退出，默认为1
+		// 在操作过后调用
+		recordSignet:function(index,path,forward){
+			var self = this;
+
+			if(S.isUndefined(index)){
+				index = 0;
+				path = S.getHash()['viewpath'];
+				forward = 1;
+			}
+
+			if(S.isUndefined(path)){
+				path = S.getHash()['viewpath'];
+				forward = 1;
+			}
+
+			if(S.isUndefined(forward)){
+				forward = 1;
+			}
+
+			var path = decodeURIComponent(path);
+
+			var olevel = self.get('signet').level;
+			// 确保执行formatUriTail时，一定是未uriencode的值
+			var hisurl = self.formatUrlTail(path,S.getHash());
+
+			var state = {
+				level:olevel + index,
+				viewpath:path,
+				hisurl:hisurl,
+				forward:forward,
+				lastviewpath:self.get('signet').viewpath,
+				scrollTop:S.DOM.scrollTop()
+			};
+
+			self.set('signet',state);
+
+			return state;
+
+		},
+
+		// TODO: MS实例的销毁
+		destroy: function(){
+
+		},
+		_go :function(path,type,callback){
+			var self = this;
+
+			if(self.isMultiplePage() && self.callTeardown(self.get('signet').viewpath) === false){
+				self.rollback();
+				return this;
+			}
+
+			if(S.isUndefined(type)){
+				type = 'next';
+				callback = function(){};
+			}
+			if(S.isFunction(type)){
+				callback = type;
+				type = 'next';
+			}
+			if(S.isUndefined(callback)){
+				callback = function(){};
+			}
+
+			// self.slide.removeHeightTimmer();
+
+			self.loadData(path,type,callback);
+			/*
+			window.history.pushState({
+
+			},"page 3",path);
+			*/
+		},
+
+		/*
+			{
+				path:undefined
+				data:undefined
+				callback:undefined
+			}
+		 
+		 */
+		postback: function(o){
+			var self = this;
+			self.__post = o.data;
+			if(S.isString(o.path)){
+				self.back(o.path,o.data,o.callback);
+			}else{
+				self.back(o.data,o.callback);
+			}
+		},
+
+		// 参数格式同上
+		postforward: function(o){
+			var self = this;
+			self.__post = o.data;
+			if(S.isString(o.path)){
+				self.forward(o.path,o.data,o.callback);
+			}else{
+				self.forward(o.data,o.callback);
+			}
+		},
+
+		// param 只能是对象
+		// type 可以是post，也可以是get，默认是get
+		back: function(path,param,callback){
+			var self = this;
+
+			// back(path)
+			// back(path,callback)
+			// back(path,param)
+			// back(param)
+			// back(path,param,callback)
+
+			if(S.isUndefined(path)){
+				path = undefined;
+				param = {};
+				callback = function(){};
+			}
+				
+			if(S.isUndefined(param)){
+				param = {};
+				callback = function(){};
+			}
+
+			if(S.isFunction(param)){
+				callback = param;
+				param = {};
+			}
+
+			if(S.isObject(path)){
+				param = path;
+				callback = function(){};
+				path = undefined;
+			}
+
+			if(S.isObject(param) && S.isUndefined(callback)){
+				callback = function(){};
+			}
+
+			if(S.isString(param)){
+				param = S.unparam(param);
+			}
+
+			if(S.isString(path)){
+				path = encodeURIComponent(path);
+			}
+
+			// 保存临时参量
+			self.set('param',S.merge(param,{
+				from:self.get('signet').viewpath
+			}));
+
+			// 如果后退到新页面,历史记录加1
+			if(S.isString(path)){
+				/*
+				S.log('===========forward===============');
+				S.log(self.get('signet').forward);
+				*/
+				/*
+				if(S.UA.android && S.UA.android < 4.3){
+					self._androidHistoryMan(path);
+				}
+				*/
+				self.prev.apply(self,[path,param,callback]);
+				var state = self.recordSignet(1,path,-1);
+				his.pushState(state,"",S.setHash(state.hisurl,param));
+				/*
+				S.log(his.state.forward);
+				S.log('==========================');
+				*/
+			}else{
+				// 否则 控制历史记录
+				his.back();
+			}
+
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
+
+			return this;
+		},
+
+
+		// 前进时需要给定path
+		// path 一定是urlendoce之前的
+		forward: function(path,param,callback){
+			var self = this;
+
+			// forward(path)
+			// forward(path,callback)
+			// forward(path,param)
+			// forward(path,param,callback)
+			
+			if(S.isUndefined(param)){
+				param = {};
+				callback = function(){};
+			}
+
+			if(S.isFunction(param)){
+				callback = param;
+				param = {};
+			}
+
+			if(S.isObject(param) && S.isUndefined(callback)){
+				callback = function(){};
+			}
+
+			if(S.isString(param)){
+				param = S.unparam(param);
+			}
+
+			self.set('param',S.merge(param,{
+				from:self.get('signet').viewpath
+			}));
+
+			/*
+			// Android下暂时不考虑，若考虑，开启此句
+			if(S.UA.android && S.UA.android < 4.3){
+				self._androidHistoryMan();
+			}
+			*/
+			path = encodeURIComponent(path);
+			/**
+			 * TODO:执行下一帧的动作必须要在hashchange之前，但next中cleanup和callstartup又依赖hashchange
+			 * 暂时用next中的延时来实现，待改进
+			 */
+			self.next.apply(self,[path,param,callback]);
+
+			var state = self.recordSignet(1,path);
+			his.pushState(state,"",S.setHash(state.hisurl,param));
+			self.set('viewpath',decodeURIComponent(S.getHash()['viewpath']));
+			return self;
+		},
+
+		// 在不支持H5 HIstory 的设备中，使用此方法记录简单的前进后退
+		// clicked: true,通过发生click事件进入的操作，则总是执行进入
+		_androidHistoryMan : function(clicked,viewpath){
+			var self = this;
+
+			if(S.isUndefined(viewpath)){
+				viewpath = self.get('viewpath');
+			}
+
+			if(clicked || !(viewpath in self.MS.AndroidHis)){
+				// Android 进入操作
+				self.next(viewpath);
+				self.recordSignet(1,viewpath);
+			}else{
+				// Android 后退操作
+				self.prev(viewpath,function(){
+					self.recallPosition();
+				});
+				self.recordSignet(1,viewpath,-1);
+				for(var i in self.MS.AndroidHis){
+					if(self.MS.AndroidHis[i] == 1){
+						delete self.MS.AndroidHis[i];
+					}
+				}
+
+			}
+
+			for(var j in self.MS.AndroidHis){
+				self.MS.AndroidHis[j] = null;
+			}
+
+			self.MS.AndroidHis[viewpath] = 1;
+
+		},
+
+		// next 和 prev 是私有方法，只做切换,不处理history
+		next:function(path,callback){
+			var self = this;
+
+			if(S.isFunction(path)){
+				callback = path;
+				path = undefined;
+			}
+
+			if(S.isUndefined(callback)){
+				callback = function(){};
+			}
+
+			if(S.isUndefined(path)){
+				if(self.isMultiplePage() && self.callTeardown(self.get('signet').viewpath) === false){
+					self.rollback();
+					return this;
+				}
+				self.slide.removeHeightTimmer();
+				if(self.get('animWrapperAutoHeightSetting')){
+					window.scrollTo(0,0);
+				}
+				self.slide.next(function(){
+					if(self.get('containerHeighTimmer')){
+						self.slide.addHeightTimmer();
+					}
+					if(S.isFunction(callback)){
+						callback.call(self.slide,self.slide);
+					}
+					if(self.get('forceReload')){
+						self.slide.remove(self.slide.length - 2);
+					}
+					alert(self.slide.animwrap.height());
+					// setTimeout(function(){
+						self.callReady();
+					// },0);
+				});
+				self.set('page',self.slide.getCurrentPannel());
+				// setTimeout(function(){
+					self.callStartup();
+				// },0);
+			}else{
+				self._go(path,'next',callback);
+			}
+		},
+
+
+		// 传入path就可以装载数据
+		prev: function(path,callback){
+			var self = this;
+
+			if(S.isFunction(path)){
+				callback = path;
+				path = undefined;
+			}
+
+			if(S.isUndefined(callback)){
+				callback = function(){};
+			}
+
+			if(!S.isString(path) && self.get('forceReload')){
+				path = self.get('viewpath');
+			}
+
+			if(S.isUndefined(path)){
+				if(self.isMultiplePage() && self.callTeardown(self.get('signet').viewpath) === false){
+					self.rollback();
+					return this;
+				}
+				self.slide.removeHeightTimmer();
+				self.slide.previous(function(){
+					var that = this;
+					if(self.get('containerHeighTimmer')){
+						self.slide.addHeightTimmer();
+					}
+					self.callDestroy();
+					that.removeLast();
+					if(S.isFunction(callback)){
+						callback.call(self.slide,self.slide);
+					}
+					//setTimeout(function(){
+						self.callReady();
+					//},0);
+				});
+				self.set('page',self.slide.getCurrentPannel());
+				//setTimeout(function(){
+					self.callStartup();
+				//},0);
+			}else{
+				self._go(path,'prev',callback);
+
+				/*
+				var state = self.get('signet');
+				var hisurl = self.formatUrlTail(viewpath,S.getHash());
+				level = state.level - 1;
+				self.set('signet',{
+					level:level,
+					viewpath:path,
+					hisurl:hisurl
+				});
+				*/
+				// TODO 手动调用装载上一帧时写hash
+			}
+
+			// window.history.back();
+		},
+		getAjaxPath:function(path){
+			var self = this;
+			return self.get('basepath') + path;
+		},
+		loadData:function(path,type,callback){
+			var self = this;
+			if(S.isUndefined(type)){
+				type = 'next';
+				callback = function(){};
+			}
+			if(S.isFunction(type)){
+				callback = type;
+				type = 'next';
+			}
+			if(S.isUndefined(callback)){
+				callback = function(){};
+			}
+
+			var renderPage = function(html){
+
+				self.closeLoading();
+				var prel = self.get('page');
+				var el = S.Node('<div class="MS-pal">'+html+'</div>');
+				//向前
+				self.set('page',el);
+				switch(type){
+				case 'prev':
+					self.slide.add(el,self.slide.currentTab);
+					self.slide.relocateCurrentTab(self.slide.currentTab + 1);
+					setTimeout(function(){
+						self.MS.cleanup();
+						S.execScript(html);
+						// TODO: 重新考虑，是否在prev动画执行完成之后调用initPageStorage和callStartup
+						// TODO：切换之前作执行，有何风险
+						// setTimeout(function(){
+							self.initPageStorage();
+							self.callStartup();
+						// },0);
+						self.slide.removeHeightTimmer();
+						self.slide.previous(function(){
+							var that = this;
+							if(self.get('containerHeighTimmer')){
+								self.slide.addHeightTimmer();
+							}
+							self.callDestroy();
+							if(S.isFunction(callback)){
+								callback.call(self.slide,self.slide);
+							}
+							that.removeLast();
+							self.slide.animwrap.css({
+								'-webkit-transform':'none'
+							});
+							setTimeout(function(){
+								self.callReady();
+							},0);
+						});
+					},150);
+					break;
+				case 'next':
+					// TODO: 只有异步加载新页面时，才会修正进入view的marginTop
+					console.info('next');
+					self._fixScrollTopBefore(el,prel);
+					self.slide.add(el);
+					/**
+					 * 增加settimeout的原因：
+					 * 		手动forward和back的时候，hashchange是在此处之后才运行
+					 * 		而cleanup()和callstartup()都依赖于hashchange后的值
+					 * 		因此
+					 * 			1，通过hashchange驱动的跳转永远正确
+					 * 			2，通过forward和back调用必须等待hashchange后执行cleanup和callstartup
+					 * 		等待时间粗设为150ms
+					 */
+					setTimeout(function(){
+						self.MS.cleanup();
+						S.execScript(html);
+						//setTimeout(function(){
+							self.initPageStorage();
+							self.callStartup();
+						//},0);
+						self.slide.removeHeightTimmer();
+						if(self.get('animWrapperAutoHeightSetting')){
+							window.scrollTo(0,0);
+						}
+						self.slide.next(function(){
+							// TODO: Android 2 下这里不执行？
+							self.callDestroy();
+							if(S.isFunction(callback)){
+								callback.call(self.slide,self.slide);
+							}
+
+							if(self.get('forceReload')){
+								self.slide.remove(self.slide.length - 2);
+							}
+							if(self.get('containerHeighTimmer')){
+								self.slide.addHeightTimmer();
+							}
+							self._fixScrollTopAfter(el,prel,function(){
+								setTimeout(function(){
+									self.callReady();
+								},0);
+							});
+							self.slide.animwrap.css({
+								'-webkit-transform':'none'
+							});
+						});
+					},150);
+
+					break;
+				case 'none':
+					self.slide.add(el,self.slide.currentTab);
+					self.callDestroy();
+					self.MS.cleanup();
+					S.execScript(html);
+					// setTimeout(function(){
+						self.initPageStorage();
+					// },0);
+					callback.call(self.slide,self.slide);
+					self.slide.removeLast();
+					// self.slide.next(callback);
+					self.slide.animwrap.css({
+						'-webkit-transform':'none'
+					});
+					//setTimeout(function(){
+						self.callStartup();
+						self.callReady();
+					//},0);
+					break;
+				}
+
+			};
+
+			var handleHTML = function(str){
+				str = str.replace(/\r/mig,'$123').replace(/\n/g,'$456').replace(/.*<!--kdk{{-->/i,'').replace(/<!--kdk}}-->.*$/i,'');
+				str = str.replace(/\$123/g,'\r').replace(/\$456/g,'\n');
+				self.MS.PAGECACHE[path] = str;
+				renderPage(str);
+			};
+
+			var fullpath = self.getAjaxPath(decodeURIComponent(path));
+
+			self.loading();
+			console.log('1');
+
+			if(self.__post){
+				S.io.post(fullpath,self.__post,handleHTML);
+				delete self.__post;
+			}else if(self.get('pageCache') && !S.isUndefined(self.MS.PAGECACHE[path])){
+				renderPage(self.MS.PAGECACHE[path]);
+			}else {
+				//S.io.get(fullpath,handleHTML);
+				S.io({
+					url:fullpath,
+					success:handleHTML,
+					error:function(){
+						if(self.get('errorAlert')){
+							alert('页面请求出错！');
+						}
+						self.closeLoading();
+					}
+				});
+			}
+
+		},
+		// 切换前，修正新节点切换高度
+		_fixScrollTopBefore: function(el,prel){
+			var self = this;
+			if(self.get('animWrapperAutoHeightSetting')){
+				return;
+			}
+			var scrollTop = S.DOM.scrollTop();
+			el.css({
+				'margin-top':scrollTop+'px'
+			});
+		},
+		// 切换后，修正新节点高度，使高度复位
+		_fixScrollTopAfter: function(el,prel,callback){
+			var self = this;
+			if(self.get('animWrapperAutoHeightSetting')){
+				callback();
+				return;
+			}
+
+			var p = el.parent();
+
+			var doReset = function(){
+				el.css({
+					'position':'absolute',
+					top:0
+				}).css({
+					'margin-top':0,
+					'position':'relative',
+					'-webkit-backface-visibility':false,
+					'left':0
+				});
+
+				if(self.get('containerHeighTimmer')){
+					self.slide.addHeightTimmer();
+				}
+				if(self.get('hideURIbar')){
+					self.slide.hideURIbar();
+				}
+				callback();
+			};
+
+			// TODO 2013-05-14 清除transform，才能让positon:fixed起作用
+			// 考虑要不要加
+			self.slide.animwrap.css({
+				'-webkit-transform':'none'
+			});
+
+			// Info: 必须将子节点挂载到body下，position:fixed 才起作用,不知道原因
+			el.css({
+				'margin-top':0,
+				'position':'fixed',
+				'top':0,
+				'-webkit-backface-visibility':false,
+				'left':self.slide.con.offset().left + 'px'
+			});
+
+			// 使用动画来规避瞬间css赋值带来的闪屏
+			
+			if(S.UA.opera && S.UA.opera > 0){
+				// Opera 的判断代码废弃
+				window.scrollTo(0,0);
+				doReset();
+			}else{
+				// 对于支持position:fixed的环境
+				S.Anim(window,{
+					scrollTop:0
+				},0.1,'easeNone',function(){
+					doReset();
+				}).run();
+			}
+		},
+
+		// 配合iScroll使用时，增加一个页面的全尺寸高度的占位
+		initPlaceholder:function(){
+			var self = this;
+			if(!self.slide){
+				return;
+			}
+
+
+		}
+	});
+
+	//Util.init();
+
+	return MS;
+
+}, {
+	requires: [
+		'./slide',
+		'base',
+		'ajax'
+	]
+});
+
+/*jshint browser:true,devel:true */
+
+KISSY.add('mobile/app/1.2/kissy2yui',function(S){
+
+	// "use strict";
+
+	// KISSY 2 YUI3
+	S.augment(S.Node,{
+
+		_delegate:function(){
+			var self = this;
+			if(S.isFunction(arguments[1])){
+				self.delegate(arguments[0],arguments[2],arguments[1]);
+			}else {
+				self.delegate.apply(self,arguments);
+			}
+			return self;
+		},
+
+		// IndexOf 原生节点
+		indexOf : function(node){
+			var self = this;
+			if(S.isUndefined(node)){
+				return null;
+			}
+			if(node[0]){
+				node = node[0];
+			}
+			var i = 0;
+			self.each(function(el,index){
+				if(el[0] === node){
+					i = index;
+				}
+			});
+			return i;
+
+		},
+		
+		size:function(){
+			return this.length;
+		},
+
+		set:function(k,v){
+			if(k === 'innerHTML') {
+				this.html(v);
+			} else {
+				this.attr(k,v);
+			}
+			return this;
+		},
+
+		get : function(k){
+			var self = this;
+			var o = {
+				'innerHTML':function(){
+					return self.html();
+				},
+				'region':function(){
+					return {
+						'height':self.height(),
+						'width':self.width()
+					};
+				}
+
+			};
+			if(k in o){
+				return o[k]();
+			}
+		},
+
+		appendChild:function(){
+			this.append.apply(this,arguments);
+			return this;
+		},
+		
+		setStyle : function(k,v){
+			this.css.apply(this,arguments);
+			return this;
+		},
+		
+		setStyles: function(o){
+			this.css.apply(this,arguments);
+			return this;
+		},
+
+		cloneNode: function(){
+			return this.clone.apply(this,arguments);
+		}
+	});
+
+	S.Node.create = function(str){
+		return S.Node(str);
+	};
+
+},{
+	requires:['node','event']
+});
+
+/**
+ * @file base.js
+ * @brief Slide
+ * @author jayli, bachi@taobao.com
+ * @version 
+ * @date 2013-01-08
+ */
+
+/*jshint smarttabs:true,browser:true,devel:true,sub:true,evil:true */
+
+KISSY.add("mobile/app/1.2/slide",function(S){
+
+	"use strict";
+
+	// $ is $
+	var $ = S.Node.all;
+
+	// BSlide构造器
+	// TODO BSlide工厂
+	var BSlide = function(){
+		
+		// TODO 如何传参?
+		if (!(this instanceof BSlide)) {
+			throw new Error('please use "new Slide()"');
+		}
+
+		this.init.apply(this,arguments);
+	};
+
+	// TODO 抽离切换“机制”和实现的方法
+	BSlide.plug = function(fn){
+
+	};
+
+	// 扩充BSlide
+	S.augment(BSlide,S.Event.Target,{
+
+		// 构造函数
+		init:function(selector,config){
+
+			var self = this;
+
+			if(S.isObject(selector)){
+				self.con = selector;
+			}else if(/^#/i.test(selector)){
+				self.con = S.one(selector);
+			}else if(S.one("#"+selector)){
+				self.con = S.one("#"+selector);
+			}else if(S.one(selector)){
+				self.con = S.one(selector);
+			}else {
+				throw new Error('Slide Container Hooker not found');
+			}
+			//接受参数
+			self.buildParam(config);
+			//构建事件中心,YUI3需要另外创建事件中心
+			// self.buildEventCenter();
+			//构造函数
+			self.buildHTML();
+			//绑定事件
+			self.bindEvent();
+			
+			// TODO:这句话永远无法触发ready事件
+			self.fire('ready',{
+				index:0,
+				navnode:self.tabs.item(0),
+				pannelnode:self.pannels.item(0)
+			});
+
+			if(self.reverse){
+				var _t ;
+				_t = self.previous;
+				self.previous = self.next;
+				self.next = _t;
+			}
+
+			// 在移动终端中的优化
+			if(self.carousel){
+				for(var i = 0;i<self.colspan;i++){
+					self.fix_for_transition_when_carousel(i*2);
+				}
+			}
+
+			self.fixSlideSize();
+
+			// LayerSlide 效果增强
+			if(self.layerSlide){
+				self.initLayer();
+			}
+
+			return this;
+		},
+
+		// offset 1,-1
+		setWrapperSize:function(offset){
+			var self = this;
+
+
+			if(S.isUndefined(offset)){
+				offset = 0;
+			}
+
+			self.pannels = self.con.all('.' + self.contentClass + ' div.' + self.pannelClass);
+			self.length = self.pannels.length;
+
+			var reHandleSize = {
+				'none':function(){
+				},
+				'vSlide':function(){
+					//统一容器和item的宽高及选中默认值
+					var animconRegion = self.animcon.get('region');
+					self.animwrap.setStyles({
+						'height': (self.length+offset) * animconRegion.height / self.colspan + 'px'
+					});
+
+				},
+				'hSlide':function(){
+					//统一容器和item的宽高及选中默认值
+					var animconRegion = self.animcon.get('region');
+					self.animwrap.setStyles({
+						'width': (self.length+offset) * animconRegion.width / self.colspan + 'px'
+					});
+				},
+				'fade':function(){
+				}
+
+			};
+
+			reHandleSize[self.effect]();
+
+			// 如果传入offset 说明仅仅计算wrapper的宽度
+			if(!S.isUndefined(offset)){
+				self.relocateCurrentTab();
+			}
+
+			return this;
+		},
+
+		// 添加一个帧，index为添加到的索引，默认添加到最后
+		add: function(node,index){
+			var self = this;
+
+			if(S.isUndefined(index) || index > self.length){
+				index = self.length;
+			}
+
+			if(S.isString(node)){
+				node = S.one(node);
+			}
+
+			/*
+			node.css({
+				float:'left'	
+			});
+			*/
+
+			// bugfix pad/phone中避免闪屏
+			/*
+			 * pad/phone中容器宽度>=641时，dom上的样式改变会有reflow，小于时，没有reflow
+			 * 在phone中会比较平滑，不会有闪屏
+			 *
+			 */
+			if(self.transitions){
+				node.css({
+					visibility:'hidden'
+				});
+			}
+
+			if(index == self.length){
+				// bugfix，防止在webkit中因为设置了backface属性，导致dom操作渲染延迟，slide操作会有闪烁
+				setTimeout(function(){
+					self.setWrapperSize(1);
+				},0);
+				node.insertAfter(self.pannels[index - 1]);
+			}else{
+				node.insertBefore(self.pannels[index]);
+			}
+
+			self.setWrapperSize();
+
+			self.fixSlideSize(self.currentTab);
+
+			// S.log(node.offset().top);
+
+			// bugfix pad/phone中避免闪屏
+			if(self.transitions){
+				node.css({
+					visibility:''
+				});
+			}
+
+			if(self.transitions){
+			}
+
+			return this;
+
+			// TODO 添加面板的时候，没有添加导航
+		},
+		remove:function(index){
+			var self = this;
+
+			if(self.length === 1){
+				return;
+			}
+
+			// 删除当前帧和之前帧时，currentTab需-1
+			if(index <= self.currentTab){
+				self.currentTab --;
+				self.length --;
+			}
+
+			// bugfix,防止移动设备中的闪屏
+			if(self.transitions){
+				self.con.css({
+					// display:'none'
+					//TODO 2013-05-14 加上visibility后导航宽度100%无法自适应，浏览器bug?，js问题？
+					visibility:'hidden'
+				});
+			}
+
+			S.one(self.pannels[index]).remove();
+
+			self.setWrapperSize();
+
+			// bugfix,防止移动设备中的闪屏
+			if(self.transitions){
+				self.con.css({
+					display:'block',
+					visibility:''
+				});
+			}
+
+			self.fixSlideSize(self.currentTab);
+
+			// TODO 删除面板的时候，没有删除导航
+			return this;
+		},
+		removeLast:function(){
+			var self = this;
+			self.remove(self.length - 1);
+			return self;
+		},
+
+		//渲染textarea中的内容，并放在与之相邻的一个div中，若有脚本，执行其中脚本
+		renderLazyData:function(textarea){
+			var self = this;
+			textarea.setStyle('display','none');
+			if(textarea.attr('lazy-data')=='1'){
+				return ;
+			}
+			textarea.attr('lazy-data','1');
+			var	id = S.stamp(div),
+				html = textarea.get('innerHTML').replace(/&lt;/ig,'<').replace(/&gt;/ig,'>'),
+				div = S.Node.create('<div>'+html+'</div>');
+			S.DOM.insertBefore(div,textarea);
+			//textarea.insertBefore(div);
+			S.execScript(html);
+		},
+		// 绑定函数 ,YUI3需要重新定义这个绑定函数,KISSY不需要
+		/*
+		on:function(type,foo){
+			var self = this;
+			self.EventCenter.subscribe(type,foo);
+			return this;
+		},
+		*/
+
+		// 如果是动画效果，则构建Wrap
+		buildWrap: function(){
+			var self = this;
+
+			self.animwrap = S.Node.create('<div style="position:absolute;"></div>');
+			self.animwrap.set('innerHTML', self.animcon.get('innerHTML'));
+			self.animcon.set('innerHTML', '');
+			self.animcon.appendChild(self.animwrap);
+			self.pannels = self.con.all('.' + self.contentClass + ' div.' + self.pannelClass);
+
+			return self;
+
+		},
+
+		// 各种动画效果的初始化行为
+		// TODO 应当从BSLide中抽取出来
+		doEffectInit: function(){
+
+			var self = this;
+
+			var effectInitFn = {
+				'none':function(){
+
+					self.pannels = self.con.all('.' + self.contentClass + ' div.' + self.pannelClass);
+					self.pannels.setStyles({
+						display:'none'	
+					});
+
+					self.pannels.item(self.defaultTab).setStyles({
+						'display':'block'	
+					});
+
+				},
+				'vSlide':function(){
+					self.buildWrap();
+					//统一容器和item的宽高及选中默认值
+					var animconRegion = self.animcon.get('region');
+					self.pannels.setStyles({
+						'float': 'none',
+						'overflow': 'hidden'
+					});
+					self.animwrap.setStyles({
+						'height': self.length * animconRegion.height / self.colspan + 'px',
+						'overflow': 'hidden',
+						'top': -1 * self.defaultTab * animconRegion.height + 'px'
+					});
+
+				},
+
+				'hSlide':function(){
+					self.buildWrap();
+					//统一容器和item的宽高及选中默认值
+					var animconRegion = self.animcon.get('region');
+					self.pannels.setStyles({
+						'float': 'left',
+						'overflow': 'hidden'
+					});
+					self.animwrap.setStyles({
+						'width': self.length * animconRegion.width / self.colspan + 'px',
+						'overflow': 'hidden',
+						'left': -1 * self.defaultTab * animconRegion.width + 'px'
+					});
+				},
+				'fade':function(){
+
+					self.pannels = self.con.all('.' + self.contentClass + ' div.' + self.pannelClass);
+					self.pannels.setStyles({
+						'position': 'absolute',
+						'zIndex': 0
+					});
+					self.pannels.each(function(node, i){
+						if (i == self.defaultTab) {
+							//node.removeClass('hidden');
+							node.setStyles({
+								'opacity': 1,
+								'display': 'block'
+							});
+						} else {
+							//node.addClass('hidden');
+							node.setStyles({
+								'opacity':0,
+								'diaplay':'none'	
+							});
+						}
+					});
+
+				}
+
+			};
+
+			effectInitFn[self.effect]();
+
+			return this;
+
+		},
+		//构建html结构的全局函数
+		buildHTML: function() {
+            var self = this;
+			var con = self.con;
+            self.tabs = con.all('.' + self.navClass + ' '+self.triggerSelector);
+
+            var tmp_pannels = con.all('.' + self.contentClass + ' .' + self.pannelClass);
+            self.length = tmp_pannels.size();
+
+			if(!con.one('.'+self.navClass)){
+				S.Node('<ul class="'+self.navClass+'" style="display:none"></ul>').appendTo(self.con);
+			}
+
+            if (self.tabs.size() === 0) {
+                //nav.li没有指定，默认指定1234
+                var t_con = con.all('.' + self.navClass);
+				var t_str = '';
+                for (var i = 0; i < self.length; i++) {
+                    var t_str_prefix = '';
+                    if (i === 0) {
+                        t_str_prefix = self.selectedClass;
+                    }
+                    t_str += '<li class="' + t_str_prefix + '"><a href="javascript:void(0);">' + (i + 1) + '</a></li>';
+                }
+                t_con.set('innerHTML', t_str);
+            }
+            self.tabs = con.all('.' + self.navClass + ' '+self.triggerSelector);
+            self.animcon = con.one('.' + self.contentClass);
+            self.animwrap = null;
+
+			self.doEffectInit();
+
+			self.fixSlideSize(self.currentTab);
+            //添加选中的class
+			self.hightlightNav(self.getWrappedIndex(self.currentTab));
+            //是否自动播放
+            if (self.autoSlide === true) {
+                self.play();
+            }
+            return this;
+        },
+		getCurrentPannel:function(){
+			var self = this;
+			return S.one(self.pannels[self.currentTab]);
+		},
+
+
+		// 重新渲染slide内页(pannels)的宽度
+		renderWidth:function(){
+			var self = this;
+			//有可能animcon没有定义宽度
+			var width = self.animcon.get('region').width;
+			if(self.effect == 'hSlide'){
+				width /= self.colspan;
+			}
+			self.pannels.setStyles({
+				width:width + 'px'
+			});
+			return this;
+		},
+		
+		//重新渲染slide内页(pannels)的高度
+		renderHeight :function(){
+			var self = this;
+			//有可能animcon没有定义高度
+			var height = self.animcon.get('region').height;
+			if(self.effect == 'vSlide'){
+				height /= self.colspan;
+			}
+			self.pannels.setStyles({
+				height:height + 'px'
+			});
+			return this;
+		},
+
+		//当当前帧的位置不正确时，重新定位当前帧到正确的位置,无动画
+		relocateCurrentTab:function(index){
+			var self = this;
+			if(S.isUndefined(index)){
+				index = self.currentTab;
+			}
+			if(self.effect != 'hSlide'){
+				return;
+			}
+
+			if(self.transitions){
+				self.animwrap.setStyles({
+					'-webkit-transition-duration': '0s',
+					'-webkit-transform':'translate3d('+(-1 * index * self.animcon.get('region').width)+'px,0,0)',
+					'-webkit-backface-visibility':'hidden'
+				});
+			}else{
+				self.animwrap.setStyles({
+					left: -1 * index * self.animcon.get('region').width
+					
+				});
+			}
+
+			self.currentTab = index;
+			
+			return this;
+		},
+
+		//根据配置条件修正控件尺寸
+		// 重新渲染slide的尺寸，
+		// 根据go到的index索引值渲染当前需要的长度和宽度
+		fixSlideSize:function(index){
+			var self = this;
+			if(self.adaptive_fixed_width){
+				self.renderWidth();
+			}
+			if(self.adaptive_fixed_height){
+				self.renderHeight();
+			}
+			if(self.adaptive_fixed_size){
+				self.renderHeight().renderWidth();
+			}
+			self.resetSlideSize(index);
+			return this;
+		},
+
+		/**
+		 * 隐藏浏览器地址栏
+		 * added bydonghan - 2013-04-13
+		 * 执行时机：app加载完成后初始化操作、切换应用视图后
+		 */
+		hideURIbar: function() {
+			this.animcon.height('2500px');
+			window.scrollTo(0 , 1);
+			this.animcon.height(window.innerHeight + 'px');
+		},
+
+		/**
+		 * 重置动画包裹器尺寸，fixed和auto两种
+		 * added by donghan - 2013-04-13
+		 */
+		setViewSize: function(type) {
+			var body = S.one('body') , 
+				html = S.one('html') ,
+				size = type === 'auto' ? 'auto' : '100%';
+			body.setStyle('height' , size);
+			html.setStyle('height' , size);
+			this.animcon.setStyle('height' , size);
+			this.animcon.parent().height(size);
+		},
+		// timmer 是指的动态监控wrapperCon高度的定时器
+		// wrapperCon在很多时候高度是可变的
+		// 这时就需要timmer来监听了
+		removeHeightTimmer: function(){
+			var self = this;
+			if(!S.isNull(self.heightTimmer)){
+				clearInterval(self.heightTimmer);
+				self.heightTimmer = null;
+			}
+		},
+		addHeightTimmer: function(){
+			var self = this;
+			if(!S.isNull(self.heightTimmer)){
+				clearInterval(self.heightTimmer);
+				self.heightTimmer = null;
+			}
+
+			var resetHeight = function(){
+				if(self.effect == 'hSlide'){
+					self.animcon.setStyles({
+						height:self.pannels.item(self.currentTab).get('region').height+'px'
+					});
+				}
+			};
+			self.heightTimmer = setInterval(resetHeight,100);
+			resetHeight();
+		},
+
+		//在before_switch和windowResize的时候执行，根据spec_width是否指定，来决定是否重置页面中的适配出来的宽度和高度并赋值
+		// index是go的目标tab-pannel的索引
+		// 这个函数主要针对横向滚动时各个pannel高度不定的情况
+		resetSlideSize:function(index){
+			var self = this;
+			var width,height;
+			if(typeof index == 'undefined' || index === null){
+				index = self.currentTab;
+			}
+			// 如果没有开关，或者没有滑动特效，则退出函数
+			if(self.effect != 'hSlide' && self.effect != 'vSlide'){
+				return;
+			}
+			//var width = self.spec_width();
+			
+			if(self.effect == 'hSlide'){
+				width = self.adaptive_width ? 
+										self.adaptive_width():
+										self.animcon.get('region').width;
+				height = self.pannels.item(index).get('region').height;
+
+				width /= self.colspan;
+
+				// pannels的高度是不定的，高度是根据内容
+				// 来撑开的因此不能设置高度，而宽度则需要设置
+				self.pannels.setStyles({
+					width:width+'px',
+					display:'block'
+				});
+
+				self.animcon.setStyles({
+					width:width * self.colspan +'px',
+					overflow:'hidden'
+				});
+
+				if(self.animWrapperAutoHeightSetting){
+					self.animcon.setStyles({
+						height:height+'px'
+						//强制pannel的内容不超过动画容器的范围
+					});
+				}
+			}
+
+			if(self.effect == 'vSlide'){
+				width = self.pannels.item(index).get('region').width;
+				height = self.adaptive_height ? 
+										self.adaptive_height():
+										self.animcon.get('region').height;
+				height /= self.colspan;
+
+				self.pannels.setStyles({
+					height:height * self.colspan +'px',
+					display:'block'
+				});
+
+				self.animcon.setStyles({
+					height:height * self.colspan +'px',
+					overflow:'hidden'
+				});
+
+				if(self.animWrapperAutoHeightSetting){
+					self.animcon.setStyles({
+						width:width +'px'
+						//强制pannel的内容不超过动画容器的范围
+					});
+				}
+
+			}
+
+			return this;
+		},
+
+		// 得到tabnav应当显示的当前index索引，0,1,2,3...
+		getWrappedIndex:function(index){
+			var self = this,wrappedIndex = 0;
+
+			if(index === 0){
+				//debugger;
+			}
+			if(self.carousel){
+				
+				if(index < self.colspan){
+					wrappedIndex = self.length - self.colspan * 3 + index; 
+				} else if(index >= self.length - self.colspan) {
+					wrappedIndex = index - (self.length - self.colspan);
+				} else {
+					wrappedIndex = index - self.colspan;
+				}
+
+			}else{
+				wrappedIndex = index;
+			}
+			return wrappedIndex;
+		},
+
+
+		// 绑定默认事件
+		bindEvent:function(){
+			var self = this;
+			if(	S.inArray(self.eventType,['click','mouseover','mouseenter'] )) {
+				self.con._delegate(self.eventType,function(e){
+					e.halt();
+					var ti = Number(self.tabs.indexOf(e.currentTarget));
+					if(self.carousel){
+						ti = (ti + 1) % self.length;
+					}
+					self.go(ti);
+					if(self.autoSlide){
+						self.stop().play();
+					}
+				},'.'+self.navClass+' '+self.triggerSelector);
+			}
+
+			// 是否支持鼠标悬停停止播放
+			if(self.hoverStop){
+				self.con._delegate('mouseover',function(e){
+					//e.halt();
+					if(self.autoSlide)self.stop();
+				},'.'+self.contentClass+' div.'+self.pannelClass);
+				self.con._delegate('mouseout',function(e){
+					//e.halt();
+					if(self.autoSlide)self.play();
+				},'.'+self.contentClass+' div.'+self.pannelClass);
+			}
+
+			// 绑定窗口resize事件 
+			S.Event.on(window,'resize',function(e){
+				self.fixSlideSize(self.currentTab);
+				self.relocateCurrentTab();
+			});
+
+			// 绑定判断switch发生的时机
+			self.on('beforeSwitch',function(o){
+				if(this.layerSlide && this.isAming()){
+					return false;
+				}
+			});
+
+			//终端事件触屏事件绑定
+			// TODO 触屏设备目前和ie6的降级方案实现一样,目前没实现降级
+			// TODO 需要将触屏支持抽离出BSlide
+			if ( 'ontouchstart' in document.documentElement ) {
+
+				if(!self.touchmove){
+					return this;
+				}
+
+				self.con._delegate('touchstart',function(e){
+					self.stop();
+					self.touching = true;
+					if(self.is_last() && self.carousel){
+						self.fix_next_carousel();
+					}
+					if(self.is_first() && self.carousel){
+						self.fix_pre_carousel();
+					}
+					self.startX = e.changedTouches[0].clientX;
+					self.startY = e.changedTouches[0].clientY;
+					self.animwrap.setStyles({
+						'-webkit-transition-duration': '0s'
+					});
+					self.startT = Number(new Date());//如果快速手滑，则掠过touchmove，因此需要计算时间
+				},'.'+self.contentClass); 
+
+				self.con._delegate('touchend',function(e){
+					self.touching = false;
+					var endX  = e.changedTouches[0].clientX;
+					var width = Number(self.animcon.get('region').width);
+					self.deltaX = Math.abs(endX - self.startX);//滑过的距离
+					var swipeleft = (Math.abs(endX) < Math.abs(self.startX));//是否是向左滑动
+					var swiperight = !swipeleft;
+					//判断是否在边界反滑动，true，出现了反滑动，false，正常滑动
+					var anti = self.carousel ? false : ( self.is_last() && swipeleft || self.is_first() && swiperight );
+
+					//复位
+					var reset = function(){
+						self.animwrap.setStyles({
+							'-webkit-transition-duration': (Number(self.speed) / 2) + 's',
+							'-webkit-transform':'translate3d('+(-1 * self.currentTab * self.animcon.get('region').width / self.colspan)+'px,0,0)'
+						});
+					};
+
+					//根据手势走向上一个或下一个
+					var goswipe = function(){
+						var colwidth = self.animcon.get('region').width / self.colspan;
+						var span = parseInt( (self.deltaX - colwidth / 2) / colwidth , 10);
+						// 滑动距离超过一帧
+						if(swipeleft){//下一帧
+							if(span >= 1 && self.length >2){
+								// TODO 这里将solspan设为大于1的值时，有时候会意外复位，复现条件未知
+								/*
+								console.log('currentTab:'+self.currentTab+' span:'+span);
+								*/
+								self.currentTab += span;
+								if(self.currentTab >= self.length - 1){
+									self.currentTab = self.length - 2;
+								}
+							}
+							self.next();
+						}else{//上一帧
+							if(span >= 1 && self.length > 2){
+								if(self.currentTab - span <= 0){
+									self.currentTab = 1;
+								}else{
+									self.currentTab += -1 * span;
+								}
+							}
+							self.previous();
+						}
+					};
+
+					//如果检测到是上下滑动，则复位并return
+					/*
+					if(self.isScrolling){
+						reset();
+						return;
+					}
+					*/
+
+					//如果滑动物理距离太小，则复位并return
+					//这个是避免将不精确的点击误认为是滑动
+					if(self.touchmove && self.deltaX < 30){
+						reset();
+						return;
+					}
+
+
+					if(		!anti && (
+								// 支持touchmove，跑马灯效果，任意帧，touchmove足够的距离
+								( self.touchmove && (self.deltaX > width / 3) ) ||
+								// 不支持touchmove，跑马灯
+								( !self.touchmove && self.carousel ) ||
+								// 正常tab，支持touchmove，横向切换
+								( !self.carousel && self.touchmove && self.effect == 'hSlide' ) || 
+								// 不支持touchmove，不支持跑马灯
+								( !self.touchmove && !self.carousel) ||
+								//快速手滑
+								( Number(new Date()) - self.startT < 550 )
+							)
+						
+						){
+
+							//根据根据手滑方向翻到上一页和下一页
+							goswipe();
+
+					}else{
+						//复位
+						reset();
+					}
+
+					if(self.autoSlide){
+						self.play();
+					}
+				},'.'+self.contentClass);
+
+
+				//处理手指滑动事件相关
+				if(self.touchmove){
+
+					// TODO 网页放大缩小时，距离计算有误差
+
+
+					self.con._delegate('touchmove',function(e){
+						// 确保单手指滑动，而不是多点触碰
+						if(e.touches.length > 1 ) return;
+
+
+						//deltaX > 0 ，右移，deltaX < 0 左移
+						self.deltaX = e.touches[0].clientX- self.startX; 
+
+						//判断是否在边界反滑动，true，出现了反滑动，false，正常滑动
+						var anti = ( self.is_last() && self.deltaX < 0 || self.is_first() && self.deltaX > 0 );
+
+						if(!self.carousel && self.effect == 'hSlide' && anti){
+							self.deltaX = self.deltaX / 3; //如果是边界反滑动，则增加阻尼效果
+						}
+
+						// 判断是否需要上下滑动页面
+
+
+						self.isScrolling = ( Math.abs(self.deltaX) < Math.abs(e.touches[0].clientY- self.startY) ) ? true: false;
+
+						if(!self.isScrolling){
+
+							// 阻止默认上下滑动事件
+							e.halt();
+
+							self.stop();
+							var width = Number(self.animcon.get('region').width / self.colspan);
+							var dic = self.deltaX - self.currentTab * width;
+
+							// 立即跟随移动
+							self.animwrap.setStyles({
+								'-webkit-transition-duration': '0s',
+								'-webkit-transform':'translate3d('+dic+'px,0,0)'
+							});
+
+						}
+						
+					},'.'+self.contentClass); 
+
+					// TODO 触屏设备中的AnimEnd事件的实现
+					self.animwrap.on('webkitTransitionEnd',function(){
+						
+						/*
+						self.fire('afterSwitch',{
+							index: index,
+							navnode: self.tabs.item(self.getWrappedIndex(index)),
+							pannelnode: self.pannels.item(index)
+							
+						});	
+						*/
+					}); 
+				}
+
+			}
+
+			return this;
+
+		},
+
+		// 初始化所有的SubLayer
+		// TODO 从BSlide中抽离出来
+
+		/*
+		 * SubLayer存放在:
+		 *
+		 * self {
+		 *		sublayers:[
+		 *			[],	// 第一帧的sublay数组,可以为空数组
+		 *			[], // ...
+		 *			[]
+		 *		]
+		 * }
+		 *
+		 * */
+		
+		initLayer: function(){
+			var self = this;
+
+			// 在触屏设备中layer功能暂时去掉
+			// TODO 应当加上触屏支持
+			if ( 'ontouchstart' in document.documentElement ) {
+				return;
+			}
+
+			if(S.UA.ie > 0 && S.UA.ie < 9){
+				return;
+			}
+
+			// 过滤rel中的配置项
+			var SubLayerString = [
+				"durationin",
+				"easingin",
+				"durationout",
+				"easingout",
+				"delayin",
+				"delayout",
+				"slideindirection",
+				"slideoutdirection",
+				"offsetin",
+				"offsetout",
+				"alpha",
+				
+				"easeInStrong",
+				"easeOutStrong",
+				"easeBothStrong",
+				"easeNone",
+				"easeIn",
+				"easeOut",
+				"easeBoth",
+				"elasticIn",
+				"elasticOut",
+				"elasticBoth",
+				"backIn",
+				"backOut",
+				"backBoth",
+				"bounceIn",
+				"bounceOut",
+				"bounceBoth",
+				"left",
+				"top",
+				"right",
+				"bottom"
+			];
+
+			// sublay的默认配置项，参照文件顶部文档说明
+			var SubLayerConfig = {
+				"durationin":			1000,
+				"easingin":				'easeIn',
+				"durationout":			1000,
+				"easingout":			'easeOut',
+				"delayin":				300,
+				"delayout":				300,
+				"slideindirection":		'right',
+				"slideoutdirection":	'left',
+				"alpha":				true,	
+				"offsetin":				50,	
+				"offsetout":			50
+
+			};
+
+			// SubLayer 构造器,传入单个el，生成SubLayer对象
+			var SubLayer = function(el){
+
+				var that = this;
+				var _sublayer_keys = [];
+				
+				/*
+				S.each(SubLayerConfig,function(k,v){
+					_sublayer_keys.push(k);
+				});
+				*/
+
+				// 如果sublayer配置的书写格式不标准，则这里会报错
+				// TODO 错误捕捉处理
+				var json = el.attr('rel').replace(/"'/ig,'').replace(new RegExp('('+SubLayerString.join('|')+')',"ig"),'"$1"');
+
+				var o = S.JSON.parse('{'+json+'}');
+				
+				function setParam(def, key){
+					var v = o[key];
+					// null 是占位符
+					that[key] = (v === undefined || v === null) ? def : v;
+				}
+
+				
+				S.each(SubLayerConfig,setParam);
+
+				this.el = el;
+
+				// el.offset 计算高度不准确，不知为何，改用css()
+				// TODO 寻找原因
+				/*
+				this.left = el.offset().left;
+				this.top = el.offset().top;
+				*/
+				this.left = Number(el.css('left').replace('px',''));
+				this.top = Number(el.css('top').replace('px',''));
+
+				// sublayer.animIn()，某个sublayer的进入动画
+				this.animIn = function(){
+
+					var that = this;
+
+					// 记录进入偏移量和进入方向
+					var offsetIn = that.offsetin;
+					var inType = that.slideindirection;
+
+					// 动画开始之前的预处理
+					var prepareEl = {
+						left:function(){
+								 that.el.css({
+									 'left':that.left-offsetIn
+								 });
+							 },
+						top:function(){
+								that.el.css({
+									'top':that.top-offsetIn
+								});
+							},
+						right:function(){
+								  that.el.css({
+									  'left':that.left+offsetIn
+								  });
+							  },
+						bottom:function(){
+								   that.el.css({
+									   'top':that.top+offsetIn
+								   });
+							   }
+					};
+
+					prepareEl[inType]();
+
+					setTimeout(function(){
+
+
+						var SlideInEffectTo = {
+							left:	{
+										left:that.left// + offsetIn
+									},
+							top:	{
+										top:that.top// - offsetIn
+									},
+							bottom:	{
+										top:that.top// + offsetIn,
+									},
+							right:	{
+										left:that.left// - offsetIn
+									}
+						};
+
+
+
+						// 动画结束的属性
+						var to = {};
+
+						S.mix(to,SlideInEffectTo[inType]);
+
+						// 如果开启alpha，则从透明动画到不透明
+						if(that.alpha){
+							S.mix(to,{
+								opacity:1	
+							});
+						}
+
+
+						// 执行动画
+						S.Anim(that.el,to,that.durationin/1000,that.easingin,function(){
+							// TODO 动画结束后的回调事件
+							// 寻找最后的动画结束时间
+						}).run();
+						
+					},that.delayin);
+
+					if(that.alpha){
+						that.el.css({
+							opacity:0	
+						});
+					}
+
+
+				};
+				// TODO 仿效animIn来实现
+				this.animOut = function(){
+
+				};
+
+			};
+
+			self.sublayers = [];
+
+			self.pannels.each(function(node,index){
+
+				if(self.effect == 'vSlide'||self.effect == 'hSlide'){
+					node.css({
+						position:'relative'	
+					});
+				}
+
+				if(node.all('[alt="sublayer"]').length === 0){
+					self.sublayers[index] = [];
+					return;
+				}
+				if(self.sublayers[index] === undefined){
+					self.sublayers[index] = [];
+				}
+
+				node.all('[alt="sublayer"]').each(function(el,j){
+					self.sublayers[index].push(new SubLayer(el));
+				});
+				
+			});
+
+			self.on('beforeSwitch',function(o){
+				if(o.index === self.currentTab){
+					return false;
+				}
+				self.subLayerRunin(o.index);
+			});
+
+			self.on('beforeTailSwitch',function(o){
+				self.subLayerRunout(o.index);	
+			});
+
+		},
+
+		// 执行某一帧的进入动画
+		subLayerRunin : function(index){
+
+			var self = this;
+			
+			var a = self.sublayers[index];
+
+			S.each(a,function(o,i){
+				o.animIn();
+			});
+		},
+
+		// 执行某一帧的移出动画
+		subLayerRunout : function(index){
+			var self = this;
+
+			var a = self.sublayers[index];
+
+			S.each(a,function(o,i){
+				o.animOut();
+			});
+
+		},
+
+		// 构建BSlide全局参数列表
+		buildParam:function(o){
+
+			var self = this;
+
+			if(o === undefined || o === null){
+				o = {};
+			}
+
+			function setParam(def, key){
+				var v = o[key];
+				// null 是占位符
+				self[key] = (v === undefined || v === null) ? def : v;
+			}
+
+			S.each({
+				autoSlide:		false,
+				speed:			500,//ms
+				timeout:		3000,
+				effect:			'none',
+				eventType:		'click',
+				easing:			'easeBoth',
+				hoverStop:		true,
+				selectedClass:	'selected',
+				conClass:		't-slide',
+				navClass:		'tab-nav',
+				triggerSelector:'li',
+				contentClass:	'tab-content',
+				pannelClass:	'tab-pannel',
+				// before_switch:	new Function,
+				carousel:		false,
+				reverse:		false,
+				touchmove:		false,
+				adaptive_fixed_width:false,
+				adaptive_fixed_height:false,
+				adaptive_fixed_size:false,
+				adaptive_width:	false,
+				adaptive_height:false,
+				defaultTab:		0,
+				layerSlide:		false,
+				layerClass:		'tab-animlayer',
+				colspan:		1,
+				animWrapperAutoHeightSetting:true,// beforeSwitch不修改wrappercon 宽高
+				webkitOptimize	:true
+				
+			},setParam);
+
+			S.mix(self,{
+				tabs:			[],
+				animcon:		null,
+				pannels:		[],
+				timmer:			null,
+				touching:		false
+			});
+
+			self.speed = self.speed / 1000;
+
+			if(self.defaultTab !== 0){
+				self.defaultTab = Number(self.defaultTab) - 1; // 默认隐藏所有pannel
+			}
+
+			// 如果是跑马灯，则不考虑默认选中的功能，一律定位在第一页,且只能是左右切换的不支持上下切换
+			if(self.carousel){
+				self.defaultTab = self.colspan; //跑马灯显示的是真实的第二项
+				self.effect = 'hSlide';// TODO 目前跑马灯只支持横向滚动
+			}
+
+			self.currentTab = self.defaultTab;//0,1,2,3...
+
+			//判断是否开启了内置动画
+			self.transitions = ( "webkitTransition" in document.body.style && self.webkitOptimize );
+
+            return self;
+		},
+		//针对移动终端的跑马灯的hack
+		//index 移动第几个,0,1,2,3
+		fix_for_transition_when_carousel: function(index){
+			var self = this;
+			if(typeof index == 'undefined'){
+				index = 0;
+			}
+			var con = self.con;
+            self.animcon = self.con.one('.' + self.contentClass);
+			self.animwrap = self.animcon.one('div');
+			self.pannels = con.all('.' + self.contentClass + ' div.' + self.pannelClass);
+			if(self.effect == 'hSlide'){
+				var width = Number(self.animcon.get('region').width / self.colspan);
+				var height = Number(self.animcon.get('region').height);
+				self.animwrap.setStyle('width',self.pannels.size() * width + 2 * width);
+				var first = self.pannels.item(index).cloneNode(true);
+				var last = self.pannels.item(self.pannels.size()- 1 - index).cloneNode(true);
+				self.animwrap.append(first);
+				self.animwrap.prepend(last);
+				if(self.transitions){
+					//这步操作会手持终端中造成一次闪烁,待解决
+					self.animwrap.setStyles({
+						'-webkit-transition-duration': '0s',
+						'-webkit-transform':'translate3d('+(-1 * width * (index/2 + 1))+'px,0,0)',
+						'-webkit-backface-visibility':'hidden',
+						'left':'0'
+					});
+				}else {
+					self.animwrap.setStyle('left',-1 * width * (index/2 + 1));
+				}
+			}
+			//重新获取重组之后的tabs
+			self.pannels = con.all('.' + self.contentClass + ' div.' + self.pannelClass);
+			self.length = self.pannels.size();
+
+			return this;
+
+		},
+
+		// 是否在做动画过程中
+		isAming : function(){
+			var self = this;
+			if(self.anim){
+				return self.anim.isRunning();
+			} else {
+				return false;
+			}
+		},
+
+		//上一个
+		previous:function(callback){
+			var self = this;
+			//防止旋转木马状态下切换过快带来的晃眼
+			try{
+				if(self.isAming() && self.carousel){
+					return this;
+				}
+			}catch(e){}
+			var _index = self.currentTab+self.length-1 - (self.colspan - 1);
+			if(_index >= (self.length - self.colspan + 1)){
+				_index = _index % (self.length - self.colspan + 1);
+			}
+
+			if(self.carousel){
+
+				if(self.is_first()){
+					self.fix_pre_carousel();
+					self.previous.call(self);
+					// arguments.callee.call(self);
+					return this;
+				}
+			}
+			self.go(_index,callback);
+			return this;
+		},
+		//判断当前tab是否是最后一个
+		is_last:function(){
+			var self = this;
+			if(self.currentTab == (self.length - (self.colspan - 1) - 1)){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		//判断当前tab是否是第一个
+		is_first:function(){
+			var self = this;
+			if(self.currentTab === 0){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		//下一个
+		next:function(callback){
+			var self = this;
+			//防止旋转木马状态下切换过快带来的晃眼
+			try{
+				if(self.isAming() && self.carousel){
+					return this;
+				}
+			}catch(e){}
+			var _index = self.currentTab+1;
+			if(_index >= (self.length - self.colspan + 1)){
+				_index = _index % (self.length - self.colspan + 1);
+			}
+			if(self.carousel){
+
+				if(self.is_last()){
+					self.fix_next_carousel();
+					self.next.call(self);
+					// arguments.callee.call(self);
+					return this;
+
+				}
+
+			}
+			self.go(_index,callback);
+			return this;
+		},
+		// 修正跑马灯结尾的滚动位置
+		fix_next_carousel:function(){
+			var self = this;
+
+			self.currentTab = self.colspan;
+			var con = self.con;
+			if(self.effect != 'none'){
+				self.pannels = con.all('.'+self.contentClass+' div.'+self.pannelClass);
+			}
+
+			//目标offset，'-234px'
+			var dic = '-' + Number(self.animcon.get('region').width ).toString()+'px';
+
+			if(self.effect == 'hSlide'){
+
+				if(self.transitions){
+					self.animwrap.setStyles({
+						'-webkit-transition-duration': '0s',
+						'-webkit-transform':'translate3d('+dic+',0,0)'
+					});
+
+				}else{
+					self.animwrap.setStyle('left',dic);
+				}
+			} else if (self.effect == 'vSlide'){
+				// 暂不支持纵向跑马灯的滚动
+
+			}
+
+			return;
+
+		},
+
+		// 修正跑马灯开始的滚动位置
+		fix_pre_carousel:function(){
+			var self = this;
+
+			// jayli 这里需要调试修正，继续调试
+			self.currentTab = self.length - 1 - self.colspan * 2 + 1;
+			var con = self.con;
+			if(self.effect != 'none'){
+				self.pannels = con.all('.'+self.contentClass+' div.'+self.pannelClass);
+			}
+			// 目标offset,是一个字符串 '-23px'
+			var dic = '-' + (Number(self.animcon.get('region').width / self.colspan) * (self.currentTab)).toString() + 'px';
+
+			if(self.effect == 'hSlide'){
+				if(self.transitions){
+					self.animwrap.setStyles({
+						'-webkit-transition-duration': '0s',
+						'-webkit-transform':'translate3d('+dic +',0,0)'
+					});
+
+				}else{
+					self.animwrap.setStyle('left',dic);
+				}
+			}else if (self.effect == 'vSlide'){
+				//竖向滚动暂时未实现
+
+			}
+
+			return;
+
+		},
+		//高亮显示第index(0,1,2,3...)个nav
+		hightlightNav:function(index){
+			var self = this;
+			// 同时是跑马灯，且一帧多元素，则不允许存在Nav
+			if(self.carousel && self.colspan > 1){
+				return this;
+			}
+			if(self.tabs.item(index)){
+				self.tabs.removeClass(self.selectedClass);
+				self.tabs.item(index).addClass(self.selectedClass);
+			}
+			return this;
+		},
+		//切换至index,这里的index为真实的索引
+		switch_to:function(index,callback){
+			var self = this;
+			//首先高亮显示tab
+
+
+			var afterSwitch = function(){
+				if(S.isFunction(callback)){
+					callback.call(self,self);
+				}
+				self.fire('afterSwitch',{
+					index: self.currentTab,
+					navnode: self.tabs.item(self.getWrappedIndex(self.currentTab)),
+					pannelnode: self.pannels.item(self.currentTab)
+				});
+			};
+			
+
+			self.fire('beforeTailSwitch',{
+                index: self.currentTab,
+                navnode: self.tabs.item(self.getWrappedIndex(self.currentTab)),
+                pannelnode: self.pannels.item(self.currentTab)
+			});
+
+			self.hightlightNav(self.getWrappedIndex(index));
+			self.fixSlideSize(index);
+			if(self.autoSlide){
+				self.stop().play();
+			}
+            if (index >= self.length) {
+                index = index % self.length;
+            }
+            if (index == self.currentTab) {
+                return this;
+            }
+
+			if (self.anim) {
+				try {
+					self.anim.stop();
+					//fix IE6下内存泄露的问题，仅支持3.2.0及3.3.0,3.1.0及3.0.0需修改Y.Anim的代码
+					//modified by huya
+					// self.anim.destroy();
+					self.anim = null;
+				} catch (e) {}
+			}
+
+			// TODO 帧切换动画的实现应当从Bslide中抽离出来
+			var animFn = {
+				'none':function(index){
+
+					self.pannels.setStyles({
+						'display':'none'	
+					});
+
+					self.pannels.item(index).setStyles({
+						'display':'block'	
+					});
+
+					afterSwitch();
+
+				},
+				'vSlide':function(index){
+
+					if(self.transitions){
+						self.animwrap.setStyles({
+							'-webkit-transition-duration': self.speed + 's',
+							'-webkit-transform':'translate3d(0,'+(-1 * index * self.animcon.get('region').height / self.colspan)+'px,0)',
+							'-webkit-backface-visibility':'hidden'
+						});
+						self.anim = S.Anim(self.animwrap,{
+							opacity:1
+						},self.speed,self.easing,function(){
+							afterSwitch();
+						});
+						self.anim.run();
+					} else {
+						/*
+						self.anim = new S.Anim({
+							node: self.animwrap,
+							to: {
+								top: -1 * index * self.animcon.get('region').height
+							},
+							easing: self.easing,
+							duration: self.speed
+						});
+						self.anim.run();
+						*/
+						self.anim = S.Anim(self.animwrap,{
+							top: -1 * index * self.animcon.get('region').height / self.colspan
+						},self.speed,self.easing,function(){
+							afterSwitch();
+						});
+						self.anim.run();
+					}
+
+				},
+				'hSlide':function(index){
+
+					if(self.transitions){
+						self.animwrap.setStyles({
+							'-webkit-transition-duration': self.speed + 's',
+							'-webkit-transform':'translate3d('+(-1 * index * self.animcon.get('region').width / self.colspan)+'px,0,0)',
+							'-webkit-backface-visibility':'hidden'
+						});
+						self.anim = S.Anim(self.animwrap,{
+							opacity:1
+						},self.speed,self.easing,function(){
+							afterSwitch();
+						});
+						self.anim.run();
+					}else{
+
+						self.anim = S.Anim(self.animwrap,{
+							left: -1 * index * self.animcon.get('region').width / self.colspan
+						},self.speed,self.easing,function(){
+							afterSwitch();
+						});
+
+						self.anim.run();
+					}
+
+				},
+				'fade':function(index){
+					//重写fade效果逻辑
+					//modified by huya
+					var _curr = self.currentTab;
+
+					self.anim = S.Anim(self.pannels.item(index),{
+						opacity: 1
+					},self.speed,self.easing,function(){
+
+						self.pannels.item(_curr).setStyle('zIndex', 0);
+						self.pannels.item(index).setStyle('zIndex', 1);
+						self.pannels.item(_curr).setStyle('opacity', 0);
+						self.pannels.item(_curr).setStyles({
+							'display':'none'	
+						});
+						afterSwitch();
+						/*
+						self.fire('afterSwitch',{
+							index: index,
+							navnode: self.tabs.item(self.getWrappedIndex(index)),
+							pannelnode: self.pannels.item(index)
+						});
+						*/
+					});
+
+					//动画开始之前的动作
+					self.pannels.item(index).setStyles({
+						'display':'block'	
+					});
+					self.pannels.item(index).setStyle('opacity', 0);
+					self.pannels.item(_curr).setStyle('zIndex', 1);
+					self.pannels.item(index).setStyle('zIndex', 2);
+
+					self.anim.run();
+
+				}
+
+			};
+
+			animFn[self.effect](index);
+
+            self.currentTab = index;
+
+			// TODO，讨论switch的发生时机
+            self.fire('switch', {
+                index: index,
+                navnode: self.tabs.item(self.getWrappedIndex(index)),
+                pannelnode: self.pannels.item(index)
+            });
+
+			//延迟执行的脚本
+			var scriptsArea = self.pannels.item(index).all('.data-lazyload');
+			if(scriptsArea){
+				scriptsArea.each(function(node,i){
+					self.renderLazyData(node);
+				});
+			}
+		},
+		//去往任意一个,0,1,2,3...
+		"go":function(index,callback){
+			var self = this;
+
+            var goon = self.fire('beforeSwitch', {
+				index:index,
+				navnode:self.tabs.item(index),
+				pannelnode:self.pannels.item(index)
+            });
+
+			if(goon !== false){
+				//发生go的时候首先判断是否需要整理空间的长宽尺寸
+				//self.renderSize(index);
+
+				if(index + self.colspan > self.pannels.size()){
+					index = self.pannels.size() - self.colspan;
+				}
+				self.switch_to(index,callback);
+			}
+
+			// TODO 讨论afterSwitch的发生时机
+			/*
+            self.fire('afterSwitch', {
+                index: index,
+                navnode: self.tabs.item(self.getWrappedIndex(index)),
+                pannelnode: self.pannels.item(index)
+            });
+			*/
+
+			return this;
+
+		},
+		//自动播放
+		play:function(){
+			var self = this;
+			if(self.timer !== null){
+				clearTimeout(self.timer);
+			}
+			self.timer = setTimeout(function(){
+				self.next().play();
+			},Number(self.timeout));
+			return this;
+		},
+		//停止自动播放
+		stop:function(){
+			var self = this;
+			clearTimeout(self.timer);
+			self.timer = null;
+			return this;
+		}
+	});
+
+	return BSlide;
+
+},{
+	requires:['node','event','json','./util','./kissy2yui']	
+});
+
+KISSY.add('mobile/app/1.2/util',function(S){
+
+	"use strict";
+
+	// Node 增补方法
+	
+	S.mix(S,{
+		setHash : function(sUrl, data){
+			var url;
+			var i;
+			if(typeof sUrl == 'object'){
+				url = window.location.href;
+				data = sUrl;
+			}else{
+				url = sUrl;
+			}
+			if(url.indexOf("#") < 0){
+				url+='#';
+			}
+			var o = this.getHash(url);
+
+			/**
+			 * 清除新视图hash中不需要的key，如果不及时清除，则存在潜在风险
+			 * 比如：从视图A { 
+			 *    viewpath: 'a.html',
+			 *    param: 'type=ssq'
+			 * }
+			 * 跳转到视图B {
+			 *    viewpath: 'b.html',
+			 *    param: 'need=true'
+			 * }
+			 * hash将变成: '#viewpath=b.html&need=true' 而不是'#viewpath=b.html&type=ssq&need=true'
+			 * added by zhenn(栋寒)
+			 */ 
+			for (var i in o) {
+				if (!(i in data) && i !== 'viewpath') {
+					delete o[i];
+				}	
+			}	
+
+			for(i in data){
+				o[i] = data[i];
+			}
+			url = url.split("#")[0]+'#';
+			for(i in o){
+				url+=i+'='+o[i]+'&';
+			}
+			url = url.substr(0,url.length-1);
+			return url;
+		},
+		// url?a=1&b=2
+		// url?a=1&b=2#c=3&d=4
+		// url?a=1&b=2#c=3&d=4?e=5 错误的输入
+		getHash : function(sUrl){
+			var url = sUrl || window.location.href;
+			if(url.indexOf("#") < 0){
+				return {};
+			}else{
+				var hash = url.split('#')[1];
+				// Uri.getFragment() 得到的是decode之后的？why?
+				// var hash = new S.Uri(url).getFragment();
+				if(hash === '')return {};
+				try{
+					if(hash[hash.length-1] == '&')hash = hash.substr(0, hash.length-1);
+					hash = hash.replace(/"/ig,'\'');
+					// hash = hash.replace(/=/ig,'":"');
+					hash = hash.replace(/=/ig,'":"');
+					hash = hash.replace(/&/ig,'","');
+					hash += '"';
+					hash = "{\""+ hash + "}";
+					var o = S.JSON.parse(hash);
+				}catch(e){
+					var o = S.unparam(hash);
+				}
+				// S.unparam() 得到的也是decode之后的？why？
+				// var o = S.unparam(hash);
+				return o;
+			}
+		},
+			
+		_globalEval : function(data){
+			if (data && /\S/.test(data)) {
+				var head = document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0],
+					script = document.createElement('script');
+
+				// 神奇的支持所有的浏览器
+				script.text = data;
+
+				head.insertBefore(script, head.firstChild);
+				setTimeout(function(){
+					head.removeChild(script);
+				},1);
+			}
+		},
+		// 一段杂乱的html片段，执行其中的script脚本
+		// edit by donghan 
+		// 增加功能：在匹配script标签时，忽略模板，避免eval报错
+		execScript:function(html){
+			var self = this;
+			var re_script = new RegExp(/<script([^>]*)>([^<]*(?:(?!<\/script>)<[^<]*)*)<\/script>/ig); // 防止过滤错误
+
+			var hd = S.one('head').getDOMNode(),
+				match, attrs, srcMatch, charsetMatch,
+				t, s, text,
+				temp = /\stype="(javascript)|(text)\/template"/i,
+				RE_SCRIPT_SRC = /\ssrc=(['"])(.*?)\1/i,
+				RE_SCRIPT_CHARSET = /\scharset=(['"])(.*?)\1/i;
+
+			re_script.lastIndex = 0;
+			while ((match = re_script.exec(html))) {
+				attrs = match[1];
+				srcMatch = attrs ? attrs.match(RE_SCRIPT_SRC) : false;
+				// 如果script标示为模板
+				if (attrs.match(temp)) {
+					continue;	
+				}
+
+				// 通过src抓取到脚本
+				if (srcMatch && srcMatch[2]) {
+					s = document.createElement('script');
+					s.src = srcMatch[2];
+					// 设置编码类型
+					if ((charsetMatch = attrs.match(RE_SCRIPT_CHARSET)) && charsetMatch[2]) {
+						s.charset = charsetMatch[2];
+					}
+					s.async = true; // hack gecko
+					hd.appendChild(s);
+				}
+				// 如果是内联脚本
+				else if ((text = match[2]) && text.length > 0) {
+					self._globalEval(text);
+				}
+			}
+		},
+		// 判断当前环境是否是daily环境
+		isDaily:function(){
+			var self = this;
+			if(/daily\.taobao\.net/.test(window.location.hostname)){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+	});
+
+},{
+	requires:[
+		'node',
+		'sizzle',
+		'json',
+		'uri'
+	]	
+});

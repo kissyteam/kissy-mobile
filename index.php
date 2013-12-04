@@ -22,6 +22,10 @@
 
 	   <link href="tools/skin/todc-bootstrap.css" rel="stylesheet" />
    </head>
+<script>
+window.location.href="http://gallery.kissyui.com/app/1.4/guide/index.html";
+
+</script>
 
 
   <body data-spy="scroll" data-target=".bs-docs-sidebar">
